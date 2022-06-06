@@ -7,6 +7,7 @@ const defaultTheme = {
         backgroundLighter: '#B0D6F5',
         backgroundDarker: '#98B2D3',
         black: '#23272A',
+        white: '#FFFFFF',
         gray: '#D9D9D9'
     }
 }
