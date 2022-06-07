@@ -1,44 +1,59 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const MARGIN = 32;
+const FONT_SIZE = 18;
 
 export const Header = styled.header`
-    width: 100%;
     height: 70px;
     display: flex;
-    flex-flow: column;
-    justify-content: center;
 `;
 
-export const MenuContainer = styled.ul`
+export const Navbar = styled.nav`
+    width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+`
+
+export const MenuContainer = styled.ul<{ verticalAlign?: 'flex-start' | 'flex-end' }>`
+    display: flex;
+    flex: 1;
+    justify-content: ${props => props.verticalAlign || 'none'};
     list-style-type: none;
-`;
+    `;
 
 export const MenuItem = styled.li`
-    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: ${MARGIN}px;
+    &:last-child {
+        margin-right: ${MARGIN}px;
+    }
 `;
 
-export const Anchor = styled.a`
-    min-width: 100px;
-    height: 30px;
+const SelectedAnchor = css`
+    color: ${props => props.theme.colors.secondary};
+    text-shadow:
+    -1px -1px 0 ${props => props.theme.colors.white},
+    1px -1px 0 ${props => props.theme.colors.white},
+    -1px 1px 0 ${props => props.theme.colors.white},
+    1px 1px 0 ${props => props.theme.colors.white},
+    0 2px 5px ${props => props.theme.colors.black};
+`;
+
+export const Anchor = styled.a<{ selected?: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
     color: ${props => props.theme.colors.white};
-    font-size: 18px;
+    font-size: ${FONT_SIZE}px;
     text-shadow:
     -1px -1px 0 ${props => props.theme.colors.secondary},
     1px -1px 0 ${props => props.theme.colors.secondary},
     -1px 1px 0 ${props => props.theme.colors.secondary},
     1px 1px 0 ${props => props.theme.colors.secondary};
 
-    &:hover {
-        color: ${props => props.theme.colors.secondary};
-        text-shadow:
-        -1px -1px 0 ${props => props.theme.colors.white},
-        1px -1px 0 ${props => props.theme.colors.white},
-        -1px 1px 0 ${props => props.theme.colors.white},
-        1px 1px 0 ${props => props.theme.colors.white},
-        0 2px 5px ${props => props.theme.colors.black};
-    }
+    ${props => props.selected ? SelectedAnchor : css`&:hover { ${SelectedAnchor} }`}
 `;
+
