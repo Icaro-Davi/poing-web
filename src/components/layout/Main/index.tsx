@@ -17,4 +17,4 @@ const MainLayout: React.FC<MainLayout> = props => {
     );
 }
 
-export default MainLayout;
+export default React.memo(MainLayout);
