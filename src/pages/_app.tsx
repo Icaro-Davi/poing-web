@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import type { AppContext, AppProps } from 'next/app';
 import { getLocale } from '../locale';
 import Providers, { InitialStateType } from '../context';
+import { handleRoutes } from '../utils/Routes';
 
 interface InitialValues extends AppProps {
   initialState: InitialStateType;
@@ -24,6 +25,7 @@ App.getInitialProps = async ({ ctx, Component }: AppContext) => {
   if (typeof window === "undefined") {
     initialState.isAuthenticated = false;
     initialState.locale = await getLocale('pt_BR');
+    handleRoutes(ctx, initialState.isAuthenticated);
   }
   return {
     initialState,

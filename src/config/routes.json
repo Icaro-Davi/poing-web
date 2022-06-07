@@ -1,0 +1,22 @@
+[
+    {
+        "path": "/",
+        "layout": "MainLayout",
+        "public": true
+    },
+    {
+        "path": "/help",
+        "layout": "MainLayout",
+        "public": true
+    },
+    {
+        "path": "/commands",
+        "layout": "MainLayout",
+        "public": true
+    },
+    {
+        "path": "/dashboard/poing",
+        "layout": "AuthLayout",
+        "public": false
+    }
+]
