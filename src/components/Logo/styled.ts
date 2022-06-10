@@ -49,6 +49,7 @@ export const LogoContainer = styled.div`
 export const LogoName = styled.h1`
     user-select: none;
     font-family: 'pattaya', sans-serif;
+    font-weight: lighter;
     font-size: 35px;
     color: ${props => props.theme.colors.secondary};
     z-index: 5;

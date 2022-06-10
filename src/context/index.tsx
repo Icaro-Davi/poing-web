@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ThemeProvider } from "styled-components";
 import { Locale } from "../locale/index.type";
+import GlobalStyled from "../styles/globalStyled";
 import defaultTheme from "../styles/themes/default";
 import AppProvider from "./App";
 import AuthProvider from "./Auth";
@@ -19,6 +20,7 @@ const Providers: React.FC<IProviders> = props => {
     return (
         <AppProvider {...props}>
             <ThemeProvider theme={defaultTheme}>
+                <GlobalStyled />
                 <AuthProvider {...props}>
                     {props.children}
                 </AuthProvider>

@@ -1,4 +1,5 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { StrokeCss } from "../../../../styles/globalStyled";
 
 const MARGIN = 32;
 const FONT_SIZE = 18;
@@ -32,28 +33,14 @@ export const MenuItem = styled.li`
     }
 `;
 
-const SelectedAnchor = css`
-    color: ${props => props.theme.colors.secondary};
-    text-shadow:
-    -1px -1px 0 ${props => props.theme.colors.white},
-    1px -1px 0 ${props => props.theme.colors.white},
-    -1px 1px 0 ${props => props.theme.colors.white},
-    1px 1px 0 ${props => props.theme.colors.white},
-    0 2px 5px ${props => props.theme.colors.black};
-`;
-
 export const Anchor = styled.a<{ selected?: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${props => props.theme.colors.white};
     font-size: ${FONT_SIZE}px;
-    text-shadow:
-    -1px -1px 0 ${props => props.theme.colors.secondary},
-    1px -1px 0 ${props => props.theme.colors.secondary},
-    -1px 1px 0 ${props => props.theme.colors.secondary},
-    1px 1px 0 ${props => props.theme.colors.secondary};
-
-    ${props => props.selected ? SelectedAnchor : css`&:hover { ${SelectedAnchor} }`}
+    ${props => StrokeCss({ color: props.theme.colors.white, strokeColor: props.theme.colors.secondary, shadow: 'transparent' })}
+    ${props => props.selected && StrokeCss({ color: props.theme.colors.secondary, strokeColor: props.theme.colors.white })}
+    &:hover {
+        ${props => StrokeCss({ color: props.theme.colors.secondary, strokeColor: props.theme.colors.white })}
+    }
 `;
-

@@ -1,5 +1,3 @@
-import '../styles/globals.css';
-import { Fragment } from 'react';
 import type { AppContext, AppProps } from 'next/app';
 import { getLocale } from '../locale';
 import Providers, { InitialStateType } from '../context';
@@ -11,11 +9,9 @@ interface InitialValues extends AppProps {
 
 const App = ({ Component, pageProps, initialState }: InitialValues) => {
   return (
-    <Fragment>
-      <Providers {...{ initialState }}>
-        <Component {...pageProps} />
-      </Providers>
-    </Fragment>
+    <Providers {...{ initialState }}>
+      <Component {...pageProps} />
+    </Providers>
   );
 }
 
