@@ -1,18 +1,25 @@
 import styled from "styled-components";
+import { AlignType, StyledGridContainerProps } from "./grid.types";
 
-export const StyledGridContainer = styled.div<{ horizontalAlign?: 'center' | 'left' | 'right' }>`
+const StyleFlexAlign = (cssProperty: string, alignType: AlignType) => {
+    switch (alignType) {
+        case 'center':
+            return `${cssProperty}: center;`
+        case 'left':
+            return `${cssProperty}: flex-start;`
+        case 'right':
+            return `${cssProperty}: flex-end;`
+    }
+}
+
+export const StyledGridContainer = styled.div<StyledGridContainerProps>`
     display: flex;
     flex-wrap: wrap;
-    ${props => {
-        switch (props.horizontalAlign) {
-            case 'center':
-                return 'justify-content: center;'
-            case 'left':
-                return 'justify-content: flex-start;'
-            case 'right':
-                return 'justify-content: flex-end;'
-        }
-    }}
+    ${props => props.horizontalAlign && StyleFlexAlign('justify-content', props.horizontalAlign)}
+    ${props => props.verticalAlign && StyleFlexAlign('align-items', props.verticalAlign)}
 `;
 
-export const StyledGridRow = styled.div``;
+export const StyledGridRow = styled.div`
+    display: flex;
+    flex-direction: column;
+`;

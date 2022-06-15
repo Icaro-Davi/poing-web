@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { StrokeTextType, StyledParagraphType, StyledTitlePropsType } from "./styled.types";
 
-const StrokeText = ({ textColor, strokeColor, strokeSize = 1, shadowColor, shadowBlur = 3, shadowX = 3, shadowY = 3 }: StrokeTextType) => css`
+export const StrokeText = ({ textColor, strokeColor, strokeSize = 1, shadowColor, shadowBlur = 3, shadowX = 3, shadowY = 3 }: StrokeTextType) => css`
     color: ${props => textColor || props.theme.colors.white};
     text-shadow:
     ${strokeSize}px ${strokeSize}px 0 ${strokeColor},
@@ -31,17 +31,17 @@ const TitleDefaultStyle = css<StyledTitlePropsType>`
 
 export const StyledTitleOne = styled.h1`
     ${TitleDefaultStyle}
-    font-size: clamp(2.3rem, 3vw, 3.5rem);
+    font-size: clamp(3rem, 5vw, 3.5rem);
 `;
 
 export const StyledTitleTwo = styled.h2`
     ${TitleDefaultStyle}
-    font-size: clamp(1.8rem, 2.5vw, 3rem);
+    font-size: clamp(2.5rem, 2.5vw, 3rem);
 `;
 
 export const StyledParagraph = styled.p<StyledParagraphType>`
     font-family: 'Roboto', sans-serif;
-    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    font-size: clamp(1rem, 1.2vw, 1.5rem);
     ${props =>
         props.stroke && StrokeText({
             strokeColor: props.theme.colors.secondary,

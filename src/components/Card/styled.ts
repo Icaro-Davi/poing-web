@@ -1,13 +1,27 @@
 import styled, { css, DefaultTheme, ThemeProps } from "styled-components";
 import { ThemeColorsKeys } from "../../utils/general.types";
+import { StyledTitleOne, StrokeText, StyledParagraph } from "../Typography/styled";
 import { IStyledCard } from "./card.types";
+
+export const StyledCardTitle = styled(StyledTitleOne)``;
+export const StyledCardParagraph = styled(StyledParagraph)``;
 
 const Theme = (props: ThemeProps<DefaultTheme>, themeColorKey: ThemeColorsKeys) => css`
     background-color: ${props.theme.colors[themeColorKey]};
+
+    ${StyledCardTitle} {
+        ${props => StrokeText({
+            strokeColor: props.theme.colors[themeColorKey]
+        })}
+    }
+    ${StyledCardParagraph} {
+        ${props => StrokeText({
+            strokeColor: props.theme.colors[themeColorKey]
+        })}
+    }
 `;
 
 export const StyledCard = styled.div<IStyledCard>`
-    width: 100%;
     padding: ${({ padding }) => (padding || 16) + 'px'};
     border: 8px solid ${props => props.theme.colors.white};
     border-radius: 35px;
