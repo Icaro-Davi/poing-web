@@ -1,20 +1,10 @@
-import Link, { LinkProps } from "next/link";
 import { useRouter } from 'next/router';
 import { useApp } from "../../../../context/App";
 import { useAuth } from "../../../../context/Auth";
 import Logo from "../../../Logo";
-import { Anchor, Header, MenuContainer, MenuItem, Navbar } from "./styles";
-
-interface IStyledLink extends LinkProps {
-    label?: string;
-    selected?: boolean;
-}
-
-const StyledLink: React.FC<IStyledLink> = props => (
-    <Link {...props} passHref>
-        <Anchor selected={props.selected}>{props.label}</Anchor>
-    </Link>
-);
+import StyledLink from '../Link';
+import { Anchor, Header } from '../styled';
+import { MenuContainer, MenuItem, Navbar } from "./styles";
 
 const MainLayoutHeader: React.FC = props => {
     const auth = useAuth();

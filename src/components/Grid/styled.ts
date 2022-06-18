@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AlignType, StyledGridContainerProps } from "./grid.types";
+import { AlignType, StyledGridContainerProps, StyledGridRowProps } from "./grid.types";
 
 const StyleFlexAlign = (cssProperty: string, alignType: AlignType) => {
     switch (alignType) {
@@ -19,7 +19,9 @@ export const StyledGridContainer = styled.div<StyledGridContainerProps>`
     ${props => props.verticalAlign && StyleFlexAlign('align-items', props.verticalAlign)}
 `;
 
-export const StyledGridRow = styled.div`
+export const StyledGridRow = styled.div<StyledGridRowProps>`
     display: flex;
     flex-direction: column;
+    justify-content: ${({ verticalAlign }) => verticalAlign || 'flex-start'};
+    align-items: ${({ horizontalAlign }) => horizontalAlign || 'flex-start'};
 `;

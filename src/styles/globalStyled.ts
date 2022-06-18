@@ -1,4 +1,5 @@
-import { createGlobalStyle, css } from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import fonts from "./fonts";
 import { GridMediaQuery } from "./mediaQuery";
 
 const GlobalStyled = createGlobalStyle`
@@ -6,6 +7,15 @@ const GlobalStyled = createGlobalStyle`
         padding: 0;
         margin: 0;
         box-sizing: border-box;
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-thumb{
+            background-color: ${props => props.theme.colors.black};
+            border: .5px solid ${props => props.theme.colors.primary};
+            border-radius: 5px;
+        }
     }
 
     #__next {
@@ -19,17 +29,8 @@ const GlobalStyled = createGlobalStyle`
         text-decoration: none;
     }
 
+    ${fonts}
     ${GridMediaQuery}
 `;
 
 export default GlobalStyled;
-
-export const StrokeCss = (options: { color: string, strokeColor: string, shadow?: 'transparent' | string, shadowBlur?: number, strokeSize?: number }) => css`
-    color: ${options.color};
-    text-shadow:
-    -${options?.strokeSize ?? 1}px -${options?.strokeSize ?? 1}px 0 ${options.strokeColor},
-    ${options?.strokeSize ?? 1}px -${options?.strokeSize ?? 1}px 0 ${options.strokeColor},
-    -${options?.strokeSize ?? 1}px ${options?.strokeSize ?? 1}px 0 ${options.strokeColor},
-    ${options?.strokeSize ?? 1}px ${options?.strokeSize ?? 1}px 0 ${options.strokeColor},
-    2px 2px ${options?.shadowBlur ?? 5}px ${props => options.shadow || props.theme.colors.black};
-`;

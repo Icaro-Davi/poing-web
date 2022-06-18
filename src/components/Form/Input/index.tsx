@@ -6,7 +6,6 @@ interface IInput extends React.HTMLAttributes<HTMLInputElement>{
 
 const Input: React.FC<IInput> = ({  label, ...props }) => {
     const onInputBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-        console.log(e.target.nextElementSibling)
         if (e.target.value === "") e.target.nextElementSibling?.classList.remove('filled');
         else e.target.nextElementSibling?.classList.add('filled');
     }

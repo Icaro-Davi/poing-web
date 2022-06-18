@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { StrokeText } from "../../Typography/styled";
 
 const StyledInputFocus = css`
-    top: -10px;
+    top: -7px;
     color: ${props => props.theme.colors.secondary};
     font-size: 14px;
     ${props => StrokeText({ textColor: props.theme.colors.white, shadowX: 0, shadowY: 0, strokeSize: 1, strokeColor: props.theme.colors.secondary  })}
@@ -16,8 +16,8 @@ export const StyledInputContainer = styled.div`
 export const StyledInputLabel = styled.label`
     position: absolute;
     left: 10px;
-    top: 14px;
-    transition: all 0.2s;
+    top: 15px;
+    transition: top 0.2s ease-in-out, left .2s ease-in-out;
     padding: 0 2px;
     z-index: 1;
     color: ${props => props.theme.colors.gray};
@@ -28,7 +28,7 @@ export const StyledInputLabel = styled.label`
         background: ${props => props.theme.colors.white};
         position: absolute;
         left: 0px;
-        top: 10px;
+        top: 12px;
         width: 100%;
         z-index: -1;
     }
@@ -47,7 +47,6 @@ export const StyledInput = styled.input`
     border-radius: 5px;
     font-size: 18px;
     outline: none;
-    transition: all 0.3s;
     color: ${props => props.theme.colors.black};
 
     :focus {

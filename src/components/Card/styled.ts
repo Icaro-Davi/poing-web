@@ -3,8 +3,10 @@ import { ThemeColorsKeys } from "../../utils/general.types";
 import { StyledTitleOne, StrokeText, StyledParagraph } from "../Typography/styled";
 import { IStyledCard } from "./card.types";
 
-export const StyledCardTitle = styled(StyledTitleOne)``;
 export const StyledCardParagraph = styled(StyledParagraph)``;
+export const StyledCardTitle = styled(StyledTitleOne)`
+    width: 100%;
+`;
 
 const Theme = (props: ThemeProps<DefaultTheme>, themeColorKey: ThemeColorsKeys) => css`
     background-color: ${props.theme.colors[themeColorKey]};
@@ -22,10 +24,10 @@ const Theme = (props: ThemeProps<DefaultTheme>, themeColorKey: ThemeColorsKeys) 
 `;
 
 export const StyledCard = styled.div<IStyledCard>`
+    width: 100%;
     padding: ${({ padding }) => (padding || 16) + 'px'};
     border: 8px solid ${props => props.theme.colors.white};
     border-radius: 35px;
-    margin-top: 16px;
     box-shadow: 0 8px 9px -5px #000;
 
     ${props => {
@@ -42,4 +44,11 @@ export const StyledCard = styled.div<IStyledCard>`
                 return '';
         }
     }}
+`;
+
+export const TitleAndCardContainer = styled.div<{ direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse' }>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: ${props => props.direction || 'row'};
 `;

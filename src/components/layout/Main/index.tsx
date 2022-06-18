@@ -1,15 +1,21 @@
 import React, { ReactNode } from "react";
-import Header from "./Header";
+import { useApp } from "../../../context/App";
+import HorizontalMenu from "../Menu/Horizontal";
+import Sidebar from "../Menu/Sidebar";
 import { Container, Main } from "./styled";
 
 interface MainLayout {
     children: ReactNode;
 }
-// watch to responsive https://www.youtube.com/watch?v=53i9EHsJGxw&t=142s&ab_channel=AldarSatori
+
 const MainLayout: React.FC<MainLayout> = props => {
+    const { layout } = useApp();
+    const isMobile = layout.breakpoints.md && layout.breakpoints.sm;
     return (
         <Container>
-            <Header />
+            {isMobile
+                ? <HorizontalMenu />
+                : <Sidebar />}
             <Main>
                 {props.children}
             </Main>

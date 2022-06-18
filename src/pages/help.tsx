@@ -13,7 +13,10 @@ const Help: NextPage = props => {
                             type="four"
                             title="Precisa de ajuda?"
                             description="Você pode entrar no nosso discord oficial, ou nos contatar pelo email: “emailemail@email.com”."
-                            imageSrc="/static/image/rimuru_question.png"
+                            imageSrc="/image/rimuru_question.png"
+                            imgAlt='Slime Rimuru Tempest'
+                            imgH={360}
+                            style={{ marginTop: '10rem' }}
                         />
                     </Grid.Row>
                 </Grid>
