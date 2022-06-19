@@ -18,7 +18,8 @@ export const ButtonShining = styled.button`
     font-size: 14px;
     color: ${props => props.theme.colors.white};
     font-weight: bold;
-    width: 9em;
+    min-width: 9em;
+    padding: 0 1rem;
     height: 3em;
     line-height: 2em;
     text-align: center;

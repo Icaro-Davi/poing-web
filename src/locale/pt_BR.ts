@@ -22,6 +22,13 @@ const pt_BR = {
                 title: 'Ainda estou em desenvolvimento',
                 description: 'Por isso peço a ajuda de todos, me ajudem a virar um slime grandão :3 me convidem para o servidor e mandem o feedback do que estão achando *w *'
             }
+        },
+        help: {
+            helpCard: {
+                title: 'Precisa de ajuda?',
+                description: 'Você pode entrar no nosso discord oficial, ou nos contatar pelo email: “emailemail@email.com”.',
+                discordButton: 'Entrar no meu servidor :3'
+            }
         }
     }
 }

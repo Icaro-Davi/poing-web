@@ -1,28 +1,37 @@
 import { NextPage } from "next";
 import { Fragment } from "react";
+import { ButtonShining } from "../components/Buttons";
 import Card from "../components/Card";
 import Grid from "../components/Grid";
+import { useApp } from "../context/App";
+
+const cardsBreakpoints = { xl: 20, lg: 23, md: 20, sm: 24 }
 
 const Help: NextPage = props => {
+    const {locale: { pages: {help: { helpCard }} }} = useApp();
     return (
-        <Fragment>
-            <section>
-                <Grid horizontalAlign="center">
-                    <Grid.Row breakpoints={{ xl: 16, lg: 22, md: 20, sm: 24 }}>
-                        <Card
-                            type="four"
-                            title="Precisa de ajuda?"
-                            description="Você pode entrar no nosso discord oficial, ou nos contatar pelo email: “emailemail@email.com”."
-                            imageSrc="/image/rimuru_question.png"
-                            imgAlt='Slime Rimuru Tempest'
-                            imgH={360}
-                            style={{ marginTop: '10rem' }}
-                        />
-                    </Grid.Row>
-                </Grid>
-            </section>
-        </Fragment>
-    )
+        <Grid horizontalAlign="center">
+            <Grid.Row
+                verticalAlign="center"
+                breakpoints={cardsBreakpoints}
+                style={{ height: 'calc(100vh - 5rem)' }}
+            >
+                <Card
+                    type="four"
+                    title={helpCard.title}
+                    description={helpCard.description}
+                    imageSrc="/image/rimuru_question.png"
+                    imgAlt='Slime Rimuru Tempest'
+                    imgH={360}
+                    imgW={200}
+                    buttonsArea={
+                        <Fragment>
+                            <ButtonShining style={{ marginTop: '0.5rem' }}>{helpCard.discordButton}</ButtonShining>
+                        </Fragment>
+                    }
+                />
+            </Grid.Row>
+        </Grid>
+    );
 }
-
 export default Help;
