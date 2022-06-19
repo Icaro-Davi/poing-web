@@ -13,11 +13,26 @@ export const StyledItemContainer = styled.div`
 `;
 
 export const StyledOpenMenuBtn = styled.button`
+    cursor: pointer;
     border: 0;
     background-color: transparent;
     display: flex;
     align-items: center;
-    cursor: pointer;
+    justify-content: center;
+    position: relative;
+
+    ::before {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        z-index: 5;
+
+    }
+    :hover::before {
+        background: url('/webp/click.webp') no-repeat;
+        background-size: 50px;
+    }
 `;
 
 export const StyledSideMenuContainer = styled.div`
