@@ -13,7 +13,7 @@ const ButtonShiningColors = '#8B8BAE, #88D9E6, #C5FFFD, #8B8BAE';
 
 export const ButtonShining = styled.button`
     text-decoration: none;
-    position: absolute;
+    position: relative;
     border: none;
     font-size: 14px;
     color: ${props => props.theme.colors.white};
