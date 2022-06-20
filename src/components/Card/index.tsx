@@ -21,48 +21,52 @@ const Card: React.FC<ICard> = ({ children, title, description, imageSrc, imgAlt,
     const isMobile = (breakpoints.xs || breakpoints.sm && !breakpoints.lg);
     return (
         <StyledCard {...props}>
-            <TitleAndCardContainer
-                direction={
-                    isMobile
-                        ? 'column'
-                        : reverse ? 'row-reverse' : 'row'
-                }
-                style={{
-                    textAlign: isMobile
-                        ? 'center'
-                        : reverse ? 'right' : 'left'
-                }}
-            >
-                <div style={{ width: (isMobile ? imgW / 1.5 : (imgW * 2)), height: (isMobile ? imgH / 1.5 : (imgH * 1.5)) }}>
-                    {imageSrc && <Img
-                        imageSrc={imageSrc}
-                        alt={imgAlt || ''}
-                        style={{ position: 'relative', width: 'auto', height: '100%' }}
-                    />}
-                </div>
-                {(title || description) && (
-                    <div style={{ display: 'flex', flexFlow: 'column' }}>
-                        {title && (
-                            <StyledCardTitle
-                                spacing="lg"
-                                stroke={{ strokeSize: 1.5, shadowBlur: 5, shadowX: 5, shadowY: 5 }}
-                            >
-                                {title}
-                            </StyledCardTitle>
-                        )}
-                        {description && (
-                            <StyledCardParagraph>
-                                {description}
-                            </StyledCardParagraph>
-                        )}
-                        {buttonsArea && (
-                            <div style={{ padding: '0.5rem 0' }}>
-                                {buttonsArea}
-                            </div>
-                        )}
-                    </div>
-                )}
-            </TitleAndCardContainer>
+            {(imageSrc || title || description) && (
+                <TitleAndCardContainer
+                    direction={
+                        isMobile
+                            ? 'column'
+                            : reverse ? 'row-reverse' : 'row'
+                    }
+                    style={{
+                        textAlign: isMobile
+                            ? 'center'
+                            : reverse ? 'right' : 'left'
+                    }}
+                >
+                    {imageSrc && (
+                        <div style={{ width: (isMobile ? imgW / 1.5 : (imgW * 2)), height: (isMobile ? imgH / 1.5 : (imgH * 1.5)) }}>
+                            <Img
+                                imageSrc={imageSrc}
+                                alt={imgAlt || ''}
+                                style={{ position: 'relative', width: 'auto', height: '100%' }}
+                            />
+                        </div>
+                    )}
+                    {(title || description) && (
+                        <div style={{ display: 'flex', flexFlow: 'column' }}>
+                            {title && (
+                                <StyledCardTitle
+                                    spacing="lg"
+                                    stroke={{ strokeSize: 1.5, shadowBlur: 5, shadowX: 5, shadowY: 5 }}
+                                >
+                                    {title}
+                                </StyledCardTitle>
+                            )}
+                            {description && (
+                                <StyledCardParagraph>
+                                    {description}
+                                </StyledCardParagraph>
+                            )}
+                            {buttonsArea && (
+                                <div style={{ padding: '0.5rem 0' }}>
+                                    {buttonsArea}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </TitleAndCardContainer>
+            )}
             {children && (
                 <div>{children}</div>
             )}
