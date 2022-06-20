@@ -1,11 +1,10 @@
 import { NextPage } from "next";
 import { Fragment } from "react";
+import { cardsBreakpoints } from ".";
 import { ButtonShining } from "../components/Buttons";
 import Card from "../components/Card";
 import Grid from "../components/Grid";
 import { useApp } from "../context/App";
-
-const cardsBreakpoints = { xl: 20, lg: 23, md: 20, sm: 24 }
 
 const Help: NextPage = props => {
     const {locale: { pages: {help: { helpCard }} }} = useApp();
