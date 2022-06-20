@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { useApp } from "../../../context/App";
+import Footer from "../Footer";
 import HorizontalMenu from "../Menu/Horizontal";
 import Sidebar from "../Menu/Sidebar";
 import { Container, Main } from "./styled";
@@ -18,6 +19,7 @@ const MainLayout: React.FC<MainLayout> = props => {
                 : <Sidebar />}
             <Main>
                 {props.children}
+                <Footer />
             </Main>
         </Container>
     );
