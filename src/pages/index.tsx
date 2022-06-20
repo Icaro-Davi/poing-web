@@ -14,7 +14,7 @@ const Home: NextPage = () => {
       <Grid.Row
         verticalAlign='center'
         breakpoints={cardsBreakpoints}
-        style={{ height: 'calc(100vh - 5rem)' }}
+        style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
         <Card
           type="two"
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
       <Grid.Row
         verticalAlign='center'
         breakpoints={cardsBreakpoints}
-        style={{ height: 'calc(100vh - 5rem)' }}
+        style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
         <Card
           reverse
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
       <Grid.Row
         verticalAlign='center'
         breakpoints={cardsBreakpoints}
-        style={{ height: 'calc(100vh - 5rem)' }}
+        style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
         <Card
           type="three"

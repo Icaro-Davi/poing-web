@@ -14,7 +14,7 @@ const Help: NextPage = props => {
             <Grid.Row
                 verticalAlign="center"
                 breakpoints={cardsBreakpoints}
-                style={{ height: 'calc(100vh - 5rem)' }}
+                style={{ minHeight: 'calc(100vh - 10rem)' }}
             >
                 <Card
                     type="four"
