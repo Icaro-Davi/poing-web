@@ -1,10 +1,10 @@
 import { forwardRef, ReactNode } from 'react';
-import { StyledTitleOne, StyledTitleTwo } from './styled';
+import { StyledTitleFour, StyledTitleOne, StyledTitleThree, StyledTitleTwo } from './styled';
 import { StrokeTextType, StyledTitlePropsType } from './styled.types';
 
 interface ITitle extends Omit<StyledTitlePropsType, 'stroke'> {
     children: ReactNode;
-    level?: '1' | '2';
+    level?: '1' | '2' | '3' | '4';
     stroke: StrokeTextType | boolean;
 }
 
@@ -16,6 +16,10 @@ const Title = forwardRef<HTMLDivElement, ITitle>(
                     return StyledTitleOne;
                 case '2':
                     return StyledTitleTwo;
+                case '3':
+                    return StyledTitleThree;
+                case '4':
+                    return StyledTitleFour;
                 default:
                     return StyledTitleOne;
             }

@@ -39,6 +39,16 @@ export const StyledTitleTwo = styled.h2`
     font-size: clamp(2.5rem, 2.5vw, 3rem);
 `;
 
+export const StyledTitleThree = styled.h3`
+    ${TitleDefaultStyle}
+    font-size: clamp(1.5rem, 2vw, 2.5rem);
+`;
+
+export const StyledTitleFour = styled.h4`
+    ${TitleDefaultStyle}
+    font-size: clamp(0.8rem, 2vw, 1.3rem);
+`;
+
 export const StyledParagraph = styled.p<StyledParagraphType>`
     font-family: 'Roboto', sans-serif;
     font-size: clamp(1rem, 1.2vw, 1.5rem);
