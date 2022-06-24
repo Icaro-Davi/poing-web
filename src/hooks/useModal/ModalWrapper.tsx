@@ -1,13 +1,13 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
-import { ModalConfigType } from "./modal.types";
+import { ModalComponent, ModalWrapperParams } from "./modal.types";
 
 const StyledModalWrapper = styled.div`
 
 `;
 
-function ModalWrapper<P = {}>({ Component, Config, ...props }: { Component: React.ComponentType<any>, Config: { modal: ModalConfigType<P> } }) {
-    console.log('re rendered')
+function ModalWrapper<P extends { [key: string]: any } = {}>({ Component, Config, ...props }: ModalWrapperParams<P>): ModalComponent {
+    if (!Config?.modal) return () => <Fragment />;
     return () => (
         <StyledModalWrapper>
             <Component {...{ ...props, ...Config }} />

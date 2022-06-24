@@ -5,19 +5,21 @@ export type ModalConfigType<P> = {
     setContent: (content: P) => void;
 }
 
-type ModalComponentType<P = {}> = {
-    modal: ModalConfigType<P>;
-} & P;
+export type ModalComponentWrapper<P extends { [key: string]: any } = {}> = React.ComponentType<P & { modal: ModalConfigType<P> }>;
+export type ModalComponent = React.ComponentType;
 
-export type ModalComponent<P extends { [key: string]: any } = {}> = React.ComponentType<ModalComponentType<P>>;
+export type ModalWrapperParams<P extends { [key: string]: any } = {}> = {
+    Component: React.ComponentType<any>,
+    Config?: { modal: ModalConfigType<P> }
+};
 
 export type ModalStateType<P extends { [key: string]: any } = {}> = {
     visibility: boolean;
     content: P;
+    Component: ModalComponent;
 }
 
 export type ModalActionType<T> = {
     type: T;
     payload?: Partial<ModalStateType>;
 }
-
