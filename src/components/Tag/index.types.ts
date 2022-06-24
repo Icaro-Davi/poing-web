@@ -1,5 +1,5 @@
+export type TagThemeType = 'admin' | 'moderation' | 'utility' | 'none';
 export type TagProps = {
-    theme?: 'rainbow' | 'blue' | 'green' | 'red' | 'none';
+    borderTheme?: TagThemeType;
     weight?: 'bold' | 'light';
-    size?: number;
 }
