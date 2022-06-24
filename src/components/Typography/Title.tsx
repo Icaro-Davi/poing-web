@@ -2,13 +2,13 @@ import { forwardRef, ReactNode } from 'react';
 import { StyledTitleFour, StyledTitleOne, StyledTitleThree, StyledTitleTwo } from './styled';
 import { StrokeTextType, StyledTitlePropsType } from './styled.types';
 
-interface ITitle extends Omit<StyledTitlePropsType, 'stroke'> {
+interface ITitle extends React.HTMLAttributes<HTMLHeadingElement>, Omit<StyledTitlePropsType, 'stroke'> {
     children: ReactNode;
     level?: '1' | '2' | '3' | '4';
-    stroke: StrokeTextType | boolean;
+    stroke?: StrokeTextType | boolean;
 }
 
-const Title = forwardRef<HTMLDivElement, ITitle>(
+const Title = forwardRef<HTMLHeadingElement, ITitle>(
     ({ level, children, stroke, ...props }, ref) => {
         const Title = (() => {
             switch (level) {
