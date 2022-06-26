@@ -10,10 +10,12 @@ export type StrokeTextType = {
 }
 
 export type StyledTitlePropsType = {
-    stroke?: StrokeTextType | string;
+    stroke?: StrokeTextType | number;
     spacing?: 'sm' | 'md' | 'lg' | 'none';
+    font?: 'Roboto' | 'Pattaya';
+    bold?: number;
 };
 
 export type StyledParagraphType = {
-    stroke?: StrokeTextType | string;
+    stroke?: StrokeTextType | number;
 }

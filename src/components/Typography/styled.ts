@@ -12,8 +12,8 @@ export const StrokeText = ({ textColor, strokeColor, strokeSize = 1, shadowColor
 `;
 
 const TitleDefaultStyle = css<StyledTitlePropsType>`
-    font-family: 'pattaya', sans-serif;
-    font-weight: lighter;
+    font-family: ${props => props.font || 'Pattaya'}, sans-serif;
+    font-weight: ${props => props.bold ? 'bold' : 'lighter'};
     ${props => {
         switch (props.spacing) {
             case 'lg':
@@ -26,7 +26,11 @@ const TitleDefaultStyle = css<StyledTitlePropsType>`
                 return;
         }
     }}
-    ${props => props.stroke && StrokeText({ strokeColor: props.theme.colors.secondary, ...typeof props?.stroke === 'string' ? {} : props?.stroke })}
+    ${props =>
+        !!props.stroke && StrokeText({
+            strokeColor: props.theme.colors.secondary,
+            ...typeof props?.stroke === 'object' ? props?.stroke : {}
+        })}
 `;
 
 export const StyledTitleOne = styled.h1`
@@ -46,7 +50,7 @@ export const StyledTitleThree = styled.h3`
 
 export const StyledTitleFour = styled.h4`
     ${TitleDefaultStyle}
-    font-size: clamp(0.8rem, 2vw, 1.3rem);
+    font-size: clamp(1rem, 2vw, 1.3rem);
 `;
 
 export const StyledParagraph = styled.p<StyledParagraphType>`
@@ -55,8 +59,8 @@ export const StyledParagraph = styled.p<StyledParagraphType>`
     ${props =>
         props.stroke && StrokeText({
             strokeColor: props.theme.colors.secondary,
-            shadowBlur:2, shadowX: 1, shadowY: 1,
-            ...typeof props?.stroke === 'string' ? {} : props.stroke
+            shadowBlur: 2, shadowX: 1, shadowY: 1,
+            ...typeof props?.stroke === 'object' ? props?.stroke : {}
         })
     }
 `;

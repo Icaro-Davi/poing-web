@@ -56,3 +56,47 @@ export const ButtonShining = styled.button`
         background: linear-gradient(32deg, ${ButtonShiningColors});
     }
 `;
+
+export const IconButton = styled.button<{ size?: number, hoverColor?: string, fontColor?: string }>`
+    cursor: pointer;
+    color: ${props => props.fontColor || '#FFF'};
+    width: ${props => '35px' || props.size};
+    height: ${props => '35px' || props.size};
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all .2s;
+    background-color: ${props => props.hoverColor || props.theme.colors.black};
+
+    :hover{
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    :active{
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    ::after{
+        content: "";
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 100px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: all .4s;
+        background-color: ${props => props.hoverColor || props.theme.colors.black};
+    }
+
+    :hover::after {
+        transform: scaleX(1.6) scaleY(1.6);
+        opacity: 0;
+    }
+`;

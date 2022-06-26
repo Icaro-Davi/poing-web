@@ -1,13 +1,9 @@
 import React, { Fragment } from "react";
-import styled from "styled-components";
-import { ModalComponent, ModalWrapperParams } from "./modal.types";
-
-const StyledModalWrapper = styled.div`
-
-`;
+import { ModalComponent, ModalWrapperParams } from "../modal.types";
+import { StyledModalWrapper } from "./styled";
 
 function ModalWrapper<P extends { [key: string]: any } = {}>({ Component, Config, ...props }: ModalWrapperParams<P>): ModalComponent {
-    if (!Config?.modal) return () => <Fragment />;
+    if (!Config?.modal || !Config.modal.isActivated) return () => <Fragment />;
     return () => (
         <StyledModalWrapper>
             <Component {...{ ...props, ...Config }} />

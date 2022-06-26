@@ -7,6 +7,20 @@ const pt_BR = {
             login: 'Login'
         }
     },
+    commands: [
+        {
+            name: 'anonymous-direct-message',
+            description: 'Envia uma mensagem anonimamente para um membro do server através de mim.',
+            usage: '{@bot.name}anonymous-direct-message [@member|memberID]* [message]*',
+            aliases: ['adm'],
+            arguments: [
+                { argument: '[member]*', description: 'A referência de algum membro do servidor, pode ser [menção | membroId].' }
+            ],
+            examples: [
+                { command: '!anonymous-direct-message {@bot.name} Oi você quer pular pelo meu servidor ?', description: 'Envia uma mensagem privada para {@bot.name}.' }
+            ]
+        }
+    ],
     pages: {
         home: {
             welcomeCard: {

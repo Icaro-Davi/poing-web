@@ -26,7 +26,7 @@ function useModal<Props extends { [key: string]: any }>(Component: ModalComponen
             type: 'MODAL_COMPONENT',
             payload: { Component: ModalComponent }
         });
-    }, [state.content]);
+    }, [state.content, state.visibility]);
 
     return [state.Component, modal];
 }

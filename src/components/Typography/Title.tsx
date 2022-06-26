@@ -2,10 +2,11 @@ import { forwardRef, ReactNode } from 'react';
 import { StyledTitleFour, StyledTitleOne, StyledTitleThree, StyledTitleTwo } from './styled';
 import { StrokeTextType, StyledTitlePropsType } from './styled.types';
 
-interface ITitle extends React.HTMLAttributes<HTMLHeadingElement>, Omit<StyledTitlePropsType, 'stroke'> {
+interface ITitle extends React.HTMLAttributes<HTMLHeadingElement>, Omit<StyledTitlePropsType, 'stroke' | 'bold'> {
     children: ReactNode;
     level?: '1' | '2' | '3' | '4';
     stroke?: StrokeTextType | boolean;
+    bold?: boolean;
 }
 
 const Title = forwardRef<HTMLHeadingElement, ITitle>(
@@ -29,7 +30,12 @@ const Title = forwardRef<HTMLHeadingElement, ITitle>(
             <Title
                 {...props}
                 ref={ref}
-                stroke={typeof stroke === 'object' ? stroke : 'true'}
+                bold={Number(!!props.bold)}
+                stroke={
+                    typeof stroke === 'object'
+                        ? stroke
+                        : typeof stroke === 'boolean' ? Number(stroke) : 1
+                }
             >
                 {children}
             </Title>

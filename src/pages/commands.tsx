@@ -2,43 +2,43 @@ import { NextPage } from "next";
 import { Fragment } from "react";
 import CommandsCard from "../components/Card/Commands";
 import Grid from "../components/Grid";
+import ModalCommandCard from "../components/Modal/Command";
+import { useApp } from "../context/App";
 import useModal from "../hooks/useModal";
-import { ModalComponent } from "../hooks/useModal/modal.types";
-
-const Element: ModalComponent<{ count: number }> = props => {
-    console.log(props)
-    return <button onClick={() => props.modal.setContent({ count: 1 + props.count })}>Hello World {props.count}</button>
-}
 
 const Commands: NextPage = props => {
-    const { ModalComponent, modal } = useModal(Element);
-
+    const { locale } = useApp();
+    const [CommandModal, modal] = useModal(ModalCommandCard);
     return (
         <Fragment>
             <Grid horizontalAlign="center">
                 <CommandsCard
                     title="Admin"
                     tagTheme="admin"
+                    openModal={(content) => {
+                        modal.setContent(content);
+                        modal.open();
+                    }}
                     commands={[
-                        { command: 'help', description: 'Ao usar pode buscar as informações de um comando especifico, como também listar todos os disponíveis.' },
+                        { name: 'help', description: 'Ao usar pode buscar as informações de um comando especifico, como também listar todos os disponíveis.' },
                     ]}
                 />
                 <CommandsCard
                     title="Moderação"
                     tagTheme="moderation"
                     commands={[
-                        { command: 'help', description: 'Ao usar pode buscar as informações de um comando especifico, como também listar todos os disponíveis.' },
+                        { name: 'help', description: 'Ao usar pode buscar as informações de um comando especifico, como também listar todos os disponíveis.' },
                     ]}
                 />
                 <CommandsCard
                     title="Utilitário"
                     tagTheme="utility"
                     commands={[
-                        { command: 'help', description: 'Ao usar pode buscar as informações de um comando especifico, como também listar todos os disponíveis.' },
+                        { name: 'help', description: 'Ao usar pode buscar as informações de um comando especifico, como também listar todos os disponíveis.' },
                     ]}
                 />
             </Grid>
-            <ModalComponent />
+            <CommandModal />
         </Fragment>
     );
 }

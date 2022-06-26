@@ -6,14 +6,14 @@ import { TagThemeType } from "../Tag/index.types";
 import { Title } from "../Typography";
 
 type Command = {
-    command: string;
+    name: string;
     description: string;
 };
 
 interface ICommandCard {
     title: string;
     tagTheme?: TagThemeType;
-    openModal?: (content: any) => void;
+    openModal?: (content: { title: string, command: Command }) => void;
     commands: Command[];
 }
 
@@ -21,7 +21,7 @@ const ListCommands = (command: Command & { tagTheme?: TagThemeType, onClick?: (e
     return (
         <div key={`${command}`} onClick={command?.onClick} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <div style={{ whiteSpace: 'nowrap' }}>
-                <Tag weight="bold" borderTheme={command.tagTheme}>{command.command}</Tag>
+                <Tag weight="bold" borderTheme={command.tagTheme}>{command.name}</Tag>
             </div>
             <Tag style={{ lineBreak: 'anywhere' }}>{command.description}</Tag>
         </div>
@@ -30,7 +30,7 @@ const ListCommands = (command: Command & { tagTheme?: TagThemeType, onClick?: (e
 
 const CommandsCard: React.FC<ICommandCard> = ({ commands, title, openModal, tagTheme }) => {
     return (
-        <Grid.Row style={{ margin: '1rem 0' }} breakpoints={cardsBreakpoints}>
+        <Grid.Row style={{ margin: '1.5rem 0' }} breakpoints={cardsBreakpoints}>
             <Card style={{ width: '100%', position: 'relative', paddingTop: '1.5rem' }}>
                 {title && <Title style={{ position: 'absolute', top: -33, left: 35 }} level="3">{title}</Title>}
                 {commands.map(command => ListCommands({
