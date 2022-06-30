@@ -1,18 +1,26 @@
 import ReactMarkdown from 'react-markdown';
+import { Locale } from '../../../locale/index.type';
+import { PickInside } from '../../../utils/general.types';
 import { Title } from "../../Typography";
 import { StyledModalCommandCardSection } from "./styled";
 
-interface ICommandSectionModal {
-    howToUseDescription: string;
-    aliasesDescription: string;
-    argumentDescription: string;
-    exampleDescription: string;
-}
-
-const Section: React.FC<ICommandSectionModal> = ({ aliasesDescription, argumentDescription, exampleDescription, howToUseDescription }) => {
+const Section: React.FC<PickInside<Locale, 'commands'>> = ({ aliases, usage, description, args, examples }) => {
     const MD =
-        `###  Comando Abreviado
-        \n ${aliasesDescription}.
+        `
+        \n ### Descrição
+        \n ${description}
+        \n &nbsp;
+        \n ### Como usar
+        \n ${usage}
+        \n &nbsp;
+        \n ###  Comando Abreviado
+        \n ${aliases.map(alias => `**\`\`\`${alias}\`\`\`** `).join(' ')}
+        \n &nbsp;
+        \n ### Argumentos
+        \n ${args.join('\n\n')}
+        \n &nbsp;
+        \n ### Exemplos
+        \n ${examples.join('\n\n')}
     `;
     return (
         <StyledModalCommandCardSection>

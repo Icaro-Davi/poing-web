@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components";
 
 const PADDING = '1rem';
 
-const Slide = keyframes`
+const SlideIn = keyframes`
     from {
         transform: translateY(-15px);
         opacity: 0;
@@ -18,7 +18,13 @@ export const StyledModalCommandCardContainer = styled.div`
 
     transform: translateY(0);
     opacity: 1;
-    animation: ${Slide} .3s linear;
+    animation: ${SlideIn} .3s linear;
+
+    &.modal-out {
+        transition: transform .3s, opacity .3s;
+        transform: translateY(-15px);
+        opacity: 0;
+    }
 `;
 
 export const StyledModalCommandCardHeader = styled.nav`
@@ -38,4 +44,16 @@ export const StyledModalCommandCardSection = styled.section`
 
 export const StyledModalCommandCardFooter = styled.footer`
     padding: ${PADDING} 0 0 0;
+`;
+
+export const StyledModalCommandWrapper = styled.div`
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
 `;

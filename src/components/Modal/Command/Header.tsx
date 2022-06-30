@@ -12,7 +12,7 @@ interface IHeader {
 const Header: React.FC<IHeader> = props => (
     <StyledModalCommandCardHeader>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <FiTerminal size={30} /> <Title bold font="Roboto" stroke={{ strokeColor: '#000' }} level='3'>{props.commandName}</Title>
+            <FiTerminal size={30} /> <Title bold font="Roboto" stroke={{ strokeColor: '#000' }} level='4'>{props.commandName}</Title>
         </div>
         <IconButton title={props.closeButtonTitle} hoverColor="#f77474" onClick={props.onClose}>
             <FiX size={20} />
