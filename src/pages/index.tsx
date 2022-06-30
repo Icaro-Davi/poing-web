@@ -26,7 +26,10 @@ const Home: NextPage = () => {
           imgW={390}
           buttonsArea={
             <Fragment>
-              <ButtonShining style={{ position: 'relative', marginTop: '0.5rem', marginBottom: '1rem' }}>{welcomeCard.buttonBotInvitation}</ButtonShining>
+              <ButtonShining
+                style={{ position: 'relative', marginTop: '0.5rem', marginBottom: '1rem' }}
+                onClick={() => window.open(process.env.NEXT_PUBLIC_BOT_INVITE_URL, '_blank')?.focus()}
+              >{welcomeCard.buttonBotInvitation}</ButtonShining>
             </Fragment>
           }
         />
