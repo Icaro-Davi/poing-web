@@ -10,14 +10,15 @@ const pt_BR = {
     commands: [
         {
             name: 'anonymous-direct-message',
+            category: 'Admin',
             description: 'Envia uma mensagem anonimamente para um membro do server através de mim.',
-            usage: '{@bot.name}anonymous-direct-message [@member|memberID]* [message]*',
+            usage: '{@bot.name}anonymous-direct-message **```[@member|memberID]*```** **```[message]*```**',
             aliases: ['adm'],
-            arguments: [
-                { argument: '[member]*', description: 'A referência de algum membro do servidor, pode ser [menção | membroId].' }
+            args: [
+                '**```[member]*```** A referência de algum membro do servidor, pode ser **```[menção | membroId].```**',
             ],
             examples: [
-                { command: '!anonymous-direct-message {@bot.name} Oi você quer pular pelo meu servidor ?', description: 'Envia uma mensagem privada para {@bot.name}.' }
+                '**```{@bot.prefix}anonymous-direct-message {@bot.name} Oi você quer pular pelo meu servidor?```** Envia uma mensagem privada para {@bot.name}.',
             ]
         }
     ],
@@ -25,7 +26,7 @@ const pt_BR = {
         home: {
             welcomeCard: {
                 title: 'Bem vindo, eu sou o Poing!',
-                description: 'Sou um slime e também bot de administração, meu papel é deixar tudo mais facil para todos, vamos nos divertir juntos ?',
+                description: 'Sou um slime e também bot de administração, meu papel é deixar tudo mais fácil para todos, vamos nos divertir juntos ?',
                 buttonBotInvitation: 'Me Invoque!'
             },
             botInfoCard: {
