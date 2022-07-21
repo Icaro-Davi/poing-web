@@ -1,7 +1,6 @@
 import type { AppContext, AppProps } from 'next/app';
 import { getLocale } from '../locale';
 import Providers, { InitialStateType } from '../context';
-import { handleRoutes } from '../utils/Routes';
 
 interface InitialValues extends AppProps {
   initialState: InitialStateType;
@@ -19,9 +18,12 @@ App.getInitialProps = async ({ ctx, Component }: AppContext) => {
   const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
   const initialState = {} as any;
   if (typeof window === "undefined") {
-    initialState.isAuthenticated = false;
+    const { handleRoutes } = (await import('../utils/Routes'));
+    const authenticate = (await import('../utils/auth/authenticate')).default;
+
+    initialState.isAuthenticated = await authenticate(ctx);
     initialState.locale = await getLocale('pt_BR');
-    handleRoutes(ctx, initialState.isAuthenticated);
+    handleRoutes(ctx, !!initialState.isAuthenticated);
   }
   return {
     initialState,
