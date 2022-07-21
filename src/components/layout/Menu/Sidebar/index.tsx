@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef } from "react";
 import { RiMenuUnfoldLine, RiMenuFoldLine } from 'react-icons/ri';
 import { useTheme } from "styled-components";
 import { useApp } from "../../../../context/App";
+import { useAuth } from "../../../../context/Auth";
 import Logo from "../../../Logo";
 import StyledLink from "../Link";
 import { Anchor, Header } from "../styled";
@@ -20,6 +21,7 @@ const Sidebar: React.FC = props => {
     const spanBoxRef = useRef<HTMLDivElement>(null);
     const appTheme = useTheme();
     const { locale } = useApp();
+    const auth = useAuth();
     const Router = useRouter();
 
     useEffect(() => {
@@ -65,7 +67,7 @@ const Sidebar: React.FC = props => {
                         <StyledLink selected={Router.asPath === '/commands'} href='/commands' label={locale.navbar.mainMenu.commands} />
                     </StyledMenuItem>
                     <StyledMenuItem>
-                        <Anchor href='#'>{locale.navbar.mainMenu.login}</Anchor>
+                        <Anchor href={auth.discordAuthUrl}>{locale.navbar.mainMenu.login}</Anchor>
                     </StyledMenuItem>
                 </StyledMenuContainer>
             </StyledSideMenuContainer>
