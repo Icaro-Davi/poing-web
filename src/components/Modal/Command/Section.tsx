@@ -25,13 +25,11 @@ const Section: React.FC<PickInside<Locale, 'commands'>> = ({ aliases, usage, des
     return (
         <StyledModalCommandCardSection>
             <ReactMarkdown
-                children={MD}
                 components={{
-                    code: ({ node, inline, ...props }) => <code style={{ backgroundColor: '#EEEEEE', padding: '.2rem' }} {...props} />,
-                    h3: ({ node, ...props }) => <Title stroke={{ strokeColor: '#000' }} level='4' children={props.children} />,
-
+                    code: ({ node, inline, ...props }) => <code style={{ backgroundColor: '#EEEEEE', padding: '.2rem' }} >{props.children}</code>,
+                    h3: ({ node, ...props }) => <Title stroke={{ strokeColor: '#000' }} level='4' >{props.children}</Title>,
                 }}
-            />
+            >{MD}</ReactMarkdown>
         </StyledModalCommandCardSection>
     );
 }
