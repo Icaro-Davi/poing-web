@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StrokeText } from "../../Typography/styled";
+import { StrokeText } from "../../../Typography/styled";
 
 const FONT_SIZE = 18;
 export const MARGIN = 32;

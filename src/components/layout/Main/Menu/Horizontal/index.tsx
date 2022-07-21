@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { useApp } from "../../../../context/App";
-import { useAuth } from "../../../../context/Auth";
-import Logo from "../../../Logo";
+import { useApp } from "../../../../../context/App";
+import { useAuth } from "../../../../../context/Auth";
+import Logo from "../../../../Logo";
 import StyledLink from '../Link';
 import { Anchor, Header } from '../styled';
 import { MenuContainer, MenuItem, Navbar } from "./styles";

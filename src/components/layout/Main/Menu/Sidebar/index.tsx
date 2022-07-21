@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef } from "react";
 import { RiMenuUnfoldLine, RiMenuFoldLine } from 'react-icons/ri';
 import { useTheme } from "styled-components";
-import { useApp } from "../../../../context/App";
-import { useAuth } from "../../../../context/Auth";
-import Logo from "../../../Logo";
+import { useApp } from "../../../../../context/App";
+import { useAuth } from "../../../../../context/Auth";
+import Logo from "../../../../Logo";
 import StyledLink from "../Link";
 import { Anchor, Header } from "../styled";
 import {
