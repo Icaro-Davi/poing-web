@@ -50,7 +50,7 @@ const MainLayoutHeader: React.FC = props => {
                         )
                         : (
                             <MenuItem>
-                                <Anchor onClick={auth.logIn} href='#'>{locale?.navbar.mainMenu.login}</Anchor>
+                                <Anchor href={auth.discordAuthUrl}>{locale?.navbar.mainMenu.login}</Anchor>
                             </MenuItem>
                         )}
                 </MenuContainer>
