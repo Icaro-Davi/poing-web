@@ -45,15 +45,3 @@ export const StyledModalCommandCardSection = styled.section`
 export const StyledModalCommandCardFooter = styled.footer`
     padding: ${PADDING} 0 0 0;
 `;
-
-export const StyledModalCommandWrapper = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-`;

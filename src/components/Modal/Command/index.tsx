@@ -1,12 +1,13 @@
 import { ModalComponentWrapper } from "../../../hooks/useModal/modal.types";
 import Grid from "../../Grid";
-import { StyledModalCommandCardContainer, StyledModalCommandWrapper } from "./styled";
+import { StyledModalCommandCardContainer } from "./styled";
 import Footer from "./Footer";
 import Header from './Header';
 import Section from './Section';
 import { PickInside } from "../../../utils/general.types";
 import { Locale } from "../../../locale/index.type";
 import { useRef } from "react";
+import { ModalWrapper } from "../styled";
 
 interface IModalCommandCard {
     title: string;
@@ -20,7 +21,7 @@ const ModalCommandCard: ModalComponentWrapper<IModalCommandCard> = props => {
         setTimeout(props.modal.close, 300);
     }
     return (
-        <StyledModalCommandWrapper onClick={onCloseModal}>
+        <ModalWrapper onClick={onCloseModal}>
             <Grid horizontalAlign='center'>
                 <Grid.Row breakpoints={{ xl: 10, md: 14, xs: 22 }} onClick={e => (e.stopPropagation())}>
                     <StyledModalCommandCardContainer ref={modalRef}>
@@ -34,7 +35,7 @@ const ModalCommandCard: ModalComponentWrapper<IModalCommandCard> = props => {
                     </StyledModalCommandCardContainer>
                 </Grid.Row>
             </Grid>
-        </StyledModalCommandWrapper>
+        </ModalWrapper>
     );
 }
 
