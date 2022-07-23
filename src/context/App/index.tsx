@@ -10,7 +10,8 @@ const AppProvider: FC<IAppProvider> = props => {
     const [pageLoaded, setPageLoading] = useState(false);
     const breakpoints = useMatchMedia();
     const [store, dispatchStore] = useReducer(appReducer, {
-        guilds: []
+        guilds: [],
+        selectedGuildId: ''
     });
 
     useEffect(() => {
