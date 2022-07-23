@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { useApp } from "../../context/App";
-import Img from "../Img";
+import { useApp } from "../../../context/App";
+import Img from "../../Img";
 import { IStyledCard } from "./card.types";
 import { StyledCard, StyledCardParagraph, StyledCardTitle, TitleAndCardContainer } from "./styled";
 

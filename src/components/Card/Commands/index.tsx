@@ -1,11 +1,11 @@
-import Card from ".";
-import { cardsBreakpoints } from "../../pages";
-import Grid from "../Grid"
-import Tag from "../Tag";
-import { TagThemeType } from "../Tag/index.types";
-import { Title } from "../Typography";
-import { Locale } from '../../locale/index.type';
-import { PickInside } from "../../utils/general.types";
+import Card from "../Common";
+import { cardsBreakpoints } from "../../../pages";
+import Grid from "../../Grid"
+import Tag from "../../Tag";
+import { TagThemeType } from "../../Tag/index.types";
+import { Title } from "../../Typography";
+import { Locale } from '../../../locale/index.type';
+import { PickInside } from "../../../utils/general.types";
 
 type Command = PickInside<Locale, 'commands'>;
 

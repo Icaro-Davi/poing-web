@@ -1,6 +1,6 @@
 import styled, { css, DefaultTheme, ThemeProps } from "styled-components";
-import { ThemeColorsKeys } from "../../utils/general.types";
-import { StyledTitleOne, StrokeText, StyledParagraph } from "../Typography/styled";
+import { ThemeColorsKeys } from "../../../utils/general.types";
+import { StyledTitleOne, StrokeText, StyledParagraph } from "../../Typography/styled";
 import { IStyledCard } from "./card.types";
 
 export const StyledCardParagraph = styled(StyledParagraph)``;
