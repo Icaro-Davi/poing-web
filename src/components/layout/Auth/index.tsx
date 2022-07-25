@@ -2,7 +2,7 @@ import { FC, ReactNode, memo } from "react";
 import { useEffect } from "react";
 
 import { useApp } from "../../../context/App";
-import DiscordUserService from "../../../services/discord/user";
+import AppDispatch from "../../../context/App/dispatch";
 import SideMenu from "./SideMenu";
 import { Container, Main } from "./styles";
 
@@ -11,15 +11,8 @@ interface IAuthLayout {
 }
 
 const AuthLayout: FC<IAuthLayout> = props => {
-    const { store: { guilds }, dispatchStore } = useApp();
-    useEffect(() => {
-        let cancelRequest = false;
-        !guilds.length && DiscordUserService.getGuilds()
-            .then(guilds => {
-                if (!cancelRequest) dispatchStore({ type: 'SET_GUILDS', payload: { guilds } });
-            });
-        return () => { cancelRequest = true };
-    }, []);
+    const { dispatchStore } = useApp();
+    useEffect(() => { AppDispatch.findGuildAndSave(dispatchStore) }, []);
     return (
         <Container>
             <SideMenu />

@@ -1,8 +1,7 @@
-import { Dispatch, ReactNode } from "react";
+import { ReactNode } from "react";
 import { BreakpointsMatch } from "../../hooks/useMatchMedia";
 import { Locale } from "../../locale/index.type";
-import { AppAction, AppStateType } from "./app.types";
-import { AppActionKeys } from "./reducer";
+import { AppDispatchStore, AppStateType } from "./app.types";
 
 export interface IAppProvider {
     initialState: {
@@ -15,7 +14,7 @@ export interface IAppProvider {
 export interface IAppContext {
     locale: Locale & { set: (locale: Locale) => void };
     store: AppStateType,
-    dispatchStore: Dispatch<AppAction<AppActionKeys>>,
+    dispatchStore: AppDispatchStore,
     layout: {
         breakpoints: BreakpointsMatch;
         pageLoaded: boolean;
