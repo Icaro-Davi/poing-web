@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import appRoutes from '../../config/routes.json';
 
 const MainLayout = dynamic(() => import('../../components/layout/Main'), { suspense: true });
@@ -13,12 +13,14 @@ function handleLayoutsByRoots(path: string, isAuthenticated: boolean, children: 
     };
     switch (route?.layout) {
         case 'MainLayout':
-            return <MainLayout children={ children } />
+            return <MainLayout children={children} />
         case 'AuthLayout':
-            return <AuthLayout children={ children } />;
+            return <AuthLayout children={children} />;
+        case 'blank':
+            return <Fragment>{children}</Fragment>
         // 404
         default:
-            return <MainLayout children={ children } />;
+            return <MainLayout children={children} />;
     }
 }
 
