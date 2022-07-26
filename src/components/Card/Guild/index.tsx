@@ -11,7 +11,7 @@ interface IGuildCard {
 
 const GuildCard: FC<IGuildCard> = ({ guild, onClick, selected }) => (
     <GuildCardContainer onClick={() => { onClick && onClick(guild.id); }}>
-        <GuildNameContainer selected={selected} src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}`}>
+        <GuildNameContainer selected={selected} src={guild.icon}>
             <Paragraph stroke={{ strokeColor: '#FFFFFF', textColor: '#000000' }} >{guild.name}</Paragraph>
         </GuildNameContainer>
     </GuildCardContainer>

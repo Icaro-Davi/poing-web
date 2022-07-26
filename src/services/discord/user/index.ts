@@ -7,7 +7,7 @@ class DiscordUserService {
     static async getGuilds() {
         try {
             const { data } = await DiscordRequestor.get<UserGuildType[]>(`${this.basePath}/guilds`);
-            return data;
+            return data.map(guild => ({ ...guild, icon:`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` }));
         } catch (error) {
             console.error(error);
         }
