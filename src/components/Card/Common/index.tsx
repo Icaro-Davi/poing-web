@@ -59,7 +59,7 @@ const Card: React.FC<ICard> = ({ children, title, description, imageSrc, imgAlt,
                                 </StyledCardParagraph>
                             )}
                             {buttonsArea && (
-                                <div style={{ padding: '0.5rem 0' }}>
+                                <div style={{ padding: '0.5rem 0', display: 'flex', ...isMobile ? { justifyContent: 'center' } : { justifyContent: 'start' } }}>
                                     {buttonsArea}
                                 </div>
                             )}
