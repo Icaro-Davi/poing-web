@@ -5,12 +5,14 @@ type ImageLink = string;
 const useImageLoad = (image: ImageLink) => {
     const [imageLoaded, setImageLoad] = useState(false);
     useEffect(() => {
-        setImageLoad(false);
-        const img = new Image();
-        img.onload = () => {
-            setImageLoad(true);
+        if (image){
+            setImageLoad(false);
+            const img = new Image();
+            img.onload = () => {
+                setImageLoad(true);
+            }
+            img.src = image;
         }
-        img.src = image;
     }, [image]);
     return imageLoaded;
 }
