@@ -1,4 +1,7 @@
 import styled, { keyframes } from "styled-components";
+import Button from './Button';
+
+export { Button };
 
 const ButtonShiningAnimation = keyframes`
     0% {
