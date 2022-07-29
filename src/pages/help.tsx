@@ -1,12 +1,14 @@
-import { NextPage } from "next";
 import { Fragment } from "react";
 import { cardsBreakpoints } from ".";
 import { ButtonShining } from "../components/Buttons";
 import Card from "../components/Card";
 import Grid from "../components/Grid";
+import handleGetLayout from "../components/layout/handleGetLayout";
+import PublicLayout from "../components/layout/Public";
 import { useApp } from "../context/App";
+import { NextPageWithLayout } from "../utils/general.types";
 
-const Help: NextPage = props => {
+const HelpPage: NextPageWithLayout = props => {
     const {locale: { pages: {help: { helpCard }} }} = useApp();
     return (
         <Grid horizontalAlign="center">
@@ -33,4 +35,7 @@ const Help: NextPage = props => {
         </Grid>
     );
 }
-export default Help;
+
+HelpPage.getLayout = handleGetLayout(PublicLayout);
+
+export default HelpPage;

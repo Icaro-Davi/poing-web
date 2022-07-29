@@ -1,12 +1,13 @@
-import { NextPage } from "next";
 import { Fragment, useRef } from "react";
 import CommandsCard from "../components/Card/Commands";
 import Grid from "../components/Grid";
+import handleGetLayout from "../components/layout/handleGetLayout";
+import PublicLayout from "../components/layout/Public";
 import ModalCommandCard from "../components/Modal/Command";
 import { useApp } from "../context/App";
 import useModal from "../hooks/useModal";
 import { Locale } from "../locale/index.type";
-import { PickInside } from "../utils/general.types";
+import { NextPageWithLayout, PickInside } from "../utils/general.types";
 
 type Command = PickInside<Locale, 'commands'>;
 
@@ -19,7 +20,7 @@ const ReduceLocale = (locale: Locale) => locale.commands.reduce((prev, current) 
     return prev;
 }, {} as { [k: string]: Command[] });
 
-const Commands: NextPage = props => {
+const CommandPage: NextPageWithLayout = props => {
     const { locale } = useApp();
     const [CommandModal, modal] = useModal(ModalCommandCard);
     const commandsRef = useRef(Object.entries(ReduceLocale(locale)));
@@ -44,4 +45,6 @@ const Commands: NextPage = props => {
     );
 }
 
-export default Commands;
+CommandPage.getLayout = handleGetLayout(PublicLayout);
+
+export default CommandPage;

@@ -1,14 +1,15 @@
-import { NextPage } from "next";
-import { useAuth } from "../../context/Auth";
+import DashboardGuildLayout from "../../components/layout/DashboardGuild";
+import handleGetLayout from "../../components/layout/handleGetLayout";
+import { NextPageWithLayout } from "../../utils/general.types";
 
-const PoingSettings: NextPage = props => {
-    const auth = useAuth();
+const PoingPage: NextPageWithLayout = props => {
     return (
-        <div>
-            Private Page PoingSettings
-            <button onClick={auth?.isAuthenticated ? auth.logOut : auth?.logIn}>{auth?.isAuthenticated ? 'Logout' : 'Login'}</button>
+        <div style={{ color: '#FFFFFF'}}>
+            Hello World, Poing dashboard
         </div>
     )
 }
 
-export default PoingSettings;
+PoingPage.getLayout = handleGetLayout(DashboardGuildLayout);
+
+export default PoingPage;

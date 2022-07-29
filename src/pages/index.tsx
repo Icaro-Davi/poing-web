@@ -1,13 +1,14 @@
-import type { NextPage } from 'next'
-import { Fragment } from 'react';
-import { ButtonShining } from '../components/Buttons';
+import InviteBotBtn from '../components/Buttons/InviteBot';
 import Card from '../components/Card';
 import Grid from '../components/Grid';
+import handleGetLayout from '../components/layout/handleGetLayout';
+import PublicLayout from '../components/layout/Public';
 import { useApp } from '../context/App';
+import { NextPageWithLayout } from '../utils/general.types';
 
 export const cardsBreakpoints = { xl: 20, lg: 23, md: 20, sm: 24 };
 
-const Home: NextPage = () => {
+const HomePage: NextPageWithLayout = () => {
   const { locale: { pages: { home: { botInfoCard, devBotCard, welcomeCard } } } } = useApp();
   return (
     <Grid horizontalAlign="center">
@@ -24,14 +25,7 @@ const Home: NextPage = () => {
           imgAlt='Pouring'
           style={{ marginBottom: '5rem' }}
           imgW={390}
-          buttonsArea={
-            <Fragment>
-              <ButtonShining
-                style={{ position: 'relative', marginTop: '0.5rem', marginBottom: '1rem' }}
-                onClick={() => window.open(process.env.NEXT_PUBLIC_BOT_INVITE_URL, '_blank')?.focus()}
-              >{welcomeCard.buttonBotInvitation}</ButtonShining>
-            </Fragment>
-          }
+          buttonsArea={<InviteBotBtn />}
         />
       </Grid.Row>
       <Grid.Row
@@ -70,4 +64,6 @@ const Home: NextPage = () => {
   );
 }
 
-export default Home;
+HomePage.getLayout = handleGetLayout(PublicLayout);
+
+export default HomePage;

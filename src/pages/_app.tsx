@@ -1,15 +1,18 @@
 import type { AppContext, AppProps } from 'next/app';
 import { getLocale } from '../locale';
 import Providers, { InitialStateType } from '../context';
+import { NextPageWithLayout } from '../utils/general.types';
 
-interface InitialValues extends AppProps {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
   initialState: InitialStateType;
 }
 
-const App = ({ Component, pageProps, initialState }: InitialValues) => {
+const App = ({ Component, pageProps, initialState }: AppPropsWithLayout) => {
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <Providers {...{ initialState }}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </Providers>
   );
 }
