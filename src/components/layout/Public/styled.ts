@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { HORIZONTAL_HEADER_HEIGHT } from "./Menu/styled";
 
 export const Container = styled.div`
     width: 100%;
@@ -14,4 +15,11 @@ export const Main = styled.main<{ padding?: number }>`
     overflow: auto;
     padding-top: 0;
     padding-bottom: 0;
+
+    ::before{
+        content: '';
+        display: block;
+        width: 100%;
+        height: ${HORIZONTAL_HEADER_HEIGHT};
+    }
 `;

@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
+  images: {
+    domains: ['cdn.discordapp.com']
+  },
   compiler: {
     styledComponents: true,
   }
