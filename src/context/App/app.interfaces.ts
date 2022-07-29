@@ -17,6 +17,5 @@ export interface IAppContext {
     dispatchStore: AppDispatchStore,
     layout: {
         breakpoints: BreakpointsMatch;
-        pageLoaded: boolean;
     }
 }
