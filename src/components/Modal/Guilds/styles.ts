@@ -7,18 +7,16 @@ export const ModalContainer = styled.section`
     width: 100%;
     overflow-y: auto;
     height: calc(((${GUILD_CARD_HEIGHT} + .5em)* ${QUANTITY_OF_GUILD_CARDS_IN_SCROLL}) + .5em);
-    background-color: ${props => props.theme.colors.black};
+    background: ${props => `linear-gradient(0,${props.theme.colors.backgroundLighter} -100%, ${props.theme.colors.black})`};
     padding: .5em;
     border-radius: 6px;
-
 `;
 
 export const ModalScrollContainer = styled.div`
     width: 100%;
-
+    height: 100%;
     display: flex;
     row-gap: .5em;
-
     flex-flow: column;
 `;
 

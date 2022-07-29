@@ -1,17 +1,18 @@
 import { memo } from "react";
 import { useApp } from "../../../context/App";
+import AppDispatch from "../../../context/App/dispatch";
 import { ModalComponentWrapper } from "../../../hooks/useModal/modal.types";
 import { UserGuildType } from "../../../services/discord/user/user.types";
-import GuildCard from "../../Card/Guild";
 import Grid from "../../Grid";
 import { Title } from "../../Typography";
 import { ModalWrapper } from "../styled";
+import RenderGuildCards from "./RenderGuildCards";
 import { ModalContainer, ModalHeader, ModalScrollContainer } from "./styles";
 
 const ModalGuilds: ModalComponentWrapper<{ guilds: UserGuildType[] }> = props => {
     const { store, dispatchStore } = useApp();
     const onSelectGuild = (guildId: string) => {
-        dispatchStore({ type: 'SET_SELECTED_GUILD', payload: { selectedGuildId: guildId } });
+        AppDispatch.setSelectedGuildId(dispatchStore, guildId);
         setTimeout(props.modal.close, 100);
     }
     return (
@@ -23,7 +24,7 @@ const ModalGuilds: ModalComponentWrapper<{ guilds: UserGuildType[] }> = props =>
                     </ModalHeader>
                     <ModalContainer>
                         <ModalScrollContainer>
-                            {store.guilds.map(guild => (<GuildCard key={guild.id} selected={guild.id === store.selectedGuildId} onClick={onSelectGuild} guild={guild} />))}
+                            {RenderGuildCards(store.guilds, store.selectedGuildId, onSelectGuild)}
                         </ModalScrollContainer>
                     </ModalContainer>
                 </Grid.Row>
