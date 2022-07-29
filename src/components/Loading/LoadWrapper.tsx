@@ -4,13 +4,14 @@ import { LoaderContainer, LoadIconContainer } from "./styled";
 interface IProps {
     isLoading: boolean;
     children: ReactNode;
-    color?: string;
+    spinnerColor?: string;
+    bgColor?: string;
 }
 
 const LoadWrapper: FC<IProps> = props => {
     if (props.isLoading) return (
-        <LoaderContainer>
-            <LoadIconContainer color={props.color}>
+        <LoaderContainer backgroundColor={props.bgColor} >
+            <LoadIconContainer color={props.spinnerColor}>
                 <svg viewBox="25 25 50 50">
                     <circle r="20" cy="50" cx="50"></circle>
                 </svg>
