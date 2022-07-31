@@ -1,7 +1,9 @@
 import styled, { keyframes } from "styled-components";
 import Button from './Button';
 
-export { Button };
+const ICON_BUTTON_DEFAULT_HEIGHT = '35px';
+
+export { Button, ICON_BUTTON_DEFAULT_HEIGHT };
 
 const ButtonShiningAnimation = keyframes`
     0% {
@@ -63,8 +65,8 @@ export const ButtonShining = styled.button`
 export const IconButton = styled.button<{ size?: number, hoverColor?: string, fontColor?: string }>`
     cursor: pointer;
     color: ${props => props.fontColor || '#FFF'};
-    width: ${props => '35px' || props.size};
-    height: ${props => '35px' || props.size};
+    width: ${props => ICON_BUTTON_DEFAULT_HEIGHT || props.size};
+    height: ${props => ICON_BUTTON_DEFAULT_HEIGHT || props.size};
     border: none;
     border-radius: 50%;
     display: flex;
