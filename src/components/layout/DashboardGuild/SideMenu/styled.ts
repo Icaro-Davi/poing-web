@@ -60,7 +60,7 @@ export const NavigationContainer = styled.nav<{ btnQuantityInArea: number }>`
     overflow-y: auto;
 `;
 
-export const NavigationScrollArea = styled.div`
+export const ButtonsArea = styled.div`
     display: flex;
     flex-flow: column;
     row-gap: .5em;
