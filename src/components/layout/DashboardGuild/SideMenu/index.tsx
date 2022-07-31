@@ -1,12 +1,12 @@
-import { FC } from "react";
 import { SiDiscord } from 'react-icons/si';
-import { IoExitSharp } from 'react-icons/io5';
+import { IoExitSharp, IoHomeSharp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 
 import { useApp } from "../../../../context/App";
 import useModal from "../../../../hooks/useModal";
 import ModalGuilds from "../../../Modal/Guilds";
-import { NavigationContainer, NavigationScrollArea, SideMenuContainer } from "./styled";
+import { NavigationContainer, ButtonsArea, SideMenuContainer } from "./styled";
+import { FC } from 'react';
 import GuildChangeBtn from "./GuildChangeBtn";
 import { Divider } from "../../../Divider";
 import { Button } from "../../../Buttons";
@@ -18,27 +18,37 @@ const SideMenu: FC = props => {
     const [GuildModal, guildModal] = useModal(ModalGuilds);
     const guild = store.guilds.find(guild => guild.id === store.selectedGuildId);
     return (
-        <SideMenuContainer>
+        <SideMenuContainer onClick={e => e.stopPropagation()}>
             <GuildChangeBtn guild={guild || {} as any} onClick={guildModal.open} />
             <Divider />
-            <Button
-                style={{ width: '90%' }}
-                onClick={guildModal.open}
-                icon={<SiDiscord />}
-            >Guilds</Button>
+            <ButtonsArea>
+                <Button
+                    style={{ width: '90%' }}
+                    onClick={guildModal.open}
+                    icon={<SiDiscord />}
+                >Guilds</Button>
+            </ButtonsArea>
             <Divider />
             <NavigationContainer btnQuantityInArea={6}>
-                <NavigationScrollArea>
+                <ButtonsArea>
                     {RenderNavigationButtons({ currentPath: router.asPath })}
-                </NavigationScrollArea>
+                </ButtonsArea>
             </NavigationContainer>
             <Divider />
-            <Button
-                style={{ width: '90%' }}
-                onClick={() => router.push('/')}
-                icon={<IoExitSharp />}
-                focusColor="linear-gradient(to right, #ff7575,#ff2e2e)"
-            >Sair</Button>
+            <ButtonsArea>
+                <Button
+                    style={{ width: '90%' }}
+                    onClick={() => router.push('/')}
+                    icon={<IoHomeSharp />}
+                >Home</Button>
+                <Button
+                    disabled={true}
+                    style={{ width: '90%' }}
+                    onClick={() => router.push('/')}
+                    icon={<IoExitSharp />}
+                    focusColor="linear-gradient(to right, #ff7575,#ff2e2e)"
+                >Logout</Button>
+            </ButtonsArea>
             <GuildModal />
         </SideMenuContainer>
     );
