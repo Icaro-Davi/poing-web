@@ -8,7 +8,8 @@ class AppDispatch {
             const guilds = await DiscordUserService.getGuilds();
             if (guilds) {
                 dispatch({ type: 'SET_GUILDS', payload: { guilds } });
-                const selectedGuildId = LocalStorage.guild.getSelectedId() || guilds[0].id;
+                const lsGuildId = LocalStorage.guild.getSelectedId()
+                const selectedGuildId = (lsGuildId && guilds.find(guild => guild.id === lsGuildId)?.id) || guilds[0].id;
                 dispatch({ type: 'SET_SELECTED_GUILD', payload: { selectedGuildId } });
                 LocalStorage.guild.setSelectedId(selectedGuildId);
             }
