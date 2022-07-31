@@ -66,9 +66,17 @@ const Sidebar: React.FC = props => {
                     <StyledMenuItem>
                         <StyledLink selected={Router.asPath === '/commands'} href='/commands' label={locale.navbar.mainMenu.commands} />
                     </StyledMenuItem>
-                    <StyledMenuItem>
-                        <Anchor href={auth.discordAuthUrl}>{locale.navbar.mainMenu.login}</Anchor>
-                    </StyledMenuItem>
+                    {auth.isAuthenticated
+                        ? (
+                            <StyledMenuItem>
+                                <StyledLink selected={false} href='/dashboard/poing' label='Dashboard' />
+                            </StyledMenuItem>
+                        )
+                        : (
+                            <StyledMenuItem>
+                                <Anchor href={auth.discordAuthUrl}>{locale.navbar.mainMenu.login}</Anchor>
+                            </StyledMenuItem>
+                        )}
                 </StyledMenuContainer>
             </StyledSideMenuContainer>
         </Fragment>
