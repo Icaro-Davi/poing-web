@@ -17,5 +17,6 @@ export interface IAppContext {
     dispatchStore: AppDispatchStore,
     layout: {
         breakpoints: BreakpointsMatch;
+        isDesktopSize: boolean;
     }
 }

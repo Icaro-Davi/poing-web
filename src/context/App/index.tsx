@@ -26,7 +26,10 @@ const AppProvider: FC<IAppProvider> = props => {
             store,
             dispatchStore,
             locale: { ...locale, set: setLocale },
-            layout: { breakpoints },
+            layout: {
+                breakpoints,
+                isDesktopSize: breakpoints.md && breakpoints.sm
+            },
         }}>
             {pageLoaded ? props.children : ''}
         </AppContext.Provider>

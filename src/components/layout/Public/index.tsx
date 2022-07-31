@@ -11,10 +11,9 @@ interface MainLayout {
 
 const MainLayout: React.FC<MainLayout> = props => {
     const { layout } = useApp();
-    const isMobile = layout.breakpoints.md && layout.breakpoints.sm;
     return (
         <Container>
-            {isMobile
+            {layout.isDesktopSize
                 ? <HorizontalMenu />
                 : <Sidebar />}
             <Main>
