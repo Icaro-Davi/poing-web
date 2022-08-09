@@ -5,12 +5,11 @@ interface IProps {
     isLoading: boolean;
     children: ReactNode;
     spinnerColor?: string;
-    bgColor?: string;
 }
 
 const LoadWrapper: FC<IProps> = props => {
     if (props.isLoading) return (
-        <LoaderContainer backgroundColor={props.bgColor} >
+        <LoaderContainer>
             <LoadIconContainer color={props.spinnerColor}>
                 <svg viewBox="25 25 50 50">
                     <circle r="20" cy="50" cx="50"></circle>

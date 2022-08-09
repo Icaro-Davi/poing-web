@@ -20,14 +20,14 @@ const dashAnimation = keyframes`
     }
 `;
 
-export const LoaderContainer = styled.div<{ backgroundColor?: string }>`
+export const LoaderContainer = styled.div`
     position: relative;
     ::before{
         content: '';
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: ${props => props.backgroundColor || '#000000BB'};
+        backdrop-filter: blur(5px);
         z-index: 5;
     }
 `;
