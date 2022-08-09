@@ -1,13 +1,13 @@
 import DashboardGuildLayout from "../../components/layout/DashboardGuild";
 import handleGetLayout from "../../components/layout/handleGetLayout";
 import { NextPageWithLayout } from "../../utils/general.types";
+import PoingSettingsForm from "../../components/Form/PoingSettings";
 
 const PoingPage: NextPageWithLayout = props => {
+
     return (
-        <div style={{ color: '#FFFFFF'}}>
-            Hello World, Poing dashboard
-        </div>
-    )
+        <PoingSettingsForm />
+    );
 }
 
 PoingPage.getLayout = handleGetLayout(DashboardGuildLayout);
