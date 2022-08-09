@@ -8,7 +8,8 @@ const defaultTheme = {
         backgroundDarker: '#98B2D3',
         black: '#23272A',
         white: '#FFFFFF',
-        gray: '#D9D9D9'
+        gray: '#D9D9D9',
+        error: '#ff9494'
     }
 }
 
