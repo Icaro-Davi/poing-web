@@ -66,6 +66,7 @@ interface IProps extends Partial<Omit<PropsButtonType, 'disabled'>> {
     style?: CSSProperties;
     icon?: ReactNode;
     disabled?: boolean;
+    type: 'button' | 'submit' | 'reset';
 }
 
 const Button: FC<IProps> = ({ icon, children, ...props }) => (
