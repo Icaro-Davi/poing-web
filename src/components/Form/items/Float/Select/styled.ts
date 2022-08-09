@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FLOAT_DEFAULT_SPACING } from "../styled";
 
 export const FloatSelect = styled.select<{ error: boolean }>`
+    cursor: pointer;
     -webkit-appearance: none;
     width: 100%;
     padding: ${FLOAT_DEFAULT_SPACING};

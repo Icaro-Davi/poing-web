@@ -6,6 +6,13 @@ export const FLOAT_CUBIC_BEZIER = 'cubic-bezier(.4, 0, .2, 1)';
 export const FloatGroup = styled.div`
     position: relative;
     padding:0 .5rem 0 .5rem;
+
+    svg {
+        position: absolute;
+        color: ${props => props.theme.colors.white};
+        margin: ${FLOAT_DEFAULT_SPACING} 0 ${FLOAT_DEFAULT_SPACING} 0;
+        right: calc(${FLOAT_DEFAULT_SPACING} * 2);
+    }
 `;
 
 export const FloatLabel = styled.label<{ error: boolean }>`

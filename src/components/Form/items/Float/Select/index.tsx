@@ -1,6 +1,7 @@
 import { forwardRef, useRef } from "react";
-import { FloatComponentProps } from "../float.interface";
+import { IoChevronDownOutline } from 'react-icons/io5';
 
+import { FloatComponentProps } from "../float.interface";
 import * as Float from './styled';
 import { FloatError, FloatGroup, FloatLabel } from "../styled"
 
@@ -13,6 +14,7 @@ const FloatSelect = forwardRef<HTMLSelectElement, IProps>(
         const selectId = useRef((label || Math.random().toString(16).slice(2, 8)).replace(' ', '_'));
         return (
             <FloatGroup {...{ style: { height: '100%', ...style, } }}>
+                <IoChevronDownOutline size={18} />
                 <Float.FloatSelect
                     {...props}
                     {...props.innerElement}

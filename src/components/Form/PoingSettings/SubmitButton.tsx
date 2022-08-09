@@ -4,8 +4,8 @@ import Grid from "../../Grid";
 
 const SubmitButton: FC = () => (
     <Grid style={{ marginTop: '1em' }}>
-        <Grid.Row breakpoints={{ xs: 18 }} />
-        <Grid.Row breakpoints={{ xs: 6 }}>
+        <Grid.Row breakpoints={{ xs: 12, md: 16 }} />
+        <Grid.Row breakpoints={{ xs: 12, md: 8 }}>
             <Button type="submit">Enviar</Button>
         </Grid.Row>
     </Grid>
