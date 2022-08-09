@@ -24,8 +24,12 @@ const PoingSettingsForm: FC = () => {
     const onSubmit: SubmitHandler<any> = data => { console.log(data) }
 
     useEffect(() => {
-        fetchGuild({ dispatch: reset, fetchSettings: !Object.keys(getValues()).length, guildId: store.selectedGuildId });
-    }, []);
+        fetchGuild({
+            fetchSettings: store.selectedGuildId !== LocalStorage.bot.getSettings()?._id,
+            guildId: store.selectedGuildId,
+            dispatch: reset,
+        });
+    }, [store.selectedGuildId]);
 
     return (
         <LoadWrapper isLoading={!getValues()} >
