@@ -4,8 +4,9 @@ export const Modal = styled.div`
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: 10;
-`
+    top: 0;
+    z-index: 15;
+`;
 
 export const StyledModalBackground = styled.div`
     width: inherit;
