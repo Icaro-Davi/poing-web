@@ -1,5 +1,5 @@
 import "react-color-palette/lib/css/styles.css"
-import { ColorPicker, Color, toColor, useColor } from 'react-color-palette';
+import { ColorPicker, Color, useColor } from 'react-color-palette';
 import { CSSProperties, FC, useRef } from "react";
 import type { FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
@@ -10,7 +10,7 @@ import FloatInput from "../items/Float/Input";
 import FloatSelect from "../items/Float/Select";
 import { ColorPalletWrapper } from "./styled";
 
-type BotFields = Omit<GetReference<GuildSettingsType, 'bot'>, 'roles'>;
+type BotFields = GetReference<GuildSettingsType, 'bot'>;
 
 const style: CSSProperties = { width: '100%' };
 const breakpoints = { xs: 24, md: 12, lg: 8 };
@@ -42,8 +42,8 @@ const FormElements: FC<IProps> = ({ watch, ...props }) => {
                     {...props.register('prefix', {
                         required: "Need be filled with bot prefix.",
                         maxLength: {
-                            value: 4,
-                            message: "Only can use 4 characters."
+                            value: 5,
+                            message: "Only can use 5 characters."
                         },
                     })}
                 />
