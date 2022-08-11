@@ -37,7 +37,7 @@ const DefaultButton = styled.button<Partial<PropsButtonType>>`
         left: -10%;
         width: 120%; height: 100%;
         background-color: ${props => props.blurColor || props.theme.colors.black};
-        transform: ${props => props.active ? 'translate3d(100%, 0, 0)' :'skew(30deg)'};
+        transform: ${props => props.active ? 'translate3d(100%, 0, 0)' : 'skew(30deg)'};
         transition: transform .4s cubic-bezier(0.39, 0.575, 0.565, 1);
     }
     ${props => props.disabled
@@ -66,11 +66,11 @@ interface IProps extends Partial<Omit<PropsButtonType, 'disabled'>> {
     style?: CSSProperties;
     icon?: ReactNode;
     disabled?: boolean;
-    type: 'button' | 'submit' | 'reset';
+    type?: 'button' | 'submit' | 'reset';
 }
 
-const Button: FC<IProps> = ({ icon, children, ...props }) => (
-    <DefaultButton {...props}>
+const Button: FC<IProps> = ({ icon, children, type = 'button', ...props }) => (
+    <DefaultButton {...props} {...{ type }}>
         <span>
             {icon}
             {children}
