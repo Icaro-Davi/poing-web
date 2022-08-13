@@ -11,7 +11,6 @@ interface IProps {
 const _NotificationContainer: FC<IProps> = props => {
     const [_, forceUpdate] = useState(false);
     useEffect(() => {
-        console.log('Started Notification API');
         props.notificationRef.forceUpdate = () => forceUpdate(f => !f);
     }, [props.notificationRef]);
     const renderNotifications = useCallback((notifications: NotificationItem[]) => notifications
