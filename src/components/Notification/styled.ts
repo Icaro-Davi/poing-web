@@ -7,6 +7,8 @@ export const Notification = styled.div`
     top: 1rem; right: 1rem;
     z-index: 100;
     max-width: 400px;
+    display: flex;
+    flex-flow: column;
 `;
 
 const toLeftAnimation = keyframes`
@@ -41,6 +43,7 @@ const progressAnimation = keyframes`
 `;
 
 export const NotificationBox = styled.div<{ borderColor: string, timeout: number, withProgressBar: boolean }>`
+    flex: 1;
     display: inline-block;
     position: relative;
     left:0;
