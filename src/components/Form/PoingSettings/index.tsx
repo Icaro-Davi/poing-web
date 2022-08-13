@@ -10,8 +10,10 @@ import fetchGuild from "./FetchGuild";
 import FormElements from "./Form";
 import SubmitButton from "./SubmitButton";
 import Card from '../../Card';
+import DiscordBotService from "../../../services/discord/bot";
+import Notification from "../../Notification";
 
-type BotFields = Omit<GetReference<GuildSettingsType, 'bot'>, 'roles'>;
+type BotFields = GetReference<GuildSettingsType, 'bot'>;
 
 const PoingSettingsForm: FC = () => {
     const { store } = useApp();
@@ -21,7 +23,23 @@ const PoingSettingsForm: FC = () => {
     });
     const borderColor = watch('messageEmbedHexColor');
 
-    const onSubmit: SubmitHandler<any> = data => { console.log(data) }
+    const onSubmit: SubmitHandler<BotFields> = async (data, event) => {
+        try {
+            await DiscordBotService.updateGuildSettingsById(store.selectedGuildId, data);
+            Notification.open({
+                title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',
+                description: 'Salvei as suas novas configurações.',
+                type: 'success',
+            });
+        } catch (error) {
+            Notification.open({
+                title: 'Erro ლ(ಥ益ಥლ)',
+                description: 'Ocorreu um erro ao tentar atualizar as configurações do bot.',
+                type: 'error',
+            });
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         fetchGuild({
@@ -32,8 +50,8 @@ const PoingSettingsForm: FC = () => {
     }, [store.selectedGuildId]);
 
     return (
-        <LoadWrapper isLoading={!getValues()} >
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <LoadWrapper isLoading={!getValues()}>
+            <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
                 <Card style={{ borderColor }}>
                     <FormElements {...{ register, formState, watch, setValue }} />
                     <SubmitButton />
