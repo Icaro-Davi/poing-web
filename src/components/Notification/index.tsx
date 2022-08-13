@@ -30,13 +30,17 @@ class Notification {
             );
     }
 
-    private removeNotification(id: string) {
+    removeNotification(id: string) {
         const notificationIndex = this.notificationList.findIndex(notification => notification.id === id);
         if (notificationIndex > -1) {
             const notification = this.notificationList[notificationIndex];
             clearTimeout(notification.timeoutRef);
-            this.notificationList.splice(notificationIndex, 1);
-            this.notificationRef.forceUpdate();
+            document.getElementById(notification.id)?.classList.add('close');
+            setTimeout(() => {
+                this.notificationList.splice(notificationIndex, 1);
+                this.notificationRef.forceUpdate();
+                notification.options.onClose && notification.options.onClose();
+            }, NOTIFICATION_BOX_CLOSE_ANIMATION_DELAY);
             return true;
         }
         return false;
@@ -51,14 +55,7 @@ class Notification {
             id, options,
             Component: NotificationNode,
             timeout: timeout >= 6000 ? timeout : 6000,
-            destroy: () => {
-                clearTimeout(notificationItem.timeoutRef);
-                document.getElementById(id)?.classList.add('close');
-                notificationItem.timeoutRef = setTimeout(() => {
-                    this.removeNotification(id);
-                    options.onClose && options.onClose();
-                }, NOTIFICATION_BOX_CLOSE_ANIMATION_DELAY);
-            },
+            destroy: () => this.removeNotification(id),
             startTimeout: () => {
                 notificationItem.timeoutRef = setTimeout(notificationItem.destroy, notificationItem.timeout - NOTIFICATION_BOX_CLOSE_ANIMATION_DELAY);
                 return notificationItem.timeoutRef;
