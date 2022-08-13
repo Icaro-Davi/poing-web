@@ -1,6 +1,7 @@
 import { AppDispatchStore } from "./app.types";
 import DiscordUserService from "../../services/discord/user";
 import LocalStorage from "../../utils/localStorage";
+import Notification from "../../components/Notification";
 
 class AppDispatch {
     static async findGuildAndSave(dispatch: AppDispatchStore) {
@@ -14,7 +15,12 @@ class AppDispatch {
                 LocalStorage.guild.setSelectedId(selectedGuildId);
             }
         } catch (error) {
-            throw error;
+            console.error(error);
+            Notification.open({
+                title: 'Error',
+                description: 'Erro ao buscar a lista de guilds',
+                type: 'error'
+            });
         }
     }
 
