@@ -1,5 +1,6 @@
 import DiscordRequestor from "../requestor";
-import { GuildSettingsType } from "./bot.types";
+import type { GetReference } from "../../../utils/general.types";
+import type { GuildSettingsType } from "./bot.types";
 
 class DiscordBotService {
     static basePath = '/bot';
@@ -8,7 +9,14 @@ class DiscordBotService {
             const { data } = await DiscordRequestor.get<GuildSettingsType>(`${this.basePath}/guild/${guildId}`);
             return data;
         } catch (error) {
-            console.error(error);
+            throw error;
+        }
+    }
+    static async updateGuildSettingsById(guildId: string, settings: Omit<GetReference<GuildSettingsType, 'bot'>, 'roles'>) {
+        try {
+            await DiscordRequestor.post(`${this.basePath}/guild/${guildId}`, settings);
+        } catch (error) {
+            throw error;
         }
     }
 
