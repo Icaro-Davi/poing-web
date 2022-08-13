@@ -37,7 +37,6 @@ class Notification {
             clearTimeout(notification.timeoutRef);
             this.notificationList.splice(notificationIndex, 1);
             this.notificationRef.forceUpdate();
-            console.log('removed', notification.id);
             return true;
         }
         return false;
@@ -62,7 +61,6 @@ class Notification {
             },
             startTimeout: () => {
                 notificationItem.timeoutRef = setTimeout(notificationItem.destroy, notificationItem.timeout - NOTIFICATION_BOX_CLOSE_ANIMATION_DELAY);
-                console.log('created', notificationItem.id, 'ends in', notificationItem.timeout, 'milliseconds.');
                 return notificationItem.timeoutRef;
             }
         }
