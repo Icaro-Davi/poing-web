@@ -9,7 +9,9 @@ const defaultTheme = {
         black: '#23272A',
         white: '#FFFFFF',
         gray: '#D9D9D9',
-        error: '#ff9494'
+        error: '#ff9494',
+        success: '#52c41a',
+        warning: '#faad14'
     }
 }
 
