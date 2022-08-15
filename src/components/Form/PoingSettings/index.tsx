@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
@@ -22,9 +22,11 @@ const PoingSettingsForm: FC = () => {
         mode: 'all'
     });
     const borderColor = watch('messageEmbedHexColor');
+    const [isLoading, setLoading] = useState(false);
 
     const onSubmit: SubmitHandler<BotFields> = async (data, event) => {
         try {
+            setLoading(true);
             await DiscordBotService.updateGuildSettingsById(store.selectedGuildId, data);
             Notification.open({
                 title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',
@@ -38,6 +40,8 @@ const PoingSettingsForm: FC = () => {
                 type: 'error',
             });
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -54,7 +58,7 @@ const PoingSettingsForm: FC = () => {
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
                 <Card style={{ borderColor }}>
                     <FormElements {...{ register, formState, watch, setValue }} />
-                    <SubmitButton />
+                    <SubmitButton isLoading={isLoading} />
                 </Card>
             </form>
         </LoadWrapper>
