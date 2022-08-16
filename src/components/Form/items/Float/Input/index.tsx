@@ -24,4 +24,6 @@ const FloatInput = forwardRef<HTMLInputElement, FloatComponentProps>(({ label, s
     );
 });
 
+FloatInput.displayName = 'FloatInput';
+
 export default FloatInput;

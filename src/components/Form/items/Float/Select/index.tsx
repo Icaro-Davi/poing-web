@@ -33,4 +33,6 @@ const FloatSelect = forwardRef<HTMLSelectElement, IProps>(
     }
 );
 
+FloatSelect.displayName = 'FloatSelect';
+
 export default FloatSelect;

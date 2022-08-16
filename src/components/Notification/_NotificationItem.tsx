@@ -41,7 +41,7 @@ const _NotificationItem: FC<IProps> = ({ startTimeout, timeout, ...props }) => {
     useEffect(() => {
         !props.options.infinity && startTimeout();
         return () => { clearTimeout(props.timeoutRef) };
-    }, [startTimeout]);
+    }, [startTimeout, props.options.infinity, props.timeoutRef]);
     const { mainColor, Icon, ...rest } = getTheme(props.options.type);
     return (
         <NotificationBox id={props.id} ref={notificationRef} {...{
