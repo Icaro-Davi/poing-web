@@ -28,6 +28,8 @@ const PoingSettingsForm: FC = () => {
         try {
             setLoading(true);
             await DiscordBotService.updateGuildSettingsById(store.selectedGuildId, data);
+            const oldSettings = LocalStorage.bot.getSettings();
+            oldSettings && LocalStorage.bot.setSettings({ ...oldSettings, bot: data });
             Notification.open({
                 title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',
                 description: 'Salvei as suas novas configurações.',
@@ -47,11 +49,11 @@ const PoingSettingsForm: FC = () => {
 
     useEffect(() => {
         fetchGuild({
-            fetchSettings: store.selectedGuildId !== LocalStorage.bot.getSettings()?._id,
+            fetchSettings: true,
             guildId: store.selectedGuildId,
             dispatch: reset,
         });
-    }, [store.selectedGuildId]);
+    }, [store.selectedGuildId, reset]);
 
     return (
         <LoadWrapper isLoading={!getValues()}>
