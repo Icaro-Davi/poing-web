@@ -1,7 +1,8 @@
-import { GetServerSidePropsContext, NextPageContext, } from "next";
 import Cookie from 'cookies';
 import jsCookie from 'js-cookie';
 import CookieKeys from "./keys";
+
+import type{ GetServerSidePropsContext, NextPageContext, } from "next";
 
 export function getCookie(key: string, ctx?: NextPageContext | GetServerSidePropsContext): string | undefined {
     if (ctx?.req && ctx?.res) {
@@ -24,5 +25,5 @@ export function getAuthToken(ctx?: NextPageContext | GetServerSidePropsContext):
 }
 
 export function removeAuthToken(ctx?: NextPageContext | GetServerSidePropsContext){
-    removeCookie(CookieKeys.AUTH_TOKEN);
+    removeCookie(CookieKeys.AUTH_TOKEN, ctx);
 }

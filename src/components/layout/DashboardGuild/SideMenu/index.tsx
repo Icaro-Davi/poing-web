@@ -11,12 +11,15 @@ import GuildChangeBtn from "./GuildChangeBtn";
 import { Divider } from "../../../Divider";
 import { Button } from "../../../Buttons";
 import RenderNavigationButtons from "./RenderNavigationButtons";
+import { useAuth } from '../../../../context/Auth';
 
 const SideMenu: FC = props => {
     const { store } = useApp();
+    const auth = useAuth();
     const router = useRouter();
     const [GuildModal, guildModal] = useModal(ModalGuilds);
     const guild = store.guilds.find(guild => guild.id === store.selectedGuildId);
+
     return (
         <SideMenuContainer onClick={e => e.stopPropagation()}>
             <GuildChangeBtn guild={guild || {} as any} onClick={guildModal.open} />
@@ -42,9 +45,8 @@ const SideMenu: FC = props => {
                     icon={<IoHomeSharp />}
                 >Home</Button>
                 <Button
-                    disabled={true}
                     style={{ width: '90%' }}
-                    onClick={() => router.push('/')}
+                    onClick={auth.logOut}
                     icon={<IoExitSharp />}
                     focusColor="linear-gradient(to right, #ff7575,#ff2e2e)"
                 >Logout</Button>
