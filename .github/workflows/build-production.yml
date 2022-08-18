@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: Build on server
         run: |
-          echo "$SSH_PRIVATE_KEY" > $PRIVATE_KEY_PATH & chmod 600 $PRIVATE_KEY_PATH
+          echo "$SSH_PRIVATE_KEY" > $PRIVATE_KEY_PATH
+          chmod 600 $PRIVATE_KEY_PATH
           eval `ssh-agent -s` && ssh-add $PRIVATE_KEY_PATH && ssh $USERNAME@$DOMAIN
 
           echo "Hello World"
