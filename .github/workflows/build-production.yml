@@ -9,25 +9,20 @@ jobs:
   checking-project:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - name: "Get project ${{ github.event.repository.name }}"
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Uses Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: "Check Lint"
-        run: yarn lint
+          node-version: 16
 
       - name: "Install Dependencies"
         run: yarn
+
+      - name: "Check Lint"
+        run: yarn lint
 
       - name: "Build Project"
         run: yarn build
@@ -41,6 +36,7 @@ jobs:
     steps:
       - name: Build on server
         run: |
-          ssh -i $SSH_PRIVATE_KEY $USERNAME@$DOMAIN
+          ssh-add $SSH_PRIVATE_KEY
+          ssh $USERNAME@$DOMAIN
           echo "Hello World"
           exit
