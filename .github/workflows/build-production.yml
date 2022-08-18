@@ -38,7 +38,7 @@ jobs:
       - name: Build on server
         run: |
           eval `ssh-agent -s`
-          ssh-add $SSH_PRIVATE_KEY
+          ssh-add "$SSH_PRIVATE_KEY"
           ssh $USERNAME@$DOMAIN
           echo "Hello World"
           exit
