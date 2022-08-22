@@ -41,8 +41,8 @@ jobs:
             #!/bin/bash
 
             # Args
-            PROJECT_NAME=$1
-            PROJECT_SSH_CLONE=$2
+            PROJECT_NAME="${{ github.event.repository.name }}"
+            PROJECT_SSH_CLONE="git@github.com:Icaro-Davi/poing-web.git"
             PROJECT_DEPLOY="PRODUCTION"
 
             # VARS
