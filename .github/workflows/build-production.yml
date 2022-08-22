@@ -38,5 +38,73 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHPRIVATEKEY }}
           script: |
-            echo "Hello World"
-            lspci -nnk | grep net -A2
+            #!/bin/bash
+
+            # Args
+            PROJECT_NAME=$1
+            PROJECT_SSH_CLONE=$2
+            PROJECT_DEPLOY="PRODUCTION"
+
+            # VARS
+            DEPENDENCIES=("git" "node")
+            NODE_GLOBAL_DEPENDENCIES=("yarn" "pm2")
+            PROJECT_PATH="/home/$SUDO_USER/PROJECTS/NODE/$PROJECT_NAME"
+            PROJECT_ENVS=(
+                "EXAMPLE=example"
+                "NEXT_PUBLIC_BOT_INVITE_URL=https://discord.com/oauth2/authorize?client_id=955202209681916044&permissions=1239366789246&scope=bot%20applications.commands"
+                "NEXT_PUBLIC_DISCORD_REDIRECT_URI=http://localhost:3001/api/auth/discord"
+                "NEXT_PUBLIC_DISCORD_DASHBOARD_API=http://localhost:3001/api"
+            )
+
+            # Functions
+            function isRoot() {
+                [ "$EUID" -ne 0 ] && echo "Please run as root!" && exit 1
+                return 0
+            }
+
+            function checkArguments() {
+                [[ -z "$PROJECT_NAME" || -z "$PROJECT_SSH_CLONE" ]] && printf "FAILED: Need argument!\nUSAGE: script <project-name> <project-git-ssh-link>\n" && exit 1
+                return 0
+            }
+
+            function verifyDependencies() {
+                for dependency in ${DEPENDENCIES[@]}; do
+                    if command -v $dependency &>/dev/null; then
+                        echo "Dependency $dependency already installed."
+                    else
+                        npm install --global $dependency
+                    fi
+                done
+
+                for dependency in ${NODE_GLOBAL_DEPENDENCIES[@]}; do
+                    if command -v $dependency &>/dev/null; then
+                        echo "Dependency $dependency already installed."
+                    else
+                        apt get $dependency
+                    fi
+                done
+                return 0
+            }
+
+            function updateLocalProject() {
+                pm2 del $PROJECT_NAME &>/dev/null && echo "Project $PROJECT_NAME deleted" || echo "Not initialized yed!"
+
+                # Check if has project folder and install or update on git
+                if [ -d "$PROJECT_PATH" ]; then
+                    cd $PROJECT_PATH
+                    echo git push
+                else
+                    echo git clone $PROJECT_SSH_CLONE $PROJECT_PATH
+                    cd $PROJECT_PATH
+                fi
+
+                for env in ${PROJECT_ENVS[@]}; do
+                    echo $env >> .env
+                done
+
+                yarn && yarn build && pm2 start yarn --name $PROJECT_NAME -- start || echo "Failed to deploy" && exit 1
+                echo "Deploy context at \"$PROJECT_DEPLOY\""
+                exit 0
+            }
+
+            isRoot && checkArguments && verifyDependencies && updateLocalProject
