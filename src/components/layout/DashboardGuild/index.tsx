@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { FC, ReactNode, memo } from "react";
 import { useEffect } from "react";
 import { IoMenuSharp } from 'react-icons/io5';
@@ -8,9 +9,9 @@ import useModal from "../../../hooks/useModal";
 import { IconButton, ICON_BUTTON_DEFAULT_HEIGHT } from "../../Buttons";
 import InviteBotBtn from "../../Buttons/InviteBot";
 import EmptyData from "../../EmptyData";
-import LayoutDashboardSideMenuModal from "../../Modal/LayoutDashboardSideMenu";
-import SideMenu from "./SideMenu";
 import { Container, Main } from "./styles";
+const LayoutDashboardSideMenuModal = dynamic(() => import("../../Modal/LayoutDashboardSideMenu"));
+const SideMenu = dynamic(() => import("./SideMenu"));
 
 interface IDashboardGuildLayout {
     children: ReactNode;

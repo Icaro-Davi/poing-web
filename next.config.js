@@ -1,5 +1,14 @@
+const withPlugins = require('next-compose-plugins');
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+const plugins = [];
+
+plugins.push(withBundleAnalyzer);
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['cdn.discordapp.com']
@@ -8,3 +17,5 @@ module.exports = {
     styledComponents: true,
   }
 }
+
+module.exports = withPlugins(plugins, nextConfig);

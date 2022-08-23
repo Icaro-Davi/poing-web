@@ -6,13 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
+    "win:analyze": "$env:ANALYZE = \"true\" & next build"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^12.2.5",
+    "add": "^2.0.6",
     "axios": "^0.27.2",
     "cookies": "^0.8.0",
     "js-cookie": "^3.0.1",
     "next": "^12.1.6",
+    "next-compose-plugins": "^2.2.1",
     "react": "18.1.0",
     "react-color-palette": "^6.2.0",
     "react-device-detect": "^2.2.2",
@@ -20,7 +25,8 @@
     "react-hook-form": "^7.34.0",
     "react-icons": "^4.4.0",
     "react-markdown": "^8.0.3",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@types/cookies": "^0.7.7",

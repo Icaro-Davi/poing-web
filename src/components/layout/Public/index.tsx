@@ -1,9 +1,10 @@
+import dynamic from "next/dynamic";
 import React, { ReactNode } from "react";
 import { useApp } from "../../../context/App";
 import Footer from "../Footer";
-import HorizontalMenu from "./Menu/Horizontal";
-import Sidebar from "./Menu/Sidebar";
 import { Container, Main } from "./styled";
+const Sidebar = dynamic(() => import("./Menu/Sidebar"));
+const HorizontalMenu = dynamic(() => import("./Menu/Horizontal"));
 
 interface MainLayout {
     children: ReactNode;
