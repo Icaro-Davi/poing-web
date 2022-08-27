@@ -1,10 +1,12 @@
-import { ReactNode } from "react";
-import { ThemeProvider } from "styled-components";
-import { Locale } from "../locale/index.type";
-import GlobalStyled from "../styles/globalStyled";
-import defaultTheme from "../styles/themes/default";
-import AppProvider from "./App";
-import AuthProvider from "./Auth";
+import dynamic from 'next/dynamic';
+
+const AppThemeProvider = dynamic(() => import('./ThemeProvider'));
+const GlobalStyled = dynamic(() => import("../styles/globalStyled"));
+const AppProvider = dynamic(() => import("./App"));
+const AuthProvider = dynamic(() => import("./Auth"));
+
+import type { ReactNode } from "react";
+import type { Locale } from "../locale/index.type";
 
 export type InitialStateType = {
     isAuthenticated: boolean;
@@ -19,12 +21,12 @@ interface IProviders {
 const Providers: React.FC<IProviders> = props => {
     return (
         <AppProvider {...props}>
-            <ThemeProvider theme={defaultTheme}>
+            <AppThemeProvider>
                 <GlobalStyled />
                 <AuthProvider {...props}>
                     {props.children}
                 </AuthProvider>
-            </ThemeProvider>
+            </AppThemeProvider>
         </AppProvider>
     );
 }

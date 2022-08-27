@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useReducer, FC, useState, createContext, useContext } from "react";
-import { isMobile } from 'react-device-detect'
 import useMatchMedia from "../../hooks/useMatchMedia";
 import { Locale } from "../../locale/index.type";
 import { IAppContext, IAppProvider } from "./app.interfaces";
@@ -14,11 +13,14 @@ const AppProvider: FC<IAppProvider> = props => {
         guilds: [],
         selectedGuildId: ''
     });
-
-    useEffect(() => {
+    const handleLoad = async () => {
+        const { isMobile } = (await import('react-device-detect'));
         isMobile ? setPageLoading(true) : window.addEventListener('load', () => {
             setPageLoading(true);
         });
+    }
+    useEffect(() => {
+        handleLoad();
     }, []);
 
     return (
