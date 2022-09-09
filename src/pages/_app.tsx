@@ -25,7 +25,7 @@ App.getInitialProps = async ({ ctx, Component }: AppContext) => {
     const authenticate = (await import('../utils/auth/authenticate')).default;
 
     initialState.isAuthenticated = await authenticate(ctx);
-    initialState.locale = await getLocale('pt_BR');
+    initialState.locale = await getLocale('pt-BR');
     handleRoutes(ctx, !!initialState.isAuthenticated);
   }
   return {
