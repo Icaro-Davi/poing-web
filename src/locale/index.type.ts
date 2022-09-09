@@ -1,4 +1,14 @@
-import pt_BR from "./pt_BR";
+import pt_BR from "./pt-BR";
 
-export type LocaleLang = 'pt_BR';
+export type LocaleLang = 'pt-BR';
 export type Locale = typeof pt_BR;
+
+export type BotCommandType = {
+    name: string;
+    category: string;
+    description: string;
+    aliases?: string[];
+    usage: string[];
+    args?: string[];
+    examples: string[];
+}
