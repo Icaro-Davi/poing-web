@@ -1,13 +1,20 @@
+import dynamic from 'next/dynamic';
+import { useRef } from "react";
+import LoadWrapper from '../../Loading/LoadWrapper'
 import { ModalComponentWrapper } from "../../../hooks/useModal/modal.types";
 import Grid from "../../Grid";
 import { StyledModalCommandCardContainer } from "./styled";
 import Footer from "./Footer";
 import Header from './Header';
-import Section from './Section';
-import { PickInside } from "../../../utils/general.types";
-import { Locale } from "../../../locale/index.type";
-import { useRef } from "react";
 import { ModalWrapper } from "../styled";
+const Section = dynamic(() => import('./Section'), {
+    loading: () => (
+        <LoadWrapper isLoading={true}><div style={{ padding: '1rem' }} /></LoadWrapper>
+    )
+});
+
+import type { Locale } from "../../../locale/index.type";
+import type { PickInside } from "../../../utils/general.types";
 
 interface IModalCommandCard {
     title: string;

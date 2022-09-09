@@ -11,13 +11,9 @@ const Section: React.FC<PickInside<Locale, 'commands'>> = ({ aliases, usage, des
         \n ${description}
         \n &nbsp;
         \n ### Como usar
-        \n ${usage}
-        \n &nbsp;
-        \n ###  Comando Abreviado
-        \n ${aliases.map(alias => `**\`\`\`${alias}\`\`\`** `).join(' ')}
-        \n &nbsp;
-        \n ### Argumentos
-        \n ${args.join('\n\n')}
+        \n ${usage.length ? `${usage.join('\n\n')}` : ''}
+        ${aliases?.length ? `\n &nbsp;\n ###  Comando Abreviado\n ${aliases?.map(alias => `**\`\`\`${alias}\`\`\`** `).join(' ')}` : ''}
+        ${args?.length ? `\n &nbsp;\n ### Argumentos\n ${args.join('\n\n')}` : ''}
         \n &nbsp;
         \n ### Exemplos
         \n ${examples.join('\n\n')}
