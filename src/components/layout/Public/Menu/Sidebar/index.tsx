@@ -4,6 +4,7 @@ import { RiMenuUnfoldLine, RiMenuFoldLine } from 'react-icons/ri';
 import { useTheme } from "styled-components";
 import { useApp } from "../../../../../context/App";
 import { useAuth } from "../../../../../context/Auth";
+import OptionsButton from "../../../../Buttons/OptionsButton";
 import Logo from "../../../../Logo";
 import StyledLink from "../Link";
 import { Anchor, Header } from "../styled";
@@ -57,6 +58,7 @@ const Sidebar: React.FC = props => {
                     </StyledOpenMenuBtn>
                 </StyledSideMenuCloseBtnContainer>
                 <StyledMenuContainer>
+
                     <StyledMenuItem>
                         <StyledLink selected={Router.asPath === '/'} href='/' label={locale.navbar.mainMenu.home} />
                     </StyledMenuItem>
@@ -68,15 +70,16 @@ const Sidebar: React.FC = props => {
                     </StyledMenuItem>
                     {auth.isAuthenticated
                         ? (
-                            <StyledMenuItem>
-                                <StyledLink selected={false} href='/dashboard/poing' label='Dashboard' />
+                            <StyledMenuItem style={{ display: 'flex', justifyContent: 'center' }}>
+                                <OptionsButton />
                             </StyledMenuItem>
                         )
                         : (
                             <StyledMenuItem>
                                 <Anchor href={auth.discordAuthUrl}>{locale.navbar.mainMenu.login}</Anchor>
                             </StyledMenuItem>
-                        )}
+                        )
+                    }
                 </StyledMenuContainer>
             </StyledSideMenuContainer>
         </Fragment>

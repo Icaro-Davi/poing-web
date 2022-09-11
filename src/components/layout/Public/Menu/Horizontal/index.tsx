@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useApp } from "../../../../../context/App";
 import { useAuth } from "../../../../../context/Auth";
+import OptionsButton from '../../../../Buttons/OptionsButton';
 import Logo from "../../../../Logo";
 import StyledLink from '../Link';
 import { Anchor, Header } from '../styled';
@@ -42,10 +43,7 @@ const MainLayoutHeader: React.FC = props => {
                     {auth.isAuthenticated
                         ? (
                             <MenuItem>
-                                <StyledLink
-                                    href='/dashboard/poing'
-                                    label="Dashboard"
-                                />
+                                <OptionsButton />
                             </MenuItem>
                         )
                         : (
