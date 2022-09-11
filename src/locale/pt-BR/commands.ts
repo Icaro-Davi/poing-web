@@ -53,7 +53,7 @@ const moderationCommands: BotCommandType[] = [
         description: 'Bane um membro e ele não poderá voltar até ser removido da lista de banidos.',
         usage: [
             `${BOT.prefix}ban ${ARGUMENT.member.name}* ${new MDHelper('(--days "Number")').codeLineB().get()} ${new MDHelper('(--reason "Text")').codeLineB().get()}`,
-            `${BOT.prefix}ban ${new MDHelper('<list>')}`
+            `${BOT.prefix}ban ${new MDHelper('<list>').codeLineB().get()}`
         ],
         args: [
             ARGUMENT.member.description,
@@ -63,7 +63,7 @@ const moderationCommands: BotCommandType[] = [
         ],
         examples: [
             `${new MDHelper(`${BOT.prefix}ban list`).codeLineB().get()} - Lista com todos os banidos.`,
-            `${new MDHelper(`${BOT.prefix}ban @${BOT.name} --days "7"`).codeLineB().get()} - A flag de days pode ser utilizada ${new MDHelper('(--days|-d)').codeLineB().get()} em seguida o valor entre aspas duplas`,
+            `${new MDHelper(`${BOT.prefix}ban @${BOT.name} --days "7"`).codeLineB().get()} - A flag de days pode ser utilizada ${new MDHelper('(--days|-d)').codeLineB().get()} em seguida o valor entre aspas duplas.`,
             `${new MDHelper(`${BOT.prefix}ban @${BOT.name} --reason "${BOT.name} está distraindo os membros do servidor."`).codeLineB().get()} - O membro ${BOT.name} foi banido com um motivo.`,
         ]
     },
