@@ -1,4 +1,5 @@
-import { Fragment, useRef } from "react";
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useRef } from "react";
 import CommandsCard from "../components/Card/Commands";
 import Grid from "../components/Grid";
 import handleGetLayout from "../components/layout/handleGetLayout";
@@ -21,9 +22,24 @@ const ReduceLocale = (locale: Locale) => locale.commands.reduce((prev, current) 
 }, {} as { [k: string]: Command[] });
 
 const CommandPage: NextPageWithLayout = props => {
+    const { query } = useRouter();
     const { locale } = useApp();
     const [CommandModal, modal] = useModal(ModalCommandCard);
     const commandsRef = useRef(Object.entries(ReduceLocale(locale)));
+
+    const openCommandModalByQueryString = () => {
+        const commandByCategoryIndex = commandsRef.current.findIndex(([category, _]) => category.toLowerCase() === `${query.category}`.toLowerCase());
+        if (commandByCategoryIndex > -1) {
+            const command = commandsRef.current[commandByCategoryIndex][1].find(command => command.name === query.command);
+            command && (() => {
+                modal.setContent({ title: command.name, command });
+                modal.open();
+            })();
+        }
+    }
+
+    useEffect(() => { query && openCommandModalByQueryString() }, [query]);
+
     return (
         <Fragment>
             <Grid horizontalAlign="center">
