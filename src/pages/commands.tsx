@@ -27,18 +27,21 @@ const CommandPage: NextPageWithLayout = props => {
     const [CommandModal, modal] = useModal(ModalCommandCard);
     const commandsRef = useRef(Object.entries(ReduceLocale(locale)));
 
-    const openCommandModalByQueryString = () => {
-        const commandByCategoryIndex = commandsRef.current.findIndex(([category, _]) => category.toLowerCase() === `${query.category}`.toLowerCase());
-        if (commandByCategoryIndex > -1) {
-            const command = commandsRef.current[commandByCategoryIndex][1].find(command => command.name === query.command);
-            command && (() => {
-                modal.setContent({ title: command.name, command });
-                modal.open();
-            })();
+    useEffect(() => {
+        const openCommandModalByQueryString = () => {
+            if (!query) return;
+            const commandByCategoryIndex = commandsRef.current.findIndex(([category, _]) => category.toLowerCase() === `${query.category}`.toLowerCase());
+            if (commandByCategoryIndex > -1) {
+                const command = commandsRef.current[commandByCategoryIndex][1].find(command => command.name === query.command);
+                command && (() => {
+                    modal.setContent({ title: command.name, command });
+                    modal.open();
+                })();
+            }
         }
-    }
-
-    useEffect(() => { query && openCommandModalByQueryString() }, [query]);
+        openCommandModalByQueryString();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Fragment>

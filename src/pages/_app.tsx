@@ -1,4 +1,3 @@
-import { handlePageLocale } from '../locale';
 import Providers, { InitialStateType } from '../context';
 
 import type { AppContext, AppProps } from 'next/app';
@@ -23,6 +22,7 @@ App.getInitialProps = async ({ ctx, Component }: AppContext) => {
   const initialState = {} as any;
   if (typeof window === "undefined") {
     const { handleRoutes } = (await import('../utils/Routes'));
+    const { handlePageLocale } = (await import('../locale'));
     const authenticate = (await import('../utils/auth/authenticate')).default;
 
     initialState.isAuthenticated = await authenticate(ctx);
