@@ -60,18 +60,18 @@ const Sidebar: React.FC = props => {
                 <StyledMenuContainer>
 
                     <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === '/'} href='/' label={locale.navbar.mainMenu.home} />
+                        <StyledLink selected={Router.asPath === `/${locale.lang}`} href={`/${locale.lang}`} label={locale.navbar.mainMenu.home} />
                     </StyledMenuItem>
                     <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === '/help'} href='/help' label={locale.navbar.mainMenu.help} />
+                        <StyledLink selected={Router.asPath === `/${locale.lang}/help`} href={`/${locale.lang}/help`} label={locale.navbar.mainMenu.help} />
                     </StyledMenuItem>
                     <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === '/commands'} href='/commands' label={locale.navbar.mainMenu.commands} />
+                        <StyledLink selected={Router.asPath === `/${locale.lang}/commands`} href={`/${locale.lang}/commands`} label={locale.navbar.mainMenu.commands} />
                     </StyledMenuItem>
                     {auth.isAuthenticated
                         ? (
                             <StyledMenuItem style={{ display: 'flex', justifyContent: 'center' }}>
-                                <OptionsButton />
+                                <OptionsButton localeLang={locale.lang} />
                             </StyledMenuItem>
                         )
                         : (

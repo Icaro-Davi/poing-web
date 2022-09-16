@@ -1,23 +1,27 @@
-import { NextPageContext } from "next";
 import Router from "next/router";
-import appRoutes from '../config/routes.json';
+import { existsSync } from "fs";
+import path from 'path';
+import { NextPageContext } from "next";
 
 /** Only in server side */
-export const handleRoutes = (ctx: NextPageContext, isAuthenticated: boolean) => {
-    const route = appRoutes.find(route => route.path === ctx.asPath);
-    if (!route) return;
-    if (!isAuthenticated && !route.public) return Redirect('/', ctx);
-    return;
+export const validateRootAndRedirect = (ctx: NextPageContext, localeLang: string) => {
+    const rootPath = `${path.resolve(__dirname)}${process.env.NODE_ENV === 'production' ? '/..' : ''}/pages/[locale]${ctx.asPath}.js`;
+    if (existsSync(rootPath)) {
+        return Redirect(`/${localeLang}${ctx.asPath}`, ctx);
+    }
 }
 
 export const Redirect = (to: string, ctx?: NextPageContext) => {
-    if (typeof window !== 'undefined') {
-        return Router.push(to);
+    try {
+        if (typeof window !== 'undefined') {
+            return Router.push(to);
+        }
+        if (ctx?.res && !ctx.res.headersSent) {
+            ctx.res.writeHead(302, { Location: to });
+            ctx.res.end();
+            return;
+        }
+    } catch (error) {
+        console.error('Redirect already sent route to', to);
     }
-    if (ctx?.res) {
-        ctx.res.writeHead(302, { Location: to });
-        ctx.res.end();
-        return;
-    }
-    return false;
 }

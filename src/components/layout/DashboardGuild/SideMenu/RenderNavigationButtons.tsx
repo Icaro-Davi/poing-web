@@ -4,15 +4,16 @@ import { Button } from '../../../Buttons';
 
 type Options = {
     currentPath: string;
+    localeLang: string;
 }
 
 const NavigationButton = (route: RouterType, options: Options) => (
     <Button
         key={route.name}
         disabled={route.disabled}
-        active={route.href === options.currentPath}
+        active={`/${options.localeLang}${route.href}` === options.currentPath}
         style={{ width: '90%' }}
-        onClick={() => Router.push(route.href)}
+        onClick={() => Router.push(`/${options.localeLang}${route.href}`)}
         icon={<route.icon />}
         focusColor="linear-gradient(to right, #0f83e7,#004191)"
     >

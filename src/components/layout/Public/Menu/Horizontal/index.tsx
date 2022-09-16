@@ -18,15 +18,15 @@ const MainLayoutHeader: React.FC = props => {
                 <MenuContainer verticalAlign="flex-end">
                     <MenuItem>
                         <StyledLink
-                            href='/'
-                            selected={router.asPath === '/'}
+                            href={`/${locale.lang}`}
+                            selected={router.asPath === `/${locale.lang}`}
                             label={locale?.navbar.mainMenu.home}
                         />
                     </MenuItem>
                     <MenuItem>
                         <StyledLink
-                            href='/help'
-                            selected={router.asPath === '/help'}
+                            href={`/${locale.lang}/help`}
+                            selected={router.asPath === `/${locale.lang}/help`}
                             label={locale?.navbar.mainMenu.help}
                         />
                     </MenuItem>
@@ -35,15 +35,15 @@ const MainLayoutHeader: React.FC = props => {
                 <MenuContainer>
                     <MenuItem>
                         <StyledLink
-                            href='/commands'
-                            selected={router.asPath === '/commands'}
+                            href={`/${locale.lang}/commands`}
+                            selected={router.asPath === `/${locale.lang}/commands`}
                             label={locale?.navbar.mainMenu.commands}
                         />
                     </MenuItem>
                     {auth.isAuthenticated
                         ? (
                             <MenuItem>
-                                <OptionsButton />
+                                <OptionsButton localeLang={locale.lang} />
                             </MenuItem>
                         )
                         : (

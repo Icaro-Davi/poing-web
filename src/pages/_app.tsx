@@ -8,7 +8,8 @@ type AppPropsWithLayout = AppProps & {
   initialState: InitialStateType;
 }
 
-const App = ({ Component, pageProps, initialState }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps, initialState, ...rest }: AppPropsWithLayout) => {
+  console.log(pageProps)
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <Providers {...{ initialState }}>
@@ -18,17 +19,23 @@ const App = ({ Component, pageProps, initialState }: AppPropsWithLayout) => {
 }
 
 App.getInitialProps = async ({ ctx, Component }: AppContext) => {
-  const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+
   const initialState = {} as any;
   if (typeof window === "undefined") {
-    const { handleRoutes } = (await import('../utils/Routes'));
-    const { handlePageLocale } = (await import('../locale'));
-    const authenticate = (await import('../utils/auth/authenticate')).default;
+    const isAuthenticated = (await import('../utils/auth/authenticate')).default;
+    const { getAndValidateLocaleLang, getLocale } = (await import('../locale'));
+    const locale = getAndValidateLocaleLang(ctx);
 
-    initialState.isAuthenticated = await authenticate(ctx);
-    initialState.locale = await handlePageLocale(ctx);
-    handleRoutes(ctx, !!initialState.isAuthenticated);
+    initialState.locale = await getLocale(locale.lang);
+    initialState.isAuthenticated = await isAuthenticated(ctx);
+    ctx.query.isAuthenticated = initialState.isAuthenticated;
+
+    if(!locale.isUrlParam){
+      const { validateRootAndRedirect } = (await import('../utils/Routes'));
+      validateRootAndRedirect(ctx, locale.lang);
+    }
   }
+  const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
   return {
     initialState,
     pageProps

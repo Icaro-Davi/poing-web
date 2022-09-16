@@ -1,14 +1,15 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef } from "react";
-import CommandsCard from "../components/Card/Commands";
-import Grid from "../components/Grid";
-import handleGetLayout from "../components/layout/handleGetLayout";
-import PublicLayout from "../components/layout/Public";
-import ModalCommandCard from "../components/Modal/Command";
-import { useApp } from "../context/App";
-import useModal from "../hooks/useModal";
-import { Locale } from "../locale/index.type";
-import { NextPageWithLayout, PickInside } from "../utils/general.types";
+import CommandsCard from "../../components/Card/Commands";
+import Grid from "../../components/Grid";
+import handleGetLayout from "../../components/layout/handleGetLayout";
+import PublicLayout from "../../components/layout/Public";
+import ModalCommandCard from "../../components/Modal/Command";
+import { useApp } from "../../context/App";
+import useModal from "../../hooks/useModal";
+import { Locale } from "../../locale/index.type";
+import { withPublicPage } from "../../utils/auth/authenticate";
+import { NextPageWithLayout, PickInside } from "../../utils/general.types";
 
 type Command = PickInside<Locale, 'commands'>;
 
@@ -65,5 +66,7 @@ const CommandPage: NextPageWithLayout = props => {
 }
 
 CommandPage.getLayout = handleGetLayout(PublicLayout);
+
+export const getServerSideProps = withPublicPage();
 
 export default CommandPage;

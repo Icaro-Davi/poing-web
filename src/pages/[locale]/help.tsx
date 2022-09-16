@@ -1,12 +1,13 @@
 import { Fragment } from "react";
 import { cardsBreakpoints } from ".";
-import { ButtonShining } from "../components/Buttons";
-import Card from "../components/Card";
-import Grid from "../components/Grid";
-import handleGetLayout from "../components/layout/handleGetLayout";
-import PublicLayout from "../components/layout/Public";
-import { useApp } from "../context/App";
-import { NextPageWithLayout } from "../utils/general.types";
+import { ButtonShining } from "../../components/Buttons";
+import Card from "../../components/Card";
+import Grid from "../../components/Grid";
+import handleGetLayout from "../../components/layout/handleGetLayout";
+import PublicLayout from "../../components/layout/Public";
+import { useApp } from "../../context/App";
+import { withPublicPage } from "../../utils/auth/authenticate";
+import { NextPageWithLayout } from "../../utils/general.types";
 
 const HelpPage: NextPageWithLayout = props => {
     const {locale: { pages: {help: { helpCard }} }} = useApp();
@@ -37,5 +38,7 @@ const HelpPage: NextPageWithLayout = props => {
 }
 
 HelpPage.getLayout = handleGetLayout(PublicLayout);
+
+export const getServerSideProps = withPublicPage();
 
 export default HelpPage;

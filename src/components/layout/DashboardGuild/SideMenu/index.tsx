@@ -14,7 +14,7 @@ import RenderNavigationButtons from "./RenderNavigationButtons";
 import { useAuth } from '../../../../context/Auth';
 
 const SideMenu: FC = props => {
-    const { store } = useApp();
+    const { store, locale } = useApp();
     const auth = useAuth();
     const router = useRouter();
     const [GuildModal, guildModal] = useModal(ModalGuilds);
@@ -34,14 +34,14 @@ const SideMenu: FC = props => {
             <Divider />
             <NavigationContainer btnQuantityInArea={6}>
                 <ButtonsArea>
-                    {RenderNavigationButtons({ currentPath: router.asPath })}
+                    {RenderNavigationButtons({ currentPath: router.asPath, localeLang: locale.lang })}
                 </ButtonsArea>
             </NavigationContainer>
             <Divider />
             <ButtonsArea>
                 <Button
                     style={{ width: '90%' }}
-                    onClick={() => router.push('/')}
+                    onClick={() => router.push(`/${locale.lang}`)}
                     icon={<IoHomeSharp />}
                 >Home</Button>
                 <Button

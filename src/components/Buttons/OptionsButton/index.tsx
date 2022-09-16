@@ -9,7 +9,11 @@ import LoadWrapper from '../../Loading/LoadWrapper';
 
 const ICON_SIZE = 20;
 
-const OptionsButton: FC = props => {
+interface IProps {
+    localeLang: string;
+}
+
+const OptionsButton: FC<IProps> = props => {
     const { logOut, user } = useAuth();
     return (
         <LoadWrapper isLoading={!user}>
@@ -25,7 +29,7 @@ const OptionsButton: FC = props => {
                 </button>
                 <ul>
                     <li>
-                        <Link href='/dashboard/poing'><a><IoSettingsOutline size={ICON_SIZE} />Dashboard</a></Link>
+                        <Link href={`/${props.localeLang}/dashboard/poing`}><a><IoSettingsOutline size={ICON_SIZE} />Dashboard</a></Link>
                     </li>
                     <li>
                         <a href='#' onClick={logOut}><IoExitOutline size={ICON_SIZE} />Sair</a>

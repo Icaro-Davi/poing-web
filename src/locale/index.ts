@@ -1,8 +1,7 @@
 import fs from 'fs';
-import { getLocaleLang, setCookie } from '../utils/cookies';
-import CookieKeys from '../utils/cookies/keys';
+import { getLocaleLang, setLocaleLang } from '../utils/cookies';
 
-import type { NextPageContext } from 'next/types';
+import type { GetServerSidePropsContext, NextPageContext } from 'next/types';
 import type { Locale, LocaleLang } from "./index.type";
 
 const availableLocales = ['pt-BR'];
@@ -16,17 +15,24 @@ export const getLocale = async (localeLang: LocaleLang): Promise<Locale | undefi
     return locale.default;
 }
 
-export const handlePageLocale = async (ctx: NextPageContext) => {
-    const localeLang = getLocaleLang(ctx) as LocaleLang;
-    if (localeLang && availableLocales.some(_localeLang => _localeLang === localeLang)) return await getLocale(localeLang);
-    if (!ctx.req) return await getLocale('pt-BR');
-    const headerLanguageIndex = ctx.req.rawHeaders.findIndex(header => header === 'Accept-Language');
-    if (headerLanguageIndex > -1) {
-        const userBrowserLocale = ctx.req.rawHeaders[headerLanguageIndex + 1].split(',')[0] as LocaleLang;
-        if (availableLocales.some(localeLang => localeLang === userBrowserLocale)) {
-            setCookie(CookieKeys.LOCALE_LANG, userBrowserLocale, ctx);
-            return await getLocale(userBrowserLocale);
-        }
+export const getAndValidateLocaleLang = (ctx: NextPageContext | GetServerSidePropsContext) => {
+    const urlLocaleLang = ctx.query.locale as LocaleLang;
+    if (urlLocaleLang && availableLocales.some(localeLang => localeLang === urlLocaleLang)) {
+        setLocaleLang(urlLocaleLang, ctx);
+        return {
+            lang: urlLocaleLang,
+            isUrlParam: true
+        };
+    } else {
+        const localeLang = getLocaleLang(ctx) as LocaleLang;
+        if (localeLang && availableLocales.some(_localeLang => _localeLang === localeLang))
+            return {
+                lang: localeLang,
+                isUrlParam: false
+            };
     }
-    return await getLocale('pt-BR');
+    return {
+        lang: 'pt_BR' as LocaleLang,
+        isUrlParam: false
+    };
 }
