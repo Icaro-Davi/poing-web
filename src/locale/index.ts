@@ -7,7 +7,10 @@ import type { Locale, LocaleLang } from "./index.type";
 const availableLocales = ['pt-BR'];
 
 export const getLocale = async (localeLang: LocaleLang): Promise<Locale | undefined> => {
-    if (!(typeof window === 'undefined')) throw new Error('Locale only works on server side.');
+    if (!(typeof window === 'undefined')) {
+        const locale = (await import(`../locale/${localeLang}`)).default as Locale;
+        return locale
+    };
     const localePath = './src/locale';
     const fileLocaleName = fs.readdirSync(localePath).find(file => file.split('.')[0] === localeLang);
     if (!fileLocaleName) return;
@@ -15,8 +18,8 @@ export const getLocale = async (localeLang: LocaleLang): Promise<Locale | undefi
     return locale.default;
 }
 
-export const getAndValidateLocaleLang = (ctx: NextPageContext | GetServerSidePropsContext) => {
-    const urlLocaleLang = ctx.query.locale as LocaleLang;
+export const getAndValidateLocaleLang = (ctx?: NextPageContext | GetServerSidePropsContext) => {
+    const urlLocaleLang = ctx?.query.locale as LocaleLang;
     if (urlLocaleLang && availableLocales.some(localeLang => localeLang === urlLocaleLang)) {
         setLocaleLang(urlLocaleLang, ctx);
         return {

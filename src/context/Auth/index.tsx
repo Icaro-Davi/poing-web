@@ -2,7 +2,7 @@ import Router from 'next/router';
 import { useRef, useState, FC, createContext, useContext, useEffect } from 'react';
 import Notification from '../../components/Notification';
 import AuthService from '../../services/discord/auth';
-import { getLocaleLang, removeAuthToken } from '../../utils/cookies';
+import { getLocaleLang } from '../../utils/cookies';
 
 import type { IAuthContext, IAuthProvider } from './auth.interfaces';
 import type { UserType } from '../../services/discord/user/user.types';
@@ -10,7 +10,7 @@ import DiscordUserService from '../../services/discord/user';
 
 const AuthProvider: FC<IAuthProvider> = props => {
     const { current: discordAuthUrl } = useRef(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI);
-    const [isAuthenticated, setAuth] = useState(props.initialState.isAuthenticated);
+    const [isAuthenticated, setAuth] = useState(!!props.initialState?.isAuthenticated);
     const [user, setUser] = useState<UserType>();
 
     const logIn = () => { };
@@ -18,7 +18,6 @@ const AuthProvider: FC<IAuthProvider> = props => {
         try {
             const localeLang = getLocaleLang();
             await AuthService.logout();
-            removeAuthToken();
             setAuth(false);
             Router.push(`/${localeLang}`);
         } catch (error) {
@@ -31,6 +30,10 @@ const AuthProvider: FC<IAuthProvider> = props => {
     };
 
     useEffect(() => {
+        !isAuthenticated && AuthService.status()
+            .then(setAuth)
+            .catch(err => err);
+
         isAuthenticated && DiscordUserService.getMe()
             .then(setUser)
             .catch(error => {

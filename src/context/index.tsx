@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
+import GlobalStyled from "../styles/globalStyled";
 
-const AppThemeProvider = dynamic(() => import('./ThemeProvider'));
-const GlobalStyled = dynamic(() => import("../styles/globalStyled"));
-const AppProvider = dynamic(() => import("./App"));
 const AuthProvider = dynamic(() => import("./Auth"));
+const AppThemeProvider = dynamic(() => import('./ThemeProvider'));
+const AppProvider = dynamic(() => import("./App"));
 
 import type { ReactNode } from "react";
 import type { Locale } from "../locale/index.type";
