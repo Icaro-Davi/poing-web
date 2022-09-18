@@ -3,10 +3,11 @@ import { useRef, useState, FC, createContext, useContext, useEffect } from 'reac
 import Notification from '../../components/Notification';
 import AuthService from '../../services/discord/auth';
 import { getLocaleLang } from '../../utils/cookies';
+import DiscordUserService from '../../services/discord/user';
+import BaseError from '../../utils/error/baseError';
 
 import type { IAuthContext, IAuthProvider } from './auth.interfaces';
 import type { UserType } from '../../services/discord/user/user.types';
-import DiscordUserService from '../../services/discord/user';
 
 const AuthProvider: FC<IAuthProvider> = props => {
     const { current: discordAuthUrl } = useRef(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI);
@@ -21,25 +22,41 @@ const AuthProvider: FC<IAuthProvider> = props => {
             setAuth(false);
             Router.push(`/${localeLang}`);
         } catch (error) {
-            console.log(error);
-            Notification.open({
-                title: 'Error',
-                description: 'Não foi possível deslogar.',
-            });
+            new BaseError({
+                origin: 'context.Auth.AuthProvider.logOut',
+                message: "Error on try logout",
+                error,
+                callback({ notifications }) {
+                    Notification.open({
+                        type: 'error',
+                        ...notifications.error.account.logout,
+                    });
+                }
+            })
         }
     };
 
     useEffect(() => {
-        !isAuthenticated && AuthService.status()
+        AuthService.status()
             .then(setAuth)
             .catch(err => err);
+    });
 
+    useEffect(() => {
         isAuthenticated && DiscordUserService.getMe()
             .then(setUser)
             .catch(error => {
-                Notification.open({ title: 'Error', description: 'Error ao tentar encontrar usuário', type: 'error' })
-                console.log(error);
-                logOut();
+                new BaseError({
+                    origin: 'context.Auth.AuthProvider.useEffect.getMe',
+                    message: 'Failed fetch DiscordUser from API',
+                    error,
+                    callback({ notifications }) {
+                        Notification.open({
+                            type: 'error',
+                            ...notifications.error.account.getMe
+                        })
+                    }
+                })
             });
     }, [isAuthenticated]);
 

@@ -4,12 +4,11 @@ class AuthService {
     static basePath = '/auth';
     static async logout() {
         try {
-            await fetch('/api/auth/logout');
             await DiscordRequestor.get(`${this.basePath}/logout`);
+            await fetch('/api/auth/logout');
         } catch (error) {
             throw error;
         }
-
     }
     static async status() {
         try {

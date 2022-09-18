@@ -1,7 +1,9 @@
-import { AppDispatchStore } from "./app.types";
 import DiscordUserService from "../../services/discord/user";
 import LocalStorage from "../../utils/localStorage";
 import Notification from "../../components/Notification";
+import BaseError from "../../utils/error/baseError";
+
+import type { AppDispatchStore } from "./app.types";
 
 class AppDispatch {
     static async findGuildAndSave(dispatch: AppDispatchStore) {
@@ -15,12 +17,17 @@ class AppDispatch {
                 LocalStorage.guild.setSelectedId(selectedGuildId);
             }
         } catch (error) {
-            console.error(error);
-            Notification.open({
-                title: 'Error',
-                description: 'Erro ao buscar a lista de guilds',
-                type: 'error'
-            });
+            new BaseError({
+                origin: 'context.app.AppDispatch.findGuildAndSave',
+                message: "Failed find user guilds",
+                error,
+                callback({ notifications }) {
+                    Notification.open({
+                        type: 'error',
+                        ...notifications.error.guilds.find
+                    });
+                }
+            })
         }
     }
 

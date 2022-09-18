@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { getLocaleLang, setLocaleLang } from '../utils/cookies';
 
 import type { GetServerSidePropsContext, NextPageContext } from 'next/types';
@@ -6,21 +5,12 @@ import type { Locale, LocaleLang } from "./index.type";
 
 const availableLocales = ['pt-BR'];
 
-export const getLocale = async (localeLang: LocaleLang): Promise<Locale | undefined> => {
-    if (!(typeof window === 'undefined')) {
-        const locale = (await import(`../locale/${localeLang}`)).default as Locale;
-        return locale
-    };
-    const localePath = './src/locale';
-    const fileLocaleName = fs.readdirSync(localePath).find(file => file.split('.')[0] === localeLang);
-    if (!fileLocaleName) return;
-    const locale = await import(`./${fileLocaleName}`)
-    return locale.default;
-}
+const validateLocale = (localeLang: string) =>
+    availableLocales.some(_localeLang => _localeLang === localeLang);
 
 export const getAndValidateLocaleLang = (ctx?: NextPageContext | GetServerSidePropsContext) => {
     const urlLocaleLang = ctx?.query.locale as LocaleLang;
-    if (urlLocaleLang && availableLocales.some(localeLang => localeLang === urlLocaleLang)) {
+    if (urlLocaleLang && validateLocale(urlLocaleLang)) {
         setLocaleLang(urlLocaleLang, ctx);
         return {
             lang: urlLocaleLang,
@@ -28,7 +18,7 @@ export const getAndValidateLocaleLang = (ctx?: NextPageContext | GetServerSidePr
         };
     } else {
         const localeLang = getLocaleLang(ctx) as LocaleLang;
-        if (localeLang && availableLocales.some(_localeLang => _localeLang === localeLang))
+        if (localeLang && validateLocale(localeLang))
             return {
                 lang: localeLang,
                 isUrlParam: false
@@ -38,4 +28,9 @@ export const getAndValidateLocaleLang = (ctx?: NextPageContext | GetServerSidePr
         lang: 'pt_BR' as LocaleLang,
         isUrlParam: false
     };
+}
+
+export const getLocale = async (ctx?: NextPageContext | GetServerSidePropsContext): Promise<Locale> => {
+    const locale = getAndValidateLocaleLang(ctx);
+    return (await import(`../locale/${locale.lang}`)).default as Locale;
 }

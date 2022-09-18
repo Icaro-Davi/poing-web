@@ -17,13 +17,12 @@ const AppProvider: FC<IAppProvider> = props => {
 
     const handleLoad = async () => {
         const { isMobile } = (await import('react-device-detect'));
-        const { getAndValidateLocaleLang, getLocale } = (await import('../../locale'));
+        const { getLocale } = (await import('../../locale'));
 
         const loadDataAndStartApp = async () => {
             if (!locale) {
-                const _locale = getAndValidateLocaleLang();
-                const loadedLocale = (await getLocale(_locale.lang)) as Locale;
-                setLocale(loadedLocale);
+                const _locale = (await getLocale()) as Locale;
+                setLocale(_locale);
             }
             setPageLoading(true);
         }

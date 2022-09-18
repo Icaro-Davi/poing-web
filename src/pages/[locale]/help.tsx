@@ -10,7 +10,7 @@ import { withPublicPage } from "../../utils/auth/authenticate";
 import { NextPageWithLayout } from "../../utils/general.types";
 
 const HelpPage: NextPageWithLayout = props => {
-    const {locale: { pages: {help: { helpCard }} }} = useApp();
+    const { locale: { pages: { root: { help: { helpCard } } } } } = useApp();
     return (
         <Grid horizontalAlign="center">
             <Grid.Row

@@ -10,7 +10,7 @@ import { NextPageWithLayout } from '../../utils/general.types';
 export const cardsBreakpoints = { xl: 20, lg: 23, md: 20, sm: 24, xs: 24 };
 
 const HomePage: NextPageWithLayout = () => {
-  const { locale: { pages: { home: { botInfoCard, devBotCard, welcomeCard } } } } = useApp();
+  const { locale: { pages: { root: { home: { botInfoCard, devBotCard, welcomeCard } } } } } = useApp();
   return (
     <Grid horizontalAlign="center">
       <Grid.Row
