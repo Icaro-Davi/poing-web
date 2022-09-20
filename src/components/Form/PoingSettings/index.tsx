@@ -1,8 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
-import type { GetReference } from "../../../utils/general.types";
 import { useApp } from "../../../context/App";
 import LocalStorage from "../../../utils/localStorage";
 import LoadWrapper from "../../Loading/LoadWrapper";
@@ -12,16 +10,22 @@ import SubmitButton from "./SubmitButton";
 import Card from '../../Card';
 import DiscordBotService from "../../../services/discord/bot";
 import Notification from "../../Notification";
+import { Title } from "../../Typography";
+import BaseError from "../../../utils/error/baseError";
+
+import type { FC } from "react";
+import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
+import type { GetReference } from "../../../utils/general.types";
 
 type BotFields = GetReference<GuildSettingsType, 'bot'>;
 
 const PoingSettingsForm: FC = () => {
-    const { store } = useApp();
+    const { store, locale } = useApp();
     const { register, handleSubmit, getValues, reset, formState, watch, setValue } = useForm<BotFields>({
         defaultValues: LocalStorage.bot.getSettings()?.bot,
         mode: 'all'
     });
-    const borderColor = watch('messageEmbedHexColor');
+    const discordPoingColorTheme = watch('messageEmbedHexColor');
     const [isLoading, setLoading] = useState(false);
 
     const onSubmit: SubmitHandler<BotFields> = async (data, event) => {
@@ -31,17 +35,21 @@ const PoingSettingsForm: FC = () => {
             const oldSettings = LocalStorage.bot.getSettings();
             oldSettings && LocalStorage.bot.setSettings({ ...oldSettings, bot: data });
             Notification.open({
-                title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',
-                description: 'Salvei as suas novas configurações.',
                 type: 'success',
+                ...locale.notifications.success.bot.updateSettings,
             });
         } catch (error) {
-            Notification.open({
-                title: 'Erro ლ(ಥ益ಥლ)',
-                description: 'Ocorreu um erro ao tentar atualizar as configurações do bot.',
-                type: 'error',
+            new BaseError({
+                origin: 'src.components.Form.PoingSettingsForm.onSubmit',
+                message: 'Failed update settings',
+                error, locale,
+                callback({ notifications }) {
+                    Notification.open({
+                        type: 'error',
+                        ...notifications.error.bot.updateSettings
+                    });
+                }
             });
-            console.log(error);
         } finally {
             setLoading(false);
         }
@@ -58,9 +66,10 @@ const PoingSettingsForm: FC = () => {
     return (
         <LoadWrapper isLoading={!getValues()}>
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
-                <Card style={{ borderColor }}>
-                    <FormElements {...{ register, formState, watch, setValue }} />
-                    <SubmitButton isLoading={isLoading} />
+                <Card style={{ borderColor: discordPoingColorTheme }}>
+                    <Title level='2' stroke={{ strokeColor: discordPoingColorTheme }} style={{ paddingBottom: '1rem', textAlign: 'center' }}>{locale.forms.poingSettings.title}</Title>
+                    <FormElements {...{ register, formState, watch, setValue, locale }} />
+                    <SubmitButton label={locale.forms.poingSettings.submitButtonLabel} isLoading={isLoading} />
                 </Card>
             </form>
         </LoadWrapper>

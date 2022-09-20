@@ -9,6 +9,6 @@ export type BotCommandType = {
     description: string;
     aliases?: string[];
     usage: string[];
-    args?: string[];
-    examples: string[];
+    args?: (string | string[])[];
+    examples: (string | string[])[];
 }

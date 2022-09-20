@@ -1,14 +1,14 @@
-import BotCommands from "./commands";
-import Navbar from "./navbar";
-import Pages from "./pages";
-import Notifications from './notifications';
+import commands from "./commands";
+import pages from "./pages";
+import notifications from './notifications';
+import layouts from "./layout";
+import forms from "./forms";
 
 const pt_BR = {
     lang: 'pt-BR',
-    navbar: Navbar,
-    commands: BotCommands,
-    pages: Pages,
-    notifications: Notifications
+    layouts, commands,
+    pages, notifications,
+    forms
 }
 
 export default pt_BR;

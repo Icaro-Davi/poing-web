@@ -10,7 +10,7 @@ class Argument {
     static staticArgSymbol = staticArgumentEmoji;
     constructor (name: string, description: string, isFlag?: boolean){
         this.name = name;
-        this.description = `${isFlag ? flagEmoji : argumentEmoji} ${name} ${description}`;
+        this.description = `${isFlag ? flagEmoji : argumentEmoji} ${name} - ${description}`;
     }
 }
 

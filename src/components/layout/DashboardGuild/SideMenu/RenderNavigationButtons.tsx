@@ -5,9 +5,10 @@ import { Button } from '../../../Buttons';
 type Options = {
     currentPath: string;
     localeLang: string;
+    navigationDashboardButtons: { [key: string]: string };
 }
 
-const NavigationButton = (route: RouterType, options: Options) => (
+const NavigationButton = (route: RouterType & { name: string }, options: Options) => (
     <Button
         key={route.name}
         disabled={route.disabled}
@@ -22,6 +23,6 @@ const NavigationButton = (route: RouterType, options: Options) => (
 );
 
 const RenderNavigationButtons = (options: Options) =>
-    routes.map(route => NavigationButton(route, options));
+    routes.map(route => NavigationButton({ ...route, name: options.navigationDashboardButtons[route.key] }, options));
 
 export default RenderNavigationButtons;

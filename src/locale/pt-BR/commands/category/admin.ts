@@ -1,5 +1,4 @@
 import { BOT } from "../../../defaultBoTInfo";
-import MDHelper from "../../../markdown";
 import COMMAND_CATEGORY from "../categories";
 import STATIC_ARGUMENT from "../staticArguments";
 
@@ -16,7 +15,10 @@ const ADMIN_COMMANDS: BotCommandType[] = [
         aliases: [`${BOT.prefix}adm`],
         args: [STATIC_ARGUMENT.member.description, STATIC_ARGUMENT.message.description],
         examples: [
-            `${new MDHelper(`${BOT.prefix}anonymous-direct-message @${BOT.name} Oi você quer pular pelo meu servidor?`).codeLineB().get()} Envia uma mensagem privada para o membro ${BOT.name}.`,
+            [
+                `${BOT.prefix}anonymous-direct-message @${BOT.name} Oi você quer pular pelo meu servidor?`,
+                `Envia uma mensagem privada para o membro ${BOT.name}.`,
+            ],
         ]
     }
 ]

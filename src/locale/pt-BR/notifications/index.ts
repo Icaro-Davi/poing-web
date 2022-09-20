@@ -1,7 +1,8 @@
-import Error from "./error";
+import error from "./error";
+import success from "./success";
 
 const notifications = {
-    error: Error,
+    error, success
 }
 
 export default notifications;

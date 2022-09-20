@@ -1,3 +1,5 @@
+import { BOT } from "../../defaultBoTInfo";
+
 const Error = {
     account: {
         logout: {
@@ -5,14 +7,24 @@ const Error = {
             description: 'Error ao tentar efetuar logout.'
         },
         getMe: {
-            title: 'Error',
+            title: 'Buscar usuário',
             description: 'Não foi possível procurar o usuário.'
         }
     },
     guilds: {
         find: {
-            title: 'Erro ao buscar guilds',
+            title: 'Buscar guilds',
             description: 'Ocorreu algum erro ao tentar buscar as guilds, tente novamente mais tarde.'
+        }
+    },
+    bot: {
+        getSettings: {
+            title: `Configurações do ${BOT.name}.`,
+            description: `Falha ao buscar as configurações do ${BOT.name}.`
+        },
+        updateSettings: {
+            title: 'Erro ლ(ಥ益ಥლ)',
+            description: `Ocorreu um erro ao tentar atualizar as configurações do ${BOT.name}.`,
         }
     }
 }

@@ -12,11 +12,11 @@ const UTILITY_COMMANDS: BotCommandType[] = [
         description: 'Buscarei informações sobre algum membro da guild.',
         usage: [`${BOT.prefix}info ${new MDHelper('<member>').codeLineB().get()}* ${STATIC_ARGUMENT.member.name}*`],
         args: [
-            `${Argument.staticArgSymbol} ${new MDHelper('<member>').codeLineB().get()} - Argumento estático para indicar que o próximo argumento é um membro.`,
+            [Argument.staticArgSymbol, '<member>', 'Argumento estático para indicar que o próximo argumento é um membro.'],
             STATIC_ARGUMENT.member.description,
         ],
         examples: [
-            `${new MDHelper(`${BOT.prefix}info member @${BOT.name}`).codeLineB().get()} - Retornarei informações sobre o membro @${BOT.name}.`
+            [`${BOT.prefix}info member @${BOT.name}`, `Retornarei informações sobre o membro @${BOT.name}.`]
         ]
     },
     {
@@ -26,7 +26,7 @@ const UTILITY_COMMANDS: BotCommandType[] = [
         usage: [`${BOT.prefix}get-members-status`],
         aliases: [`${BOT.prefix}gms`, `${BOT.prefix}guildMembers`],
         examples: [
-            `${new MDHelper(`${BOT.prefix}get-members-status`).codeLineB().get()} - Retorna uma mensagem com informações referente a quantidade de membros por status da guild.`
+            [`${BOT.prefix}get-members-status`, 'Retorna uma mensagem com informações referente a quantidade de membros por status da guild.']
         ]
     },
     {
@@ -37,11 +37,11 @@ const UTILITY_COMMANDS: BotCommandType[] = [
         aliases: [`${BOT.prefix}h`],
         args: [
             STATIC_ARGUMENT.command.description,
-            `${Argument.staticArgSymbol} ${new MDHelper('<list>').codeLineB().get()} - Esse é um argumento estático e retorna a lista de todos os meus comandos.`
+            [Argument.staticArgSymbol, '<list>', 'Esse é um argumento estático e retorna a lista de todos os meus comandos.'],
         ],
         examples: [
-            `${new MDHelper(`${BOT.prefix}help help`).codeLineB().get()} - Com essa carta você entra em uma inception onde você pede ajuda para a ajuda.`,
-            `${new MDHelper(`${BOT.prefix}h list`).codeLineB().get()} - Recebe o codex o livro da sabedoria divina do ${BOT.name} que contem todos os seus comandos.`
+            [`${BOT.prefix}help help`, 'Com essa carta você entra em uma inception onde você pede ajuda para a ajuda.'],
+            [`${BOT.prefix}h list`, `Recebe o codex o livro da sabedoria divina do ${BOT.name} que contem todos os seus comandos.`]
         ]
     },
     {
@@ -50,7 +50,9 @@ const UTILITY_COMMANDS: BotCommandType[] = [
         description: 'O tempo de resposta em milissegundos(ms) dos servidores.',
         usage: [`${BOT.prefix}ping`],
         aliases: [`${BOT.prefix}p`],
-        examples: [`${new MDHelper(`${BOT.prefix}ping`).codeLineB().get()} - Retorna ping dos serviços disponíveis.`]
+        examples: [
+            [`${BOT.prefix}ping`, 'Retorna ping dos serviços disponíveis.']
+        ]
     }
 ]
 

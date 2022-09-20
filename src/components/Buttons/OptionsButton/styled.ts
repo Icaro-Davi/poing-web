@@ -19,7 +19,7 @@ export const OptionsButtonContainer = styled.div`
             color: ${props => props.theme.colors.white};
             font-size: 15px;
             font-weight: bold;
-            min-width: 50px;
+            min-width: 100px;
             max-width: 150px;
             display: block;
 

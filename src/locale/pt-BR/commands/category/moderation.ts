@@ -4,7 +4,7 @@ import COMMAND_CATEGORY from "../categories";
 import STATIC_ARGUMENT from "../staticArguments";
 import { BOT } from "../../../defaultBoTInfo";
 
-import type{ BotCommandType } from "../../../index.type";
+import type { BotCommandType } from "../../../index.type";
 
 const MODERATION_COMMANDS: BotCommandType[] = [
     {
@@ -17,14 +17,14 @@ const MODERATION_COMMANDS: BotCommandType[] = [
         ],
         args: [
             STATIC_ARGUMENT.member.description,
-            `${Argument.staticArgSymbol} ${new MDHelper('<list>').codeLineB().get()} - Este é um argumento estático e lista os membros banidos.`,
-            `${Argument.flagSymbol} ${new MDHelper('(--days "Número"|-d "Número")').codeLineB().get()} - Número de dias entre "1 e 7" que representa as mensagens que serão deletadas, valor padrão é 0.`,
-            `${Argument.flagSymbol} ${new MDHelper('(--reason "Texto"|-r "Texto")').codeLineB().get()} - A razão do banimento.`
+            [Argument.staticArgSymbol, '<list>', 'Este é um argumento estático e lista os membros banidos.'],
+            [Argument.flagSymbol, '(--days "Número"|-d "Número")', 'Número de dias entre "1 e 7" que representa as mensagens que serão deletadas, valor padrão é 0.'],
+            [Argument.flagSymbol, '(--reason "Texto"|-r "Texto")', 'A razão do banimento.']
         ],
         examples: [
-            `${new MDHelper(`${BOT.prefix}ban list`).codeLineB().get()} - Lista com todos os banidos.`,
-            `${new MDHelper(`${BOT.prefix}ban @${BOT.name} --days "7"`).codeLineB().get()} - A flag de days pode ser utilizada ${new MDHelper('(--days|-d)').codeLineB().get()} em seguida o valor entre aspas duplas.`,
-            `${new MDHelper(`${BOT.prefix}ban @${BOT.name} --reason "${BOT.name} está distraindo os membros do servidor."`).codeLineB().get()} - O membro ${BOT.name} foi banido com um motivo.`,
+            [`${BOT.prefix}ban list`, 'Lista com todos os banidos.'],
+            [`${BOT.prefix}ban @${BOT.name} --days "7"`, `A flag de days pode ser utilizada ${new MDHelper('(--days|-d)').codeLineB().get()} em seguida o valor entre aspas duplas.`],
+            [`${BOT.prefix}ban @${BOT.name} --reason "${BOT.name} está distraindo os membros do servidor."`, 'O membro ${BOT.name} foi banido com um motivo.'],
         ]
     },
     {
@@ -36,11 +36,11 @@ const MODERATION_COMMANDS: BotCommandType[] = [
         ],
         args: [
             STATIC_ARGUMENT.member.description,
-            `${Argument.argSymbol} ${new MDHelper('[Motivo]').codeLineB().get()} - Salva o motivo pela qual o membro foi kickado.`
+            [Argument.argSymbol, '[Motivo]', `Salva o motivo pela qual o membro foi kickado.`]
         ],
         examples: [
-            `${new MDHelper(`${BOT.prefix}kick @${BOT.name}`).codeLineB().get()} - O membro ${BOT.name} for removido.`,
-            `${new MDHelper(`${BOT.prefix}kick @${BOT.name} Ele está pulando pelo servidor!`).codeLineB().get()} - O membro ${BOT.name} for removido e foi adicionado um motivo para isso.`,
+            [`${BOT.prefix}kick @${BOT.name}`, `O membro ${BOT.name} for removido.`],
+            [`${BOT.prefix}kick @${BOT.name} Ele está pulando pelo servidor!`, `O membro ${BOT.name} for removido e foi adicionado um motivo para isso.`],
         ]
     },
     {
@@ -54,17 +54,17 @@ const MODERATION_COMMANDS: BotCommandType[] = [
         ],
         args: [
             STATIC_ARGUMENT.member.description,
-            `${Argument.argSymbol} ${new MDHelper('[addrole]').codeLineB().get()} - Adicione o argumento ${new MDHelper('[addrole]').codeLineB().get()} em seguida o cargo que deseja adicionar podendo ser ${new MDHelper('[Mencionar um cargo "@Cargo" ou usar o ID do cargo "123456789"]').codeLineB().get()}.`,
-            `${Argument.argSymbol} ${new MDHelper('[list]').codeLineB().get()} - Lista os 50 membros mais próximos de acabar a punição.`,
-            `${Argument.argSymbol} ${new MDHelper('[Tempo]').codeLineB().get()} - A duração pode ser usado informando um número e em seguida com M para minutos, H para horas e D para dias.`,
-            `${Argument.argSymbol} ${new MDHelper('[Motivo]').codeLineB().get()} - Motivo para mutar o membro.`
+            [Argument.argSymbol, '[addrole]', `Adicione o argumento ${new MDHelper('[addrole]').codeLineB().get()} em seguida o cargo que deseja adicionar podendo ser ${new MDHelper('[Mencionar um cargo "@Cargo" ou usar o ID do cargo "123456789"]').codeLineB().get()}.`],
+            [Argument.argSymbol, '[list]', 'Lista os 50 membros mais próximos de acabar a punição.'],
+            [Argument.argSymbol, '[Tempo]', 'A duração pode ser usado informando um número e em seguida com M para minutos, H para horas e D para dias.'],
+            [Argument.argSymbol, '[Motivo]', 'Motivo para mutar o membro.']
         ],
         examples: [
-            `${new MDHelper(`${BOT.prefix}mute @${BOT.name}`).codeLineB().get()} - Muta o membro @${BOT.name}.`,
-            `${new MDHelper(`${BOT.prefix}mute addrole [@Cargo|CargoID]`).codeLineB().get()} - Necessário para poder mutar um membro, o membro ao ser mutado será adicionado esse cargo como punição.`,
-            `${new MDHelper(`${BOT.prefix}mute list`).codeLineB().get()} -  Lista os membros mutados.`,
-            `${new MDHelper(`${BOT.prefix}mute @${BOT.name} 10M`).codeLineB().get()} - O membro @Poing foi mutado por 10 Minutos`,
-            `${new MDHelper(`${BOT.prefix}mute @${BOT.name} Não para de pular na frente dos membros.`).codeLineB().get()} - Vai mutar o Poing por tempo indeterminado, com um motivo/razão.`
+            [`${BOT.prefix}mute @${BOT.name}`, `Muta o membro @${BOT.name}.`],
+            [`${BOT.prefix}mute addrole [@Cargo|CargoID]`, 'Necessário para poder mutar um membro, o membro ao ser mutado será adicionado esse cargo como punição.'],
+            [`${BOT.prefix}mute list`, 'Lista os membros mutados.'],
+            [`${BOT.prefix}mute @${BOT.name} 10M`, `O membro @${BOT.name} foi mutado por 10 Minutos`],
+            [`${BOT.prefix}mute @${BOT.name} Não para de pular na frente dos membros.`, `Vai mutar o ${BOT.name} por tempo indeterminado, com um motivo/razão.`],
         ]
     },
     {
@@ -79,7 +79,7 @@ const MODERATION_COMMANDS: BotCommandType[] = [
         ],
         args: [STATIC_ARGUMENT.quantity.description],
         examples: [
-            `${new MDHelper(`${BOT.prefix}remove-messages 10`).codeLineB().get()} - Remove as 10 primeiras mensagens mais recentes que foram enviadas em até 2 semanas.`
+            [`${BOT.prefix}remove-messages 10`, 'Remove as 10 primeiras mensagens mais recentes que foram enviadas em até 2 semanas.']
         ]
     },
     {
@@ -88,12 +88,12 @@ const MODERATION_COMMANDS: BotCommandType[] = [
         description: 'Retira o banimento de um membro.',
         usage: [`${BOT.prefix}unban ${new MDHelper('[MembroID]').codeLineB().get()}* ${new MDHelper('[Motivo]').codeLineB().get()}`],
         args: [
-            `${Argument.argSymbol} ${new MDHelper('[MembroID]').codeLineB().get()} - ID do membro que será removido da lista de banidos.`,
-            `${Argument.argSymbol} ${new MDHelper('[Motivo]').codeLineB().get()} - Motivo que está removendo membro da lista de banidos.`,
+            [Argument.argSymbol, '[MembroID]', 'ID do membro que será removido da lista de banidos.'],
+            [Argument.argSymbol, '[Motivo]', 'Motivo que está removendo membro da lista de banidos.']
         ],
         examples: [
-            `${new MDHelper(`${BOT.prefix}unban 123456789`).codeLineB().get()} - Agora o membro de ID 123456789 pode ser convidado novamente.`,
-            `${new MDHelper(`${BOT.prefix}unban 123456789 Pagou propina para o admin`).codeLineB().get()} - Remove membro da lista de banidos com o motivo da ação.`,
+            [`${BOT.prefix}unban 123456789`, 'Agora o membro de ID 123456789 pode ser convidado novamente.'],
+            [`${BOT.prefix}unban 123456789 Pagou propina para o admin`, 'Remove membro da lista de banidos com o motivo da ação.']
         ]
     }
 ]

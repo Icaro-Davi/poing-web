@@ -21,7 +21,7 @@ const Sidebar: React.FC = props => {
     const sideMenuRef = useRef<HTMLDivElement>(null);
     const spanBoxRef = useRef<HTMLDivElement>(null);
     const appTheme = useTheme();
-    const { locale } = useApp();
+    const { locale: { lang, layouts: { public: { menu } } } } = useApp();
     const auth = useAuth();
     const Router = useRouter();
 
@@ -60,23 +60,23 @@ const Sidebar: React.FC = props => {
                 <StyledMenuContainer>
 
                     <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === `/${locale.lang}`} href={`/${locale.lang}`} label={locale.navbar.mainMenu.home} />
+                        <StyledLink selected={Router.asPath === `/${lang}`} href={`/${lang}`} label={menu.home} />
                     </StyledMenuItem>
                     <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === `/${locale.lang}/help`} href={`/${locale.lang}/help`} label={locale.navbar.mainMenu.help} />
+                        <StyledLink selected={Router.asPath === `/${lang}/help`} href={`/${lang}/help`} label={menu.help} />
                     </StyledMenuItem>
                     <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === `/${locale.lang}/commands`} href={`/${locale.lang}/commands`} label={locale.navbar.mainMenu.commands} />
+                        <StyledLink selected={Router.asPath === `/${lang}/commands`} href={`/${lang}/commands`} label={menu.commands} />
                     </StyledMenuItem>
                     {auth.isAuthenticated
                         ? (
                             <StyledMenuItem style={{ display: 'flex', justifyContent: 'center' }}>
-                                <OptionsButton localeLang={locale.lang} />
+                                <OptionsButton localeLang={lang} label={menu.optionsButton} />
                             </StyledMenuItem>
                         )
                         : (
                             <StyledMenuItem>
-                                <Anchor href={auth.discordAuthUrl}>{locale.navbar.mainMenu.login}</Anchor>
+                                <Anchor href={auth.discordAuthUrl}>{menu.login}</Anchor>
                             </StyledMenuItem>
                         )
                     }

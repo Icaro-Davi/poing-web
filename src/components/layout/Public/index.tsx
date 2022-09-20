@@ -12,7 +12,7 @@ interface MainLayout {
 }
 
 const MainLayout: React.FC<MainLayout> = props => {
-    const { layout } = useApp();
+    const { layout, locale: { layouts: {  public: { footer } } } } = useApp();
     return (
         <Container>
             {layout.isDesktopSize
@@ -20,7 +20,7 @@ const MainLayout: React.FC<MainLayout> = props => {
                 : <Sidebar />}
             <Main>
                 {props.children}
-                <Footer />
+                <Footer createdWith={footer.createdWith} createdBy={footer.createdBy} />
             </Main>
         </Container>
     );

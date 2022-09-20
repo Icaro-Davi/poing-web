@@ -34,7 +34,7 @@ const SideMenu: FC = props => {
             <Divider />
             <NavigationContainer btnQuantityInArea={6}>
                 <ButtonsArea>
-                    {RenderNavigationButtons({ currentPath: router.asPath, localeLang: locale.lang })}
+                    {RenderNavigationButtons({ currentPath: router.asPath, localeLang: locale.lang, navigationDashboardButtons: locale.layouts.dashboardGuild.navigationDashboardButtons })}
                 </ButtonsArea>
             </NavigationContainer>
             <Divider />
@@ -43,13 +43,13 @@ const SideMenu: FC = props => {
                     style={{ width: '90%' }}
                     onClick={() => router.push(`/${locale.lang}`)}
                     icon={<IoHomeSharp />}
-                >Home</Button>
+                >{locale.layouts.dashboardGuild.buttonsArea.home}</Button>
                 <Button
                     style={{ width: '90%' }}
                     onClick={auth.logOut}
                     icon={<IoExitSharp />}
                     focusColor="linear-gradient(to right, #ff7575,#ff2e2e)"
-                >Logout</Button>
+                >{locale.layouts.dashboardGuild.buttonsArea.logout}</Button>
             </ButtonsArea>
             <GuildModal />
         </SideMenuContainer>

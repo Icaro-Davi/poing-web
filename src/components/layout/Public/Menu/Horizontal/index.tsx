@@ -9,7 +9,7 @@ import { MenuContainer, MenuItem, Navbar } from "./styles";
 
 const MainLayoutHeader: React.FC = props => {
     const auth = useAuth();
-    const { locale } = useApp();
+    const { locale: { lang, layouts: { public: { menu } } } } = useApp();
     const router = useRouter();
 
     return (
@@ -18,16 +18,16 @@ const MainLayoutHeader: React.FC = props => {
                 <MenuContainer verticalAlign="flex-end">
                     <MenuItem>
                         <StyledLink
-                            href={`/${locale.lang}`}
-                            selected={router.asPath === `/${locale.lang}`}
-                            label={locale?.navbar.mainMenu.home}
+                            href={`/${lang}`}
+                            selected={router.asPath === `/${lang}`}
+                            label={menu.home}
                         />
                     </MenuItem>
                     <MenuItem>
                         <StyledLink
-                            href={`/${locale.lang}/help`}
-                            selected={router.asPath === `/${locale.lang}/help`}
-                            label={locale?.navbar.mainMenu.help}
+                            href={`/${lang}/help`}
+                            selected={router.asPath === `/${lang}/help`}
+                            label={menu.help}
                         />
                     </MenuItem>
                 </MenuContainer>
@@ -35,20 +35,20 @@ const MainLayoutHeader: React.FC = props => {
                 <MenuContainer>
                     <MenuItem>
                         <StyledLink
-                            href={`/${locale.lang}/commands`}
-                            selected={router.asPath === `/${locale.lang}/commands`}
-                            label={locale?.navbar.mainMenu.commands}
+                            href={`/${lang}/commands`}
+                            selected={router.asPath === `/${lang}/commands`}
+                            label={menu.commands}
                         />
                     </MenuItem>
                     {auth.isAuthenticated
                         ? (
                             <MenuItem>
-                                <OptionsButton localeLang={locale.lang} />
+                                <OptionsButton localeLang={lang} label={menu.optionsButton} />
                             </MenuItem>
                         )
                         : (
                             <MenuItem>
-                                <Anchor href={auth.discordAuthUrl}>{locale?.navbar.mainMenu.login}</Anchor>
+                                <Anchor href={auth.discordAuthUrl}>{menu.login}</Anchor>
                             </MenuItem>
                         )}
                 </MenuContainer>

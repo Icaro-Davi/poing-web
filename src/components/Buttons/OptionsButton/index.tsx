@@ -11,6 +11,10 @@ const ICON_SIZE = 20;
 
 interface IProps {
     localeLang: string;
+    label: {
+        dashboard: string;
+        exit: string;
+    }
 }
 
 const OptionsButton: FC<IProps> = props => {
@@ -29,10 +33,10 @@ const OptionsButton: FC<IProps> = props => {
                 </button>
                 <ul>
                     <li>
-                        <Link href={`/${props.localeLang}/dashboard/poing`}><a><IoSettingsOutline size={ICON_SIZE} />Dashboard</a></Link>
+                        <Link href={`/${props.localeLang}/dashboard/poing`}><a><IoSettingsOutline size={ICON_SIZE} />{props.label.dashboard}</a></Link>
                     </li>
                     <li>
-                        <a href='#' onClick={logOut}><IoExitOutline size={ICON_SIZE} />Sair</a>
+                        <a href='#' onClick={logOut}><IoExitOutline size={ICON_SIZE} />{props.label.exit}</a>
                     </li>
                 </ul>
             </OptionsButtonContainer>
