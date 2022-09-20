@@ -10,7 +10,14 @@ const getBotSettings = () => {
     return (guildSettings ? JSON.parse(guildSettings) : undefined) as GuildSettingsType | undefined;
 };
 
+const clean = () => {
+    Object.keys(LocalStorageKeys).forEach(key => {
+        localStorage.removeItem(LocalStorageKeys[key as LocalStorageKeys]);
+    });
+}
+
 const LocalStorage = {
+    clean,
     guild: {
         getSelectedId: getSelectedGuild,
         setSelectedId: setSelectedGuild

@@ -8,6 +8,7 @@ import BaseError from '../../utils/error/baseError';
 
 import type { IAuthContext, IAuthProvider } from './auth.interfaces';
 import type { UserType } from '../../services/discord/user/user.types';
+import LocalStorage from '../../utils/localStorage';
 
 const AuthProvider: FC<IAuthProvider> = props => {
     const { current: discordAuthUrl } = useRef(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI);
@@ -19,6 +20,7 @@ const AuthProvider: FC<IAuthProvider> = props => {
         try {
             const localeLang = getLocaleLang();
             await AuthService.logout();
+            LocalStorage.clean();
             setAuth(false);
             Router.push(`/${localeLang}`);
         } catch (error) {
