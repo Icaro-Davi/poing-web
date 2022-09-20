@@ -25,7 +25,7 @@ const DashboardGuildLayout: FC<IDashboardGuildLayout> = props => {
         <Container>
             {layout.isDesktopSize ? <SideMenu /> : <SideMenuModal />}
             <Main>
-                {store.guilds.length
+                {store.guilds.length && store.guilds.some(guild => guild.hasBot)
                     ? (
                         <>
                             {!layout.isDesktopSize && (

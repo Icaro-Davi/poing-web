@@ -12,9 +12,10 @@ class AppDispatch {
             if (guilds) {
                 dispatch({ type: 'SET_GUILDS', payload: { guilds } });
                 const lsGuildId = LocalStorage.guild.getSelectedId()
-                const selectedGuildId = (lsGuildId && guilds.find(guild => guild.id === lsGuildId)?.id) || guilds[0].id;
-                dispatch({ type: 'SET_SELECTED_GUILD', payload: { selectedGuildId } });
-                LocalStorage.guild.setSelectedId(selectedGuildId);
+                const selectedGuildId = (lsGuildId && guilds.find(guild => guild.id === lsGuildId)?.id) || guilds.find(guild => guild.hasBot)?.id;
+                if (selectedGuildId) {
+                    this.setSelectedGuildId(dispatch, selectedGuildId);
+                }
             }
         } catch (error) {
             new BaseError({

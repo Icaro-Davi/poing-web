@@ -64,11 +64,11 @@ const PoingSettingsForm: FC = () => {
     }, [store.selectedGuildId, reset]);
 
     return (
-        <LoadWrapper isLoading={!getValues()}>
+        <LoadWrapper isLoading={!Object.keys(getValues()).length}>
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
                 <Card style={{ borderColor: discordPoingColorTheme }}>
                     <Title level='2' stroke={{ strokeColor: discordPoingColorTheme }} style={{ paddingBottom: '1rem', textAlign: 'center' }}>{locale.forms.poingSettings.title}</Title>
-                    <FormElements {...{ register, formState, watch, setValue, locale }} />
+                    {!!Object.keys(getValues()).length && <FormElements {...{ register, formState, watch, setValue, locale }} />}
                     <SubmitButton label={locale.forms.poingSettings.submitButtonLabel} isLoading={isLoading} />
                 </Card>
             </form>
