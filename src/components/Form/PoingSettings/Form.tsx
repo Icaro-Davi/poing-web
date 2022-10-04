@@ -50,6 +50,7 @@ const FormElements: FC<IProps> = ({ watch, locale: { forms: { poingSettings: { f
                             value: 5,
                             message: findStringVarsAndSubstitute(field.prefix.validation.maxLength, { '{%value%}': '5', default: false }).join('')
                         },
+                        pattern: { value: /^[!@#$%&*\-_=+.:?/]{1,5}$/, message: field.prefix.validation.patternPrefix }
                     })}
                 />
             </Grid.Row>
