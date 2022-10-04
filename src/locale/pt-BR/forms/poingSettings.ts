@@ -9,7 +9,8 @@ const poingSettings = {
             label:  `Prefixo do ${BOT.name}`,
             validation: {
                 required: STATIC_VALIDATION.required,
-                maxLength: STATIC_VALIDATION.maxLength
+                maxLength: STATIC_VALIDATION.maxLength,
+                patternPrefix: 'Prefixos validos (!@#$%&*-_=+.:?)'
             }
         },
         messageEmbedHexColor: {
