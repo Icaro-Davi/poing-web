@@ -41,7 +41,7 @@ export const getAuthToken: GetCookieFunc = ctx => {
 }
 
 export const getLocaleLang: GetCookieFunc = ctx => {
-    return getCookie(CookieKeys.LOCALE_LANG, ctx);
+    return getCookie(CookieKeys.LOCALE_LANG, ctx) || 'pt-BR';
 }
 
 export const setLocaleLang = (localeLang: LocaleLang, ctx?: NextPageContext | GetServerSidePropsContext) => {
