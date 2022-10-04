@@ -16,7 +16,7 @@ const AppProvider: FC<IAppProvider> = props => {
     });
 
     const handleLoad = async () => {
-        const { isMobile } = (await import('react-device-detect'));
+        // const { isMobile } = (await import('react-device-detect'));
         const { getLocale } = (await import('../../locale'));
 
         const loadDataAndStartApp = async () => {
@@ -26,11 +26,11 @@ const AppProvider: FC<IAppProvider> = props => {
             }
             setPageLoading(true);
         }
-        isMobile ? await loadDataAndStartApp() : window.addEventListener('load', loadDataAndStartApp);
+
+        await loadDataAndStartApp();
     }
 
     useEffect(() => { handleLoad() }, []);
-
     return (
         <AppContext.Provider value={{
             store,
