@@ -1,0 +1,1 @@
+export { WelcomeMemberService } from './welcomeMember';

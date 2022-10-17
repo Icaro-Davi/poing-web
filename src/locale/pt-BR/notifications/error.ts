@@ -26,6 +26,12 @@ const Error = {
             title: 'Erro ლ(ಥ益ಥლ)',
             description: `Ocorreu um erro ao tentar atualizar as configurações do ${BOT.name}.`,
         }
+    },
+    modules: {
+        updateModuleActivity: {
+            title: 'Ativar modulo',
+            description: 'Falha ao atualizar o status do modulo'
+        }
     }
 }
 

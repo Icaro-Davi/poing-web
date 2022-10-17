@@ -25,7 +25,7 @@ const routes: RouterType[] = [
         key: "modules",
         href: "/dashboard/modules",
         icon: IoExtensionPuzzleSharp,
-        disabled: true
+        // disabled: true
     },
     // {
     //     name: "Payments",

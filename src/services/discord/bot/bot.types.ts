@@ -1,3 +1,5 @@
+import type { WelcomeModuleType } from "../modules/modules.types";
+
 export type GuildSettingsType = {
     _id: string;
     bot: {
@@ -6,8 +8,14 @@ export type GuildSettingsType = {
         messageEmbedHexColor: string;
         roles: {
             muteId: string;
-        },
-    }
+        };
+    };
+    modules: {
+        welcomeMember: {
+            isActive: boolean;
+            settings: WelcomeModuleType | string;
+        }
+    };
     createdAt: string;
     updatedAt: string;
 }
