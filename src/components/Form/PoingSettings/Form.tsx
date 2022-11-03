@@ -8,26 +8,18 @@ import { ColorPalletWrapper } from "./styled";
 
 import type { Color } from 'react-color-palette';
 import type { CSSProperties, FC } from "react";
-import type { FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
 import type { GetReference } from "../../../utils/general.types";
-import type { Locale } from "../../../locale/index.type";
 import findStringVarsAndSubstitute from "../../../utils/findStringVarsAndSubstitute";
+import { FormProps } from "../form.interface";
 
 type BotFields = GetReference<GuildSettingsType, 'bot'>;
 
 const style: CSSProperties = { width: '100%' };
 const breakpoints = { xs: 24, md: 12, lg: 8 };
 
-interface IProps {
-    formState: FormState<BotFields>;
-    register: UseFormRegister<BotFields>;
-    watch: UseFormWatch<BotFields>;
-    setValue: UseFormSetValue<BotFields>;
-    locale: Locale;
-}
 
-const FormElements: FC<IProps> = ({ watch, locale: { forms: { poingSettings: { field } } }, ...props }) => {
+const FormElements: FC<FormProps<BotFields>> = ({ watch, locale: { forms: { poingSettings: { field } } }, ...props }) => {
     const [color, setColor] = useColor('hex', watch('messageEmbedHexColor'));
     const debounce = useRef<NodeJS.Timeout>();
 

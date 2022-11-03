@@ -1,9 +1,14 @@
 import styled, { keyframes } from "styled-components";
 import Button from './Button';
+import DangerButton from './DangerButton';
 
 const ICON_BUTTON_DEFAULT_HEIGHT = '35px';
 
-export { Button, ICON_BUTTON_DEFAULT_HEIGHT };
+export {
+    Button,
+    DangerButton,
+    ICON_BUTTON_DEFAULT_HEIGHT
+};
 
 const ButtonShiningAnimation = keyframes`
     0% {
@@ -75,6 +80,7 @@ export const IconButton = styled.button<{ size?: number, hoverColor?: string, fo
     position: relative;
     transition: all .2s;
     background-color: ${props => props.hoverColor || props.theme.colors.black};
+    flex-shrink: 0;
 
     :hover{
         transform: translateY(-3px);

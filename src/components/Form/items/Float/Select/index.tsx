@@ -3,7 +3,8 @@ import { IoChevronDownOutline } from 'react-icons/io5';
 
 import { FloatComponentProps } from "../float.interface";
 import * as Float from './styled';
-import { FloatError, FloatGroup, FloatLabel } from "../styled"
+import { FloatGroup, FloatLabel } from "../styled"
+import ErrorMessage from "../../ErrorMessage";
 
 interface IProps extends FloatComponentProps {
     options: { label: string; key?: string }[];
@@ -27,7 +28,7 @@ const FloatSelect = forwardRef<HTMLSelectElement, IProps>(
                     ))}
                 </Float.FloatSelect>
                 {label && <FloatLabel error={!!props.errorMessage}>{label}</FloatLabel>}
-                {props.errorMessage && <FloatError>{props.errorMessage}</FloatError>}
+                {props.errorMessage && <ErrorMessage>{props.errorMessage}</ErrorMessage>}
             </FloatGroup>
         );
     }

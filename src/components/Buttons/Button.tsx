@@ -24,7 +24,7 @@ const DefaultButton = styled.button<Partial<PropsButtonType>>`
     overflow: hidden;
     span{
         position: relative;
-        z-index: 10;
+        z-index: 5;
         display: flex;
         align-items: center;
         justify-content: center;

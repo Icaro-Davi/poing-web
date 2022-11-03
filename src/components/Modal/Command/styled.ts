@@ -37,9 +37,11 @@ export const StyledModalCommandCardHeader = styled.nav`
 
 export const StyledModalCommandCardSection = styled.section`
     min-height: 200px;
+    max-height: 70vh;
     width: 100%;
     padding: ${PADDING} 0 0 0;
     border-top: 1px solid ${props => props.theme.colors.gray};
+    overflow: auto;
 `;
 
 export const StyledModalCommandCardFooter = styled.footer`

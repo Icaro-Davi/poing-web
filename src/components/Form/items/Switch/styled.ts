@@ -11,6 +11,7 @@ export const SWITCH_ANIMATION_DELAY = 200;
 
 const SwitchContainer = styled.div<ISwitchContainerProps>`
     user-select: none;
+    display: flex;
     ${props => {
         const SWITCH_SIZE = props.size ?? 45;
         const CIRCLE_SIZE = SWITCH_SIZE * .5;

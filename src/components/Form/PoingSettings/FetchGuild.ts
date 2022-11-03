@@ -9,27 +9,29 @@ import Notification from '../../Notification';
 type BotFields = GetReference<GuildSettingsType, 'bot'>;
 
 function fetchGuild(options: { guildId: string; fetchSettings: boolean; dispatch: UseFormReset<BotFields> }) {
-    options.fetchSettings && DiscordBotService
-        .getGuildSettingsById(options.guildId)
-        .then(guild => {
-            if (guild) {
-                LocalStorage.bot.setSettings(guild);
-                options.dispatch(guild.bot);
-            }
-        })
-        .catch(error => {
-            new BaseError({
-                origin: 'components.Form.PoingSettings.fetchGuild',
-                message: 'Error on fetch guild settings',
-                error,
-                callback({ notifications }){
-                    Notification.open({
-                        type: 'error',
-                        ...notifications.error.bot.getSettings
-                    });
+    const botSettings = LocalStorage.bot.getSettings();
+    if ((botSettings && (!botSettings?.nextFetch || botSettings.nextFetch < Date.now())) || !botSettings)
+        options.fetchSettings && DiscordBotService
+            .getGuildSettingsById(options.guildId)
+            .then(guild => {
+                if (guild) {
+                    LocalStorage.bot.setSettings(guild, { updateFetchDate: true });
+                    options.dispatch(guild.bot);
                 }
             })
-        });
+            .catch(error => {
+                new BaseError({
+                    origin: 'components.Form.PoingSettings.fetchGuild',
+                    message: 'Error on fetch guild settings',
+                    error,
+                    callback({ notifications }) {
+                        Notification.open({
+                            type: 'error',
+                            ...notifications.error.bot.getSettings
+                        });
+                    }
+                })
+            });
 }
 
 export default fetchGuild;

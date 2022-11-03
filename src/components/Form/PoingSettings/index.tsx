@@ -6,7 +6,7 @@ import LocalStorage from "../../../utils/localStorage";
 import LoadWrapper from "../../Loading/LoadWrapper";
 import fetchGuild from "./FetchGuild";
 import FormElements from "./Form";
-import SubmitButton from "./SubmitButton";
+import SubmitButton from "../items/SubmitButton";
 import Card from '../../Card';
 import DiscordBotService from "../../../services/discord/bot";
 import Notification from "../../Notification";

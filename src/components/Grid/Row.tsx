@@ -4,7 +4,7 @@ import { StyledGridRowProps } from "./grid.types";
 import { StyledGridRow } from "./styled"
 
 interface IRow extends StyledGridRowProps, React.HTMLAttributes<HTMLDivElement> {
-    children?: ReactNode;
+    children?: ReactNode[] | ReactNode;
     breakpoints?: { [Keys in breakpoints]?: number };
 }
 

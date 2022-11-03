@@ -4,7 +4,7 @@ const modules = {
         inactive: 'Módulos Inativos'
     },
     welcomeMember: {
-        title: 'Mensagem de boas vindas'
+        title: 'Mensagem de boas-vindas'
     }
 }
 export default modules;

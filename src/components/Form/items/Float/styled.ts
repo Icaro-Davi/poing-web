@@ -23,11 +23,3 @@ export const FloatLabel = styled.label<{ error: boolean }>`
     transform: translateY(${FLOAT_DEFAULT_SPACING});
     transition: 150ms ${FLOAT_CUBIC_BEZIER};
 `;
-
-export const FloatError = styled.span`
-    display: inline-block;
-    color: #FFFFFF;
-    margin-left: calc(${FLOAT_DEFAULT_SPACING} + 1px);
-    font-size: .8rem;
-    color: ${props => props.theme.colors.error};
-`;
