@@ -11,8 +11,8 @@ type VarsType = {
 * Find vars in string and substitute for react elements
 * use %any_word% for elements or %{any_text}% for substitute for a text value.
 */
-function findStringVarsAndSubstitute(text: string, vars: VarsType) {
-    const regex = /(%[\w_]+?%|{%[\w_]+%})/g;
+function findStringVarsAndSubstitute(text: string, vars: VarsType, options?: { regex: RegExp }) {
+    const regex =  options?.regex ?? /(%[\w_]+?%|{%[\w_]+%})/g;
     const splitText = text.split(regex);
 
     const elements = splitText.map((word: string | VarKeyType, index) => {
