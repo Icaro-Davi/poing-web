@@ -14,9 +14,10 @@ class DiscordUserService {
         }
     }
 
-    static async getMe(){
+    static async getMe() {
         try {
             const { data } = await DiscordRequestor.get<UserType>(`${this.basePath}/me`);
+            data.avatar = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.webp`;
             return data;
         } catch (error) {
             throw error;
