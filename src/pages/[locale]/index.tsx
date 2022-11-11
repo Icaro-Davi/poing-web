@@ -14,7 +14,7 @@ const HomePage: NextPageWithLayout = () => {
   return (
     <Grid horizontalAlign="center">
       <Grid.Row
-        verticalAlign='center'
+        verticalAlign='middle'
         breakpoints={cardsBreakpoints}
         style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
@@ -24,13 +24,12 @@ const HomePage: NextPageWithLayout = () => {
           description={welcomeCard.description}
           imageSrc="/image/pouring.png"
           imgAlt='Pouring'
-          style={{ marginBottom: '5rem' }}
           imgW={390}
           buttonsArea={<InviteBotBtn />}
         />
       </Grid.Row>
       <Grid.Row
-        verticalAlign='center'
+        verticalAlign='middle'
         breakpoints={cardsBreakpoints}
         style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
@@ -41,12 +40,11 @@ const HomePage: NextPageWithLayout = () => {
           description={botInfoCard.description}
           imageSrc="/image/rimuru_waifu.png"
           imgAlt='Pouring'
-          style={{ marginBottom: '5rem' }}
           imgW={370}
         />
       </Grid.Row>
       <Grid.Row
-        verticalAlign='center'
+        verticalAlign='middle'
         breakpoints={cardsBreakpoints}
         style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
@@ -56,7 +54,6 @@ const HomePage: NextPageWithLayout = () => {
           description={devBotCard.description}
           imageSrc="/image/slime_king.png"
           imgAlt='Pouring'
-          style={{ marginBottom: '5rem' }}
           imgH={300}
           imgW={250}
         />

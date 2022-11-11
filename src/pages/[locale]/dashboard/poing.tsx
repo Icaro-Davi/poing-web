@@ -6,7 +6,7 @@ import Grid from "../../../components/Grid";
 import { withPrivatePage } from "../../../utils/auth/authenticate";
 
 const PoingPage: NextPageWithLayout = props => (
-    <Grid verticalAlign="center" horizontalAlign="center" style={{ width: '100%', height: '100%' }}>
+    <Grid verticalAlign="middle" horizontalAlign="center" style={{ width: '100%', height: '100%' }}>
         <Grid.Row horizontalAlign="center" breakpoints={{ xs: 24 }}>
             <PoingSettingsForm />
         </Grid.Row>
