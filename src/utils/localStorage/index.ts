@@ -1,11 +1,15 @@
 import { GuildSettingsType } from "../../services/discord/bot/bot.types";
+import { GuildChannel } from "../../services/discord/guild/guild.type";
 import LocalStorageKeys from "./keys";
+import { LocalStorageFuncOptions } from "./local.types";
+
+const getNextFetchTimestamp = () => new Date().getTime() + ((1000 * 60) * 5);
 
 const setSelectedGuild = (guildId: string) => localStorage.setItem(LocalStorageKeys.SELECTED_GUILD_ID, guildId);
 const getSelectedGuild = () => localStorage.getItem(LocalStorageKeys.SELECTED_GUILD_ID) ?? getBotSettings()?._id;
 
-const setGuildSettings = (guildSettings: GuildSettingsType, options?: { updateFetchDate?: boolean }) => {
-    const nextFetch = new Date().getTime() + ((1000 * 60) * 5);
+const setGuildSettings = (guildSettings: GuildSettingsType, options?: LocalStorageFuncOptions) => {
+    const nextFetch = getNextFetchTimestamp();
     if (options?.updateFetchDate) {
         localStorage.setItem(LocalStorageKeys.GUILD_SETTINGS, JSON.stringify({ ...guildSettings, nextFetch }));
         return;
@@ -22,11 +26,32 @@ const clean = () => {
     localStorage.clear();
 }
 
+const getChannels = () => {
+    const localChannels = localStorage.getItem(LocalStorageKeys.CHANNELS);
+    if (localChannels) return JSON.parse(localChannels) as {
+        nextFetch: number;
+        list: GuildChannel[];
+    };
+};
+const setChannels = (channels: GuildChannel[], options?: LocalStorageFuncOptions) => {
+    const nextFetch = getNextFetchTimestamp();
+    if (options?.updateFetchDate) {
+        localStorage.setItem(LocalStorageKeys.CHANNELS, JSON.stringify({ nextFetch, list: channels }));
+        return;
+    }
+    const localChannels = getChannels();
+    localStorage.setItem(LocalStorageKeys.CHANNELS, JSON.stringify({
+        list: channels,
+        nextFetch: localChannels && localChannels.nextFetch < Date.now() ? nextFetch : localChannels?.nextFetch ?? nextFetch
+    }));
+};
+
 const LocalStorage = {
     clean,
     guild: {
+        getChannels, setChannels,
         getSelectedId: getSelectedGuild,
-        setSelectedId: setSelectedGuild
+        setSelectedId: setSelectedGuild,
     },
     bot: {
         setSettings: setGuildSettings,
