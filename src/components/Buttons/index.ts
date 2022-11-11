@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import Button from './Button';
 import DangerButton from './DangerButton';
 
@@ -110,4 +110,19 @@ export const IconButton = styled.button<{ size?: number, hoverColor?: string, fo
         transform: scaleX(1.6) scaleY(1.6);
         opacity: 0;
     }
+
+    ${props => props.disabled && css`
+        cursor: not-allowed;
+        background-color: #F2F2F2;
+        color: #000000;
+
+        ::after {
+            background-color: #F2F2F2;
+        }
+
+        :hover{
+            transform: none;
+        }
+
+    `}
 `;

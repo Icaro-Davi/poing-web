@@ -59,6 +59,7 @@ export const EmbedMessage = styled.article<DiscordEmbedMessageContainerProps>`
                 border-radius: 100%;
                 overflow: hidden;
                 margin-right: ${MARGIN_TOP};
+                flex-shrink: 0;
             }
             div:last-child {
                 color: ${TITLE_TEXT_COLOR};

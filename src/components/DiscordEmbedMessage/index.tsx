@@ -20,7 +20,7 @@ const CreateFields: FC<{ fields: FieldType[] }> = props => {
                 case '': currentGridCount = '1/5'; break;
                 case '1/5': currentGridCount = '5/9'; break;
                 case '5/9': currentGridCount = '9/13'; break;
-                default: currentGridCount = ''; break;
+                case '9/13': currentGridCount = '1/5'; break;
             }
             return {
                 ...field, gridColumn: currentGridCount
@@ -44,46 +44,61 @@ const CreateFields: FC<{ fields: FieldType[] }> = props => {
     )
 }
 
-const DiscordEmbedMessage: FC<ReactMDProps> = props => (
-    <EmbedMessage sideBorderColor={props.borderSideColor}>
-        <div className='container'>
-            {props.author && (
-                <div className="author">
-                    {props.author.picture && (
-                        <div className="image-author">
-                            <Img alt="Embed user author" imageSrc={props.author.picture} />
-                        </div>
-                    )}
-                    <div>{props.author.name}</div>
-                </div>
-            )}
-            {props.title && (
-                <div className="title">
-                    {props.title}
-                </div>
-            )}
-            {props.description && (
-                <div className="description">
-                    <DiscordMarkdown>{props.description}</DiscordMarkdown>
-                </div>
-            )}
-            {props.fields && (
-                <div className="fields">
-                    <CreateFields fields={props.fields} />
-                </div>
-            )}
-            {props.thumbnail && (
-                <div className="thumbnail">
-                    <Img alt="Discord User" imageSrc={props.thumbnail} />
-                </div>
-            )}
-            {props.footer && (
-                <div className="footer">
-                    {props.footer}
-                </div>
-            )}
-        </div>
-    </EmbedMessage>
-);
+
+const DiscordEmbedMessage: FC<ReactMDProps> = props => {
+    const handleImage = (textVar?: string) => {
+        if (!textVar) return;
+        if (textVar.startsWith('https')) {
+            return textVar;
+        } else {
+            return '/image/discord-user.png';
+        }
+    }
+
+    const thumbnail = handleImage(props.thumbnail);
+    const authorImage = handleImage(props.author?.picture);
+
+    return (
+        <EmbedMessage sideBorderColor={props.borderSideColor}>
+            <div className='container'>
+                {props.author && (
+                    <div className="author">
+                        {authorImage && props.author.name && (
+                            <div className="image-author">
+                                <Img alt="Embed user author" imageSrc={authorImage} />
+                            </div>
+                        )}
+                        <div>{props.author.name}</div>
+                    </div>
+                )}
+                {props.title && (
+                    <div className="title">
+                        {props.title}
+                    </div>
+                )}
+                {props.description && (
+                    <div className="description">
+                        <DiscordMarkdown>{props.description}</DiscordMarkdown>
+                    </div>
+                )}
+                {props.fields && (
+                    <div className="fields">
+                        <CreateFields fields={props.fields} />
+                    </div>
+                )}
+                {thumbnail && (
+                    <div className="thumbnail">
+                        <Img alt="Discord User" imageSrc={thumbnail} />
+                    </div>
+                )}
+                {props.footer && (
+                    <div className="footer">
+                        {props.footer}
+                    </div>
+                )}
+            </div>
+        </EmbedMessage>
+    );
+}
 
 export default DiscordEmbedMessage;

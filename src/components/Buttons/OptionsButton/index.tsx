@@ -26,7 +26,7 @@ const OptionsButton: FC<IProps> = props => {
                     <span>{user?.username}#{user?.discriminator}</span>
                     {user && <div>
                         <Image
-                            imageSrc={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp`}
+                            imageSrc={user.avatar}
                             alt={`${user.username}#${user.discriminator}`}
                         />
                     </div>}
