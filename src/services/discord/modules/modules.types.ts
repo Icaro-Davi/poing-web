@@ -1,5 +1,6 @@
 export type WelcomeModuleType = {
     _id: string;
+    __v: number;
     isMessageText: boolean;
     channelId?: string;
     messageText?: string;

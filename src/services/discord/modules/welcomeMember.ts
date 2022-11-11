@@ -25,4 +25,22 @@ export class WelcomeMemberService {
             throw error;
         }
     }
+
+    static async updateSettings({ __v, _id, ...welcomeMember }: WelcomeModuleType) {
+        try {
+            const guildId = LocalStorage.guild.getSelectedId();
+            await DiscordRequestor.put(`${this.basePath}/${guildId}`, welcomeMember);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async testWelcomeMemberMessage({ __v, _id, ...welcomeMember }: WelcomeModuleType) {
+        try {
+            const guildId = LocalStorage.guild.getSelectedId();
+            await DiscordRequestor.post(`${this.basePath}/${guildId}/test-message`, welcomeMember);
+        } catch (error) {
+            throw error;
+        }
+    }
 }
