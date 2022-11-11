@@ -16,6 +16,7 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const AutocompleteInput: ForwardRefRenderFunction<HTMLInputElement, IProps> = ({ label, errorMessage, ...props }, ref) => {
+    const id = useRef<string>(Math.random().toString(32).slice(2));
     const inputRef = useRef<HTMLInputElement>(null);
     const optionBoxRef = useRef<HTMLDivElement>(null);
     const matchRef = useRef<MatchRef>();
@@ -36,11 +37,12 @@ const AutocompleteInput: ForwardRefRenderFunction<HTMLInputElement, IProps> = ({
 
     return (
         <AutocompleteInputContainer>
-            {label && (<Label>{label}</Label>)}
+            {label && (<Label htmlFor={id.current}>{label}</Label>)}
             <div className='autocomplete-container'>
                 <Input
                     onKeyDown={e => onInputKeyDown(e, { matchRef, optionBoxRef })}
                     ref={inputRef}
+                    id={id.current}
                     {...inputElementProps}
                     {...props}
                     onBlur={e => {

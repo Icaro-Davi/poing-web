@@ -5,7 +5,22 @@ const SelectContainer = styled.div`
     width: 100%;
     position: relative;
 
-    :focus-within button, button {
+    div {
+        position: relative;
+        ::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 6px;
+            height: 6px;
+            border-right: 2px solid #000;
+            border-bottom:2px solid #000;
+        }
+    }
+
+    :focus-within input, input {
         position: relative;
         width: 100%;
         height: ${INPUT_FORM.height};
@@ -21,24 +36,12 @@ const SelectContainer = styled.div`
         outline: none;
         cursor: pointer;
 
-        ::after {
-            content: '';
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%) rotate(45deg);
-            width: 6px;
-            height: 6px;
-            border-right: 2px solid #000;
-            border-bottom:2px solid #000;
-        }
-
         :hover {
             background-color: ${props => props.theme.colors.primary};
         }
     }
 
-    :focus-within button {
+    :focus-within input {
         background-color: ${props => props.theme.colors.backgroundDarker};
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
@@ -66,6 +69,9 @@ const SelectContainer = styled.div`
             font-family: ${INPUT_FORM.font_family};
             color: #000;
             text-transform: capitalize;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             width: 100%;
             height: 30px;
             padding: 0 1rem;

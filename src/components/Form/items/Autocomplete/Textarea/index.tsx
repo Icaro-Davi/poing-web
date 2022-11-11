@@ -15,9 +15,8 @@ interface IProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     minRows?: number;
 }
 
-const id = Math.random().toString(32).slice(2);
-
 const AutocompleteTextarea: ForwardRefRenderFunction<HTMLTextAreaElement, IProps> = ({ initialValue, ...props }, ref) => {
+    const id = useRef<string>(Math.random().toString(32).slice(2));
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const autocompleteBoxRef = useRef<HTMLDivElement>(null);
     const matchRef = useRef<MatchRef | undefined>();
@@ -41,10 +40,10 @@ const AutocompleteTextarea: ForwardRefRenderFunction<HTMLTextAreaElement, IProps
 
     return (
         <TextInputContainer>
-            {props.label && (<Label htmlFor={id}>{props.label}</Label>)}
+            {props.label && (<Label htmlFor={id.current}>{props.label}</Label>)}
             <div className='autocomplete-container'>
                 <textarea
-                    id={id}
+                    id={id.current}
                     ref={textareaRef}
                     style={{ minHeight: 57 }}
                     onKeyDown={e => onInputKeyDown(e, { matchRef, optionBoxRef: autocompleteBoxRef })}

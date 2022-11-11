@@ -1,4 +1,4 @@
-import { FC, memo, RefObject, ChangeEvent, Fragment, ReactNode } from "react"
+import { FC, memo, RefObject, ChangeEvent, ReactNode } from "react"
 import { CSSProperties } from "styled-components";
 import Label from "../Label";
 import SwitchContainer from "./styled";

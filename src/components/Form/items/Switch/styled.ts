@@ -45,7 +45,7 @@ const SwitchContainer = styled.div<ISwitchContainerProps>`
             label:after {
                 content: '';
                 position: absolute;
-                z-index: 5;
+                z-index: 3;
                 border-radius: 100%;
                 left: ${BORDER}px;
                 width: ${CIRCLE_SIZE}px;

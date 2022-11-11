@@ -33,8 +33,8 @@ const FetchWelcomeMemberSettings = (options?: FetchWelcomeModuleOptions) => {
                     origin: 'src.components.Form.WelcomeMemberForm',
                     callback: locale => {
                         Notification.open({
-                            title: 'Module de boas vindas',
-                            description: 'Falha ao procurar as configurações do modulo de boas vindas.',
+                            title: locale.notifications.error.modules.getWelcomeMemberSettings.title,
+                            description: locale.notifications.error.modules.getWelcomeMemberSettings.description,
                             type: 'error'
                         });
                     },

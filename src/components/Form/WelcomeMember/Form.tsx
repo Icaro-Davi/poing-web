@@ -1,26 +1,20 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment, useState, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { useTheme } from 'styled-components';
 import { WelcomeModuleType } from '../../../services/discord/modules/modules.types';
 import Grid from '../../Grid';
-import { FormProps } from '../form.interface';
 import Switch from '../items/Switch';
 import AutocompleteTextarea from '../items/Autocomplete/Textarea';
 import AutocompleteInput from '../items/Autocomplete/Input';
 import autocompleteVars from './autocompleteVars';
 import DarkFormContainer from '../Layouts/DarkFormContainer';
 import Select from '../items/Select';
-import { Controller } from 'react-hook-form';
-import { BORDER, SPACING } from '../items/DefaultPropertyValues';
 import EmbedFieldList from './EmbedFieldList';
+import { useApp } from '../../../context/App';
+import findStringVarsAndSubstitute from '../../../utils/findStringVarsAndSubstitute';
 
 const formElementsBreakpoint = { xs: 24, md: 12 };
 export const welcomeModuleGridGutter: [number, number] = [12, 12];
-
-// On translate this array create a object with all welcomeModule vars and use them to create as key for array and translate value
-const translate = [
-    { '': 'Sem Avatar' },
-    { '{guild.picture}': 'Avatar da guild' },
-    { '{member.picture}': 'Avatar do novo membro' }
-]
 
 const autocompleteTriggerWithoutPicture = [
     {
@@ -30,63 +24,86 @@ const autocompleteTriggerWithoutPicture = [
     }
 ]
 
-const FormElements: FC<FormProps<WelcomeModuleType>> = props => {
-    const selectAuthorItems = Object.keys(translate).map(
-        (translateKey) => {
-            let [[value, label]] = Object.entries(translate[translateKey as any]);
-            return { label, value };
-        }
-    );
+const FormElements: FC<{ channels: { label: string; value: string; }[] }> = props => {
+    const { colors } = useTheme();
+    const { locale: { forms: { welcomeMember } } } = useApp();
+    const methods = useFormContext<WelcomeModuleType>();
+
+    const pictureVars = Object.entries(welcomeMember.welcomeMemberPoingVars)
+        .filter(([key, label]) => key.match(/picture/) || key === '')
+        .map(([key, value]) => ({ label: value, value: key }));
+
     return (
         <Grid>
-            <Grid.Row breakpoints={{ xs: 24 }} horizontalAlign='center'>
-                <Switch
-                    onChange={e => { props.setValue('isMessageText', e.target.checked) }}
-                    label={props.watch('isMessageText') ? 'Ativar mensagem incorporada' : 'Ativar mensagem normal'}
-                    containerStyle={{
-                        boxShadow: '1px 1px 5px #1a1a1a29',
-                        padding: SPACING.md,
-                        borderRadius: BORDER.radius,
-                        display: 'flex', flexFlow: 'column', alignItems: 'center',
-                    }}
-                />
+            <Grid.Row breakpoints={{ xs: 24 }}>
+                <Grid horizontalAlign='center' gutter={welcomeModuleGridGutter}>
+                    <Grid.Row breakpoints={{ xs: 24, md: 8, lg: 6 }}>
+                        <DarkFormContainer style={{ height: '100%' }}>
+                            <Switch
+                                defaultChecked={methods.getValues('isMessageText')}
+                                onChange={e => { methods.setValue('isMessageText', e.target.checked) }}
+                                label={methods.watch('isMessageText') ? welcomeMember.field.isMessageText.activeLabel : welcomeMember.field.isMessageText.disabledLabel}
+                                color={{ bgActive: colors.primary }}
+                                containerStyle={{
+                                    display: 'flex', flexFlow: 'column', alignItems: 'center',
+                                }}
+                            />
+                        </DarkFormContainer>
+                    </Grid.Row>
+                    <Grid.Row breakpoints={{ xs: 24, md: 8, lg: 6 }}>
+                        <DarkFormContainer
+                            style={{
+                                height: '100%',
+                                paddingLeft: welcomeModuleGridGutter[0],
+                                paddingRight: welcomeModuleGridGutter[0]
+                            }}
+                        >
+                            <Select
+                                label={welcomeMember.field.channelId.label}
+                                initialValue={props.channels.find(channel => channel.value === methods.getValues('channelId')) || props.channels[0]}
+                                options={props.channels}
+                                onSelect={(selectedValue) => {
+                                    methods.setValue('channelId', selectedValue.value, { shouldValidate: true });
+                                }}
+                            />
+                        </DarkFormContainer>
+                    </Grid.Row>
+                </Grid>
             </Grid.Row>
-            {!props.watch('isMessageText') && (
+
+            {!methods.watch('isMessageText') && (
                 <Fragment>
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }}>
                             <Grid gutter={welcomeModuleGridGutter}>
                                 <Grid.Row breakpoints={formElementsBreakpoint}>
-                                    {props.control && (
-                                        <Controller
-                                            control={props.control}
-                                            name='messageEmbed.author.picture'
-                                            render={({ field: { onChange, onBlur } }) => (
-                                                <Select
-                                                    label='Foto do autor'
-                                                    initialValue={selectAuthorItems[2]}
-                                                    options={selectAuthorItems}
-                                                    onBlur={onBlur}
-                                                    onSelect={(selectedItem) => onChange(selectedItem.value)}
-                                                />
-
-                                            )}
-                                        />
-                                    )}
-                                </Grid.Row>
-                                <Grid.Row breakpoints={formElementsBreakpoint}>
                                     <AutocompleteInput
-                                        label='Descrição do autor'
-                                        placeholder='Escreva algo...'
+                                        label={welcomeMember.field.messageEmbedAuthorName.label}
+                                        placeholder={welcomeMember.field.messageEmbedAuthorName.placeholder}
                                         triggers={autocompleteTriggerWithoutPicture}
-                                        {...props.register('messageEmbed.author.name', {
+                                        errorMessage={methods.formState.errors.messageEmbed?.author?.name?.message}
+                                        {...methods.register('messageEmbed.author.name', {
                                             maxLength: {
                                                 value: 50,
-                                                message: 'Precisa conter em até 50 caracteres.'
+                                                message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedAuthorName.validation.maxLength,
+                                                    { default: false, '{%value%}': '50' }
+                                                ).join('')
                                             }
                                         })}
                                     />
                                 </Grid.Row>
+                                {methods.getValues('messageEmbed.author.name') && (
+                                    <Grid.Row breakpoints={formElementsBreakpoint}>
+                                        <Select
+                                            label={welcomeMember.field.messageEmbedAuthorPicture.label}
+                                            initialValue={pictureVars.find(item => item.value === methods.getValues('messageEmbed.author.picture'))}
+                                            options={pictureVars}
+                                            onSelect={function (selectedValue) {
+                                                methods.setValue('messageEmbed.author.picture', selectedValue.value, { shouldValidate: true });
+                                            }}
+                                        />
+                                    </Grid.Row>
+                                )}
                             </Grid>
                         </Grid.Row>
                     </DarkFormContainer>
@@ -96,27 +113,33 @@ const FormElements: FC<FormProps<WelcomeModuleType>> = props => {
                             <Grid gutter={welcomeModuleGridGutter}>
                                 <Grid.Row breakpoints={{ xs: 24 }}>
                                     <AutocompleteInput
-                                        label='Titulo'
-                                        placeholder='Escreva um titulo legal...'
+                                        label={welcomeMember.field.messageEmbedTitle.label}
+                                        placeholder={welcomeMember.field.messageEmbedTitle.placeholder}
                                         triggers={autocompleteTriggerWithoutPicture}
-                                        {...props.register('messageEmbed.title', {
+                                        errorMessage={methods.formState.errors.messageEmbed?.title?.message}
+                                        {...methods.register('messageEmbed.title', {
                                             maxLength: {
-                                                value: 250,
-                                                message: 'Precisa conter em até 250 caracteres.'
+                                                value: 100,
+                                                message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedTitle.validation.maxLength, {
+                                                    default: false, '{%value%}': '100'
+                                                }).join('')
                                             }
                                         })}
                                     />
                                 </Grid.Row>
                                 <Grid.Row breakpoints={{ xs: 24 }}>
                                     <AutocompleteTextarea
-                                        label='Descrição'
-                                        placeholder='Escreva uma descrição legal...'
+                                        label={welcomeMember.field.messageEmbedDescription.label}
+                                        placeholder={welcomeMember.field.messageEmbedDescription.placeholder}
                                         spellCheck={false}
                                         triggers={autocompleteTriggerWithoutPicture}
-                                        {...props.register('messageEmbed.description', {
+                                        errormessage={methods.formState.errors.messageEmbed?.description?.message}
+                                        {...methods.register('messageEmbed.description', {
                                             maxLength: {
-                                                value: 250,
-                                                message: 'Precisa conter em até 250 caracteres.'
+                                                value: 300,
+                                                message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedDescription.validation.maxLength, {
+                                                    default: false, '{%value%}': '300'
+                                                }).join('')
                                             }
                                         })}
                                     />
@@ -127,30 +150,58 @@ const FormElements: FC<FormProps<WelcomeModuleType>> = props => {
 
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }}>
-                            <EmbedFieldList
+                            <EmbedFieldList />
+                        </Grid.Row>
+                    </DarkFormContainer>
 
+                    <DarkFormContainer>
+                        <Grid.Row
+                            breakpoints={{ xs: 24 }}
+                            style={{
+                                paddingLeft: welcomeModuleGridGutter[0] / 2,
+                                paddingRight: welcomeModuleGridGutter[0] / 2,
+                            }}
+                        >
+                            <AutocompleteInput
+                                label={welcomeMember.field.messageEmbedFooter.label}
+                                placeholder={welcomeMember.field.messageEmbedFooter.placeholder}
+                                triggers={autocompleteTriggerWithoutPicture}
+                                {...methods.register('messageEmbed.footer', {
+                                    maxLength: {
+                                        value: 100,
+                                        message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedFooter.validation.maxLength, {
+                                            default: false, '{%value%}': '100'
+                                        }).join(''),
+                                    }
+                                })}
                             />
                         </Grid.Row>
                     </DarkFormContainer>
+
                 </Fragment>
             )}
-            {props.watch('isMessageText') && (
+            {methods.watch('isMessageText') && (
                 <Fragment>
                     <Grid.Row breakpoints={{ xs: 24 }}>
                         <DarkFormContainer>
                             <AutocompleteTextarea
-                                label='Mensagem de boas vindas'
+                                label={welcomeMember.field.messageText.label}
+                                placeholder={welcomeMember.field.messageText.placeholder}
+                                errormessage={methods.formState.errors.messageText?.message}
+                                initialValue={methods.getValues?.('messageText') || ''}
                                 triggers={[
-                                    { list: autocompleteVars.welcomeModuleVars.listVarsValues(), name: 'poingVars', trigger: autocompleteVars.welcomeModuleVars.trigger }
+                                    {
+                                        list: autocompleteVars.welcomeModuleVars.listVarsValues(),
+                                        name: 'poingVars',
+                                        trigger: autocompleteVars.welcomeModuleVars.trigger
+                                    }
                                 ]}
-                                placeholder='Escreva com uma mensagem de boas vindas'
-                                errormessage={props.formState.errors.messageText?.message}
-                                initialValue={props.getValue?.('messageText') || ''}
-                                {...props.register('messageText', {
-                                    minLength: 0,
+                                {...methods.register('messageText', {
                                     maxLength: {
                                         value: 500,
-                                        message: 'A mensagem so pode conter até 500 caracteres.'
+                                        message: findStringVarsAndSubstitute(welcomeMember.field.messageText.validation.maxLength, {
+                                            default: false, '{%value%}': '500'
+                                        }).join('')
                                     }
                                 })}
                             />

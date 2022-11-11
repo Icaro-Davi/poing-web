@@ -1,4 +1,5 @@
 import { FC, useRef, useCallback, FocusEvent, KeyboardEvent } from 'react';
+import HTMLNativeSetValue from '../../../../utils/HTMLNativeSetValue';
 import Label from '../Label';
 import SelectContainer from './styled';
 
@@ -12,28 +13,36 @@ interface IProps {
 }
 
 const Select: FC<IProps> = ({ onBlur, onSelect, ...props }) => {
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const id = useRef<string>(Math.random().toString(32).slice(2));
+    const inputRef = useRef<HTMLInputElement>(null);
     const optionsRef = useRef<HTMLUListElement>(null);
 
     const onChangeValue = useCallback((value: SelectItem) => {
         (document.activeElement as HTMLElement).blur();
         onBlur?.();
-        (buttonRef.current as HTMLElement).innerText = value.label;
-        (buttonRef.current as HTMLButtonElement).dataset.value = value.value;
-        onSelect?.(value);
+        if (inputRef.current) {
+            HTMLNativeSetValue({
+                customEventName: 'change',
+                elementTarget: inputRef.current,
+                HTMLElementPrototype: HTMLInputElement.prototype,
+                value: value.label
+            });
+            (inputRef.current as HTMLInputElement).dataset.value = value.value;
+            onSelect?.(value);
+        }
     }, [onBlur, onSelect]);
 
-    const onFocusSelect = useCallback((event: FocusEvent<(HTMLButtonElement), globalThis.Element>) => {
+    const onFocusSelect = useCallback((event: FocusEvent<(HTMLInputElement), globalThis.Element>) => {
         event.preventDefault();
         let itemValue = {
-            label: buttonRef.current?.innerText,
-            value: buttonRef.current?.dataset.value
+            label: inputRef.current?.value,
+            value: inputRef.current?.dataset.value
         };
 
         const findElementInDepth = (elements: HTMLCollection, currentIndex: number): HTMLElement | undefined => {
             let element = (elements[currentIndex] as HTMLElement);
             if (element) {
-                if (itemValue.label === element.innerText && itemValue.value === element.dataset.value)
+                if (itemValue.value === element.dataset.value)
                     return element;
                 else
                     return elements[currentIndex + 1] ? findElementInDepth(elements, currentIndex + 1) : optionsRef.current!.firstChild as HTMLElement;;
@@ -42,7 +51,7 @@ const Select: FC<IProps> = ({ onBlur, onSelect, ...props }) => {
             }
         }
         (findElementInDepth(optionsRef.current!.children, 0) as HTMLLIElement)?.focus();
-    }, [buttonRef]);
+    }, [inputRef]);
 
     const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
         const onEvent = (cb: (element: { next: HTMLElement, previous: HTMLElement, currentElement: HTMLElement }) => void) => {
@@ -71,6 +80,7 @@ const Select: FC<IProps> = ({ onBlur, onSelect, ...props }) => {
                 break;
             case 'Enter':
                 onEvent(router => {
+                    console.log(router.currentElement)
                     let itemValue = {
                         label: router.currentElement.innerText,
                         value: (router.currentElement.dataset.value as string),
@@ -84,11 +94,21 @@ const Select: FC<IProps> = ({ onBlur, onSelect, ...props }) => {
     return (
         <SelectContainer onKeyDown={onKeyDown} >
             {props.label && (
-                <Label onClick={e => (e.currentTarget.nextElementSibling as HTMLElement).focus()} style={{ cursor: 'pointer' }}>
+                <Label htmlFor={id.current} onClick={e => (e.currentTarget.nextElementSibling as HTMLElement).focus()} style={{ cursor: 'pointer' }}>
                     {props.label}
                 </Label>
             )}
-            <button ref={buttonRef} onFocus={onFocusSelect} onClick={e => e.preventDefault()} data-value={props.initialValue?.value}>{props.initialValue?.label}</button>
+            <div>
+                <input
+                    ref={inputRef}
+                    id={id.current}
+                    onFocus={onFocusSelect}
+                    onClick={e => e.preventDefault()}
+                    data-value={props.initialValue?.value}
+                    defaultValue={props.initialValue?.label}
+                    onKeyDown={e => e.preventDefault()}
+                />
+            </div>
             <ul className='select-list' ref={optionsRef}>
                 {props.options.map((selectItem, i) => (
                     <li key={`select-item-${i}`} className='select-item' tabIndex={i} data-value={selectItem.value} onClick={() => onChangeValue(selectItem)}>{selectItem.label}</li>
