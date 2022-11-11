@@ -31,6 +31,14 @@ const Error = {
         updateModuleActivity: {
             title: 'Ativar modulo',
             description: 'Falha ao atualizar o status do modulo'
+        },
+        getWelcomeMemberSettings: {
+            title: 'Modulo de boas vindas',
+            description: 'Falha ao buscar as suas configurações do modulo.'
+        },
+        updateWelcomeMemberSettings: {
+            title: 'Module de boas vindas',
+            description: 'Falha ao atualizar as configurações do modulo.'
         }
     }
 }
