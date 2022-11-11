@@ -1,10 +1,8 @@
 import dynamic from 'next/dynamic';
 import { FC, ReactNode, memo } from "react";
-import { useEffect } from "react";
 import { IoMenuSharp } from 'react-icons/io5';
 
 import { useApp } from "../../../context/App";
-import AppDispatch from "../../../context/App/dispatch";
 import useModal from "../../../hooks/useModal";
 import { IconButton, ICON_BUTTON_DEFAULT_HEIGHT } from "../../Buttons";
 import InviteBotBtn from "../../Buttons/InviteBot";
@@ -18,9 +16,8 @@ interface IDashboardGuildLayout {
 }
 
 const DashboardGuildLayout: FC<IDashboardGuildLayout> = props => {
-    const { dispatchStore, store, layout } = useApp();
+    const { store, layout } = useApp();
     const [SideMenuModal, sideMenuModal] = useModal(LayoutDashboardSideMenuModal);
-    useEffect(() => { dispatchStore && AppDispatch.findGuildAndSave(dispatchStore) }, [dispatchStore]);
     return (
         <Container>
             {layout.isDesktopSize ? <SideMenu /> : <SideMenuModal />}
