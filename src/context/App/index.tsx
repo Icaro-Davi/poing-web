@@ -5,18 +5,23 @@ import appReducer from "./reducer";
 
 import type { IAppContext, IAppProvider } from "./app.interfaces";
 import type { Locale } from "../../locale/index.type";
+import DiscordBotService from "../../services/discord/bot";
+import AppDispatch from "./dispatch";
+import { useAuth } from "../Auth";
 
 const AppProvider: FC<IAppProvider> = props => {
     const [locale, setLocale] = useState<Locale>(props.initialState?.locale);
-    const [pageLoaded, setPageLoading] = useState(false);
+    const [loadApp, setLoadApp] = useState({ isLoading: false, isReady: false });
     const breakpoints = useMatchMedia();
+    const { isAuthenticated } = useAuth();
     const [store, dispatchStore] = useReducer(appReducer, {
         guilds: [],
         selectedGuildId: ''
     });
 
     const handleLoad = async () => {
-        // const { isMobile } = (await import('react-device-detect'));
+        if (loadApp.isLoading) return;
+        !loadApp.isReady && setLoadApp({ isLoading: true, isReady: false });
         const { getLocale } = (await import('../../locale'));
 
         const loadDataAndStartApp = async () => {
@@ -24,13 +29,19 @@ const AppProvider: FC<IAppProvider> = props => {
                 const _locale = (await getLocale()) as Locale;
                 setLocale(_locale);
             }
-            setPageLoading(true);
+            isAuthenticated
+                ? await AppDispatch.findGuildAndSave(dispatchStore)
+                    .then(async (store) => {
+                        store?.selectedGuildId && DiscordBotService.getGuildSettingsById(store.selectedGuildId);
+                        setLoadApp({ isLoading: false, isReady: true });
+                    })
+                : setLoadApp({ isLoading: false, isReady: true });
         }
-
         await loadDataAndStartApp();
     }
 
-    useEffect(() => { handleLoad() }, []);
+    useEffect(() => { handleLoad(); }, [isAuthenticated]);
+
     return (
         <AppContext.Provider value={{
             store,
@@ -41,7 +52,7 @@ const AppProvider: FC<IAppProvider> = props => {
                 isDesktopSize: breakpoints.md && breakpoints.sm
             },
         }}>
-            {pageLoaded ? props.children : ''}
+            {loadApp.isReady && props.children}
         </AppContext.Provider>
     )
 }

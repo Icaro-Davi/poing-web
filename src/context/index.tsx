@@ -20,14 +20,14 @@ interface IProviders {
 
 const Providers: React.FC<IProviders> = props => {
     return (
-        <AppProvider {...props}>
-            <AppThemeProvider>
-                <GlobalStyled />
-                <AuthProvider {...props}>
+        <AuthProvider {...props}>
+            <AppProvider {...props}>
+                <AppThemeProvider>
+                    <GlobalStyled />
                     {props.children}
-                </AuthProvider>
-            </AppThemeProvider>
-        </AppProvider>
+                </AppThemeProvider>
+            </AppProvider>
+        </AuthProvider>
     );
 }
 

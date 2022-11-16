@@ -16,6 +16,7 @@ class AppDispatch {
                 if (selectedGuildId) {
                     this.setSelectedGuildId(dispatch, selectedGuildId);
                 }
+                return { selectedGuildId };
             }
         } catch (error) {
             new BaseError({
