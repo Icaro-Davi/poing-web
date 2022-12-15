@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { removeAuthToken, getAuthToken } from '../cookies';
+import axios, { AxiosError } from 'axios';
+import { getAuthToken, removeAuthToken } from '../cookies';
 import { getAndValidateLocaleLang } from '../../locale';
 import CookieKeys from '../cookies/keys';
 
@@ -10,17 +10,25 @@ async function isAuthenticated(ctx?: NextPageContext | GetServerSidePropsContext
     const authToken = await getAuthToken(ctx);
     try {
         if (!authToken) return false;
-        if (ctx) {
-            await axios.get(`${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`, {
-                headers: { Cookie: `${CookieKeys.AUTH_TOKEN}=${authToken}` },
-                withCredentials: true
+        if (ctx && typeof window === 'undefined') {
+            const url = process.env.NODE_ENV !== 'development'
+                ? `http://${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`
+                : `http://poing-api:3001/api/auth/status`
+            await axios.get(url, {
+                headers: {
+                    'Cookie': `${CookieKeys.AUTH_TOKEN}=${authToken}`,
+                },
+                withCredentials: true,
             });
         }
         return true;
     } catch (error) {
-        removeAuthToken(ctx);
         console.error('[AUTH] Failed to authenticate');
-        console.error(error);
+        if (error instanceof AxiosError) {
+            if (error.code === '401') removeAuthToken(ctx);
+        } else {
+            console.error(error);
+        }
         return false;
     }
 }

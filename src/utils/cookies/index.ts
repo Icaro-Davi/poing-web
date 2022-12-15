@@ -27,8 +27,9 @@ export function setCookie(key: CookieKeys, value: string, options?: CookieAttr, 
     if (ctx?.req && ctx?.res) {
         const cookie = new Cookie(ctx.req, ctx.res);
         cookie.set(key, value, options);
+        return;
     }
-    jsCookie.set(key, value, options as CookieAttributes);
+    typeof window !== 'undefined' && jsCookie.set(key, value, options as CookieAttributes);
 }
 
 export function removeAuthToken(ctx?: NextPageContext | GetServerSidePropsContext) {
