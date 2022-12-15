@@ -1,35 +1,49 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 name: Production
+
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
-  checking-project:
+  build-image:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Get project ${{ github.event.repository.name }}"
+      - name: "Get project"
         uses: actions/checkout@v3
 
-      - name: Uses Node
-        uses: actions/setup-node@v3
+      - name: "Setup env file"
+        run: |
+          touch .env.local
+          echo NEXT_PUBLIC_BOT_INVITE_URL=${{ secrets.NEXT_PUBLIC_BOT_INVITE_URL }} >> .env.local
+          echo NEXT_PUBLIC_DISCORD_REDIRECT_URI=${{ secrets.NEXT_PUBLIC_DISCORD_REDIRECT_URI }} >> .env.local
+          echo NEXT_PUBLIC_DISCORD_DASHBOARD_API=${{ secrets.NEXT_PUBLIC_DISCORD_DASHBOARD_API }} >> .env.local
+          cat .env.local
+
+      - name: "Set up QEMU"
+        uses: docker/setup-qemu-action@v2
+
+      - name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@v2
+
+      - name: "Login to Docker Hub"
+        uses: docker/login-action@v2
         with:
-          node-version: 16
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: "Install Dependencies"
-        run: yarn
+      - name: "Build and push"
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: user/app:latest
 
-      - name: "Check Lint"
-        run: yarn lint
-
-      - name: "Build Project"
-        run: yarn build
-
-  build:
-    needs: checking-project
+  deploy:
+    needs: build-image
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy on server
         uses: appleboy/ssh-action@master
@@ -38,4 +52,47 @@ jobs:
           host: ${{ secrets.DOMAIN }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHPRIVATEKEY }}
-          script: sudo bash ~/PROJECTS/BASH/install-dependencies.bash && bash ~/PROJECTS/BASH/get-project-from-git.bash ${{ github.event.repository.name }} git@github.com:Icaro-Davi/poing-web.git ${{ secrets.PROJECT_ENVS }}
+          script: |
+            sudo docker compose --force-recreate --build -d && sudo docker image prund -f
+
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# name: Production
+# on:
+#   push:
+#     branches: ["main"]
+
+# jobs:
+#   checking-project:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: "Get project ${{ github.event.repository.name }}"
+#         uses: actions/checkout@v3
+
+#       - name: Uses Node
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
+
+#       - name: "Install Dependencies"
+#         run: yarn
+
+#       - name: "Check Lint"
+#         run: yarn lint
+
+#       - name: "Build Project"
+#         run: yarn build
+
+#   build:
+#     needs: checking-project
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Deploy on server
+#         uses: appleboy/ssh-action@master
+#         with:
+#           command_timeout: 60m
+#           host: ${{ secrets.DOMAIN }}
+#           username: ${{ secrets.USERNAME }}
+#           key: ${{ secrets.SSHPRIVATEKEY }}
+#           script: sudo bash ~/PROJECTS/BASH/install-dependencies.bash && bash ~/PROJECTS/BASH/get-project-from-git.bash ${{ github.event.repository.name }} git@github.com:Icaro-Davi/poing-web.git ${{ secrets.PROJECT_ENVS }}
