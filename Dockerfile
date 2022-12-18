@@ -1,7 +1,7 @@
 FROM node:alpine
 
 WORKDIR /app
-COPY ./.env.local ./.env.local
+COPY . .
 
 RUN yarn
 RUN yarn lint
