@@ -3,7 +3,7 @@ import { useApp } from "../../../context/App";
 import { WelcomeMemberService } from "../../../services/discord/modules";
 import LocalStorage from "../../../utils/localStorage";
 import ListModules from "../../List/ListModules";
-import ModulesModal, { ModulesModalRef } from '../../Modal/modules';
+import ModulesModal, { ModulesModalRef } from '../../Modal/Modules';
 
 const ModulesScreen: FC = props => {
     const { locale: { pages: { modules } } } = useApp();
