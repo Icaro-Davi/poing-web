@@ -12,7 +12,7 @@ async function isAuthenticated(ctx?: NextPageContext | GetServerSidePropsContext
         if (!authToken) return false;
         if (ctx && typeof window === 'undefined') {
             const url = process.env.NODE_ENV !== 'development'
-                ? `http://${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`
+                ? `${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`
                 : `http://poing-api:3001/api/auth/status`
             await axios.get(url, {
                 headers: {
