@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { IoFlaskSharp, IoSaveSharp } from 'react-icons/io5';
-import { cardsBreakpoints } from "../../../pages/[locale]";
+import { cardsBreakpoints } from "../../Screens/";
 import Grid from "../../Grid";
 import { ModalWrapper } from "../styled";
 import { ModuleCard, ModuleCardFooter, ModuleCardHeader, ModuleCardSection } from "./styled";
@@ -20,7 +20,7 @@ import useBotInfo, { replaceBotVarsInString } from '../../../hooks/useBotInfo';
 import { BOT } from '../../../locale/defaultBoTInfo';
 
 const handleFormData = () => {
-    const welcomeMemberSettings = LocalStorage.bot.getSettings()?.modules.welcomeMember.settings;
+    const welcomeMemberSettings = LocalStorage.bot.getSettings()?.modules.welcomeMember.settings ?? {} as WelcomeModuleType;
     if (typeof welcomeMemberSettings === 'object') return welcomeMemberSettings;
 }
 
