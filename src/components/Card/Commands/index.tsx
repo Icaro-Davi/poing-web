@@ -1,5 +1,5 @@
 import Card from "../Common";
-import { cardsBreakpoints } from "../../../pages/[locale]";
+import { cardsBreakpoints } from "../../Screens/";
 import Grid from "../../Grid"
 import Tag from "../../Tag";
 import { TagThemeType } from "../../Tag/index.types";

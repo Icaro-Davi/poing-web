@@ -9,7 +9,7 @@ export interface ModulesModalRef {
 }
 
 const ModulesModal: ForwardRefRenderFunction<ModulesModalRef> = (props, ref) => {
-    const { locale: { pages: { modules } } } = useApp();
+    const { locale: { pages: { dashboard: { modules} } } } = useApp();
     const [WelcomeMemberModal, welcomeMember] = useModal(WelcomeMemberModule, { title: modules.welcomeMember.title });
 
     useImperativeHandle(ref, () => ({

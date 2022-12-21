@@ -38,7 +38,6 @@ const authenticationHof = async (context: GetServerSidePropsContext) => {
     return { isAuth, locale }
 }
 
-
 export const withPrivatePage = (callback?: GetServerSideProps) => {
     const getServerSideProps: GetServerSideProps = async context => {
         const { isAuth, locale } = await authenticationHof(context);
