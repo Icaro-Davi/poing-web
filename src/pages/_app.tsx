@@ -1,4 +1,7 @@
+import Head from 'next/head';
+import { Fragment } from 'react';
 import Providers, { InitialStateType } from '../context';
+import { BOT } from '../locale/defaultBoTInfo';
 
 import type { AppProps } from 'next/app';
 import type { NextPageWithLayout } from '../utils/general.types';
@@ -11,9 +14,14 @@ type AppPropsWithLayout = AppProps & {
 const App = ({ Component, pageProps, initialState, ...rest }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <Providers {...pageProps}>
-      {getLayout(<Component {...pageProps} />)}
-    </Providers>
+    <Fragment>
+      <Head>
+        <title>{pageProps?.pageHead?.title ?? BOT.name}</title>
+      </Head>
+      <Providers {...pageProps}>
+        {getLayout(<Component {...pageProps} />)}
+      </Providers>
+    </Fragment>
   );
 }
 
