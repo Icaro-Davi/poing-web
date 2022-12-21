@@ -68,7 +68,12 @@ const WelcomeMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeMemberFormPro
             const botSettings = LocalStorage.bot.getSettings();
             const welcomeMemberSettings = botSettings?.modules.welcomeMember.settings;
             if (JSON.stringify(welcomeMemberSettings) === JSON.stringify(welcomeMemberFormData)) return;
-            await WelcomeMemberService.updateSettings(welcomeMemberFormData);
+
+            if (botSettings?.modules.welcomeMember.settings)
+                await WelcomeMemberService.updateSettings(welcomeMemberFormData);
+            else
+                await WelcomeMemberService.create(welcomeMemberFormData);
+
             if (botSettings?.modules) {
                 botSettings.modules.welcomeMember.settings = welcomeMemberFormData;
                 LocalStorage.bot.setSettings(botSettings);
@@ -77,7 +82,7 @@ const WelcomeMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeMemberFormPro
         } catch (error) {
             new BaseError({
                 locale,
-                message: 'Failed on update welcome module',
+                message: 'Failed on create/update welcome module',
                 origin: 'src.components.Form.WelcomeMemberForm',
                 callback: locale => {
                     Notification.open({
