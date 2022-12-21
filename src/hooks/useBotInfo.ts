@@ -28,6 +28,7 @@ function useBotInfo() {
             picture: user?.avatar,
             tagNumber: user?.discriminator,
             joinedAt: '',
+            mention: `<@${user?.id}>`
         },
         guild: {
             name: guild?.name,
