@@ -11,6 +11,18 @@ export class WelcomeMemberService {
             await DiscordRequestor.patch(`${this.basePath}/${guildId}`, null, {
                 params: { active: isActive }
             });
+            const botSettings = LocalStorage.bot.getSettings();
+            if (botSettings)
+                LocalStorage.bot.setSettings({
+                    ...botSettings,
+                    modules: {
+                        ...botSettings?.modules,
+                        welcomeMember: {
+                            ...botSettings?.modules?.welcomeMember,
+                            isActive
+                        }
+                    }
+                });
         } catch (error) {
             throw error;
         }
