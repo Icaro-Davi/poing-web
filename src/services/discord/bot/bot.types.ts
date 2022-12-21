@@ -10,10 +10,10 @@ export type GuildSettingsType = {
             muteId: string;
         };
     };
-    modules: {
-        welcomeMember: {
-            isActive: boolean;
-            settings: WelcomeModuleType | string;
+    modules?: {
+        welcomeMember?: {
+            isActive?: boolean;
+            settings?: WelcomeModuleType | string;
         }
     };
     createdAt: string;

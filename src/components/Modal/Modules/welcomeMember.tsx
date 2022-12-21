@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import moment from 'moment';
 import { IoFlaskSharp, IoSaveSharp } from 'react-icons/io5';
 import { cardsBreakpoints } from "../../Screens/";
 import Grid from "../../Grid";
@@ -20,7 +21,7 @@ import useBotInfo, { replaceBotVarsInString } from '../../../hooks/useBotInfo';
 import { BOT } from '../../../locale/defaultBoTInfo';
 
 const handleFormData = () => {
-    const welcomeMemberSettings = LocalStorage.bot.getSettings()?.modules.welcomeMember.settings ?? {} as WelcomeModuleType;
+    const welcomeMemberSettings = LocalStorage.bot.getSettings()?.modules?.welcomeMember?.settings ?? {} as WelcomeModuleType;
     if (typeof welcomeMemberSettings === 'object') return welcomeMemberSettings;
 }
 
@@ -32,10 +33,13 @@ const WelcomeMemberModule: ModalComponentWrapper<{ title: string }> = props => {
     const [formData, setFormData] = useState<WelcomeModuleType | undefined>(handleFormData());
     const botSettings = LocalStorage.bot.getSettings();
 
-    const welcomeMemberWithVars: WelcomeModuleType = formData && JSON.parse(replaceBotVarsInString(JSON.stringify(formData), { ...botInfo, bot: { ...botInfo.bot, '@menton': `@${BOT.name}` } }));
+    const welcomeMemberWithVars: WelcomeModuleType = formData && JSON.parse(replaceBotVarsInString(JSON.stringify(formData), {
+        ...botInfo,
+        bot: { ...botInfo.bot, '@menton': `@${BOT.name}` },
+    }));
 
     useEffect(() => {
-        const welcomeModule = LocalStorage.bot.getSettings()?.modules.welcomeMember;
+        const welcomeModule = LocalStorage.bot.getSettings()?.modules?.welcomeMember;
         if (typeof welcomeModule?.settings === 'string') {
             setLoad(true);
             FetchWelcomeMemberSettings({

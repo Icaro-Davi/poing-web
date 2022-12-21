@@ -66,17 +66,25 @@ const WelcomeMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeMemberFormPro
         try {
             onSubmitStart?.();
             const botSettings = LocalStorage.bot.getSettings();
-            const welcomeMemberSettings = botSettings?.modules.welcomeMember.settings;
-            if (JSON.stringify(welcomeMemberSettings) === JSON.stringify(welcomeMemberFormData)) return;
+            const welcomeMemberSettings = botSettings?.modules?.welcomeMember?.settings;
+            if (welcomeMemberSettings && JSON.stringify(welcomeMemberSettings) === JSON.stringify(welcomeMemberFormData)) return;
 
-            if (botSettings?.modules.welcomeMember.settings)
+            if (welcomeMemberSettings)
                 await WelcomeMemberService.updateSettings(welcomeMemberFormData);
             else
                 await WelcomeMemberService.create(welcomeMemberFormData);
 
-            if (botSettings?.modules) {
-                botSettings.modules.welcomeMember.settings = welcomeMemberFormData;
-                LocalStorage.bot.setSettings(botSettings);
+            if (botSettings) {
+                LocalStorage.bot.setSettings({
+                    ...botSettings,
+                    modules: {
+                        ...botSettings.modules,
+                        welcomeMember: {
+                            ...botSettings.modules?.welcomeMember,
+                            settings: welcomeMemberFormData
+                        }
+                    }
+                });
             }
             Notification.open(locale.notifications.success.modules.updateWelcomeMemberSettings);
         } catch (error) {

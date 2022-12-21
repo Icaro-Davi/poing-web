@@ -13,7 +13,7 @@ const ModulesScreen: FC = props => {
         <div style={{ display: 'flex', height: '100%' }}>
             <ListModules locale={modules} items={[
                 {
-                    isActive: guild?.modules?.welcomeMember.isActive ?? false,
+                    isActive: guild?.modules?.welcomeMember?.isActive ?? false,
                     name: modules.welcomeMember.title,
                     modal: () => modulesRef.current?.welcomeMember,
                     updateActivity: (isActive) => WelcomeMemberService.updateActivity(isActive)
