@@ -11,9 +11,7 @@ async function isAuthenticated(ctx?: NextPageContext | GetServerSidePropsContext
     try {
         if (!authToken) return false;
         if (ctx && typeof window === 'undefined') {
-            const url = process.env.NODE_ENV !== 'development'
-                ? `${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`
-                : `http://poing-api:3001/api/auth/status`
+            const url = `${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`;
             await axios.get(url, {
                 headers: {
                     'Cookie': `${CookieKeys.AUTH_TOKEN}=${authToken}`,
@@ -40,13 +38,14 @@ const authenticationHof = async (context: GetServerSidePropsContext) => {
     return { isAuth, locale }
 }
 
+
 export const withPrivatePage = (callback?: GetServerSideProps) => {
     const getServerSideProps: GetServerSideProps = async context => {
         const { isAuth, locale } = await authenticationHof(context);
         const { props, ...serverSideConf } = (callback ? await callback(context) : { props: {} }) as { [key: string]: any, props: any };
         return {
             notFound: !locale.isUrlParam || !isAuth,
-            props: { ...props, initialState: { isAuthenticated: isAuth } },
+            props: { ...props, initialState: { isAuthenticated: isAuth, localeLang: locale.lang } },
             ...serverSideConf
         }
     }
