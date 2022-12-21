@@ -19,8 +19,8 @@ const FetchWelcomeMemberSettings = (options?: FetchWelcomeModuleOptions) => {
         WelcomeMemberService.getModuleSettings()
             .then(data => {
                 const botSettings = LocalStorage.bot.getSettings();
-                if (botSettings) {
-                    botSettings!.modules.welcomeMember = data;
+                if (botSettings && botSettings.modules) {
+                    botSettings.modules.welcomeMember = data;
                     LocalStorage.bot.setSettings(botSettings);
                 }
                 options?.onFetch && options.onFetch(data);
