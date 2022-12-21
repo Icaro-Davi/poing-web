@@ -1,48 +1,31 @@
 import dynamic from 'next/dynamic';
 import { FC, ReactNode, memo } from "react";
-import { IoMenuSharp } from 'react-icons/io5';
 
-import { useApp } from "../../../context/App";
 import useModal from "../../../hooks/useModal";
-import { IconButton, ICON_BUTTON_DEFAULT_HEIGHT } from "../../Buttons";
-import InviteBotBtn from "../../Buttons/InviteBot";
-import EmptyData from "../../EmptyData";
 import { Container, Main } from "./styles";
+import LoadScreen from '../../Loading/LoadScreen';
+
+const MainContent = dynamic(
+    async () => import('./MainContent'),
+    { loading: LoadScreen }
+);
 const LayoutDashboardSideMenuModal = dynamic(() => import("../../Modal/LayoutDashboardSideMenu"));
-const SideMenu = dynamic(() => import("./SideMenu"));
+const Navbar = dynamic(async () => import('./Navbar'));
 
 interface IDashboardGuildLayout {
     children: ReactNode;
 }
 
 const DashboardGuildLayout: FC<IDashboardGuildLayout> = props => {
-    const { store, layout } = useApp();
     const [SideMenuModal, sideMenuModal] = useModal(LayoutDashboardSideMenuModal);
     return (
         <Container>
-            {layout.isDesktopSize ? <SideMenu /> : <SideMenuModal />}
+            <Navbar SideMenuModal={SideMenuModal} />
             <Main>
-                {store.guilds.length && store.guilds.some(guild => guild.hasBot)
-                    ? (
-                        <>
-                            {!layout.isDesktopSize && (
-                                <>
-                                    <IconButton onClick={sideMenuModal.open} hoverColor='#FFFFFF' style={{ marginBottom: '.5em', position: 'absolute' }}>
-                                        <IoMenuSharp color='#000000' size={20} />
-                                    </IconButton>
-                                    <div style={{ width: '100%', height: `calc(${ICON_BUTTON_DEFAULT_HEIGHT} + .5em)` }} />
-                                </>
-                            )}
-                            {props.children}
-                        </>
-                    )
-                    : (
-                        <EmptyData>
-                            <InviteBotBtn />
-                        </EmptyData>
-                    )}
+                <MainContent sideMenuModal={sideMenuModal}>
+                    {props.children}
+                </MainContent>
             </Main>
-
         </Container>
     );
 }

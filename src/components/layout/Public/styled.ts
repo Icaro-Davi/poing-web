@@ -15,11 +15,14 @@ export const Main = styled.main<{ padding?: number }>`
     overflow: auto;
     padding-top: 0;
     padding-bottom: 0;
+    display: flex;
+    flex-flow: column;
 
     ::before{
         content: '';
         display: block;
         width: 100%;
         height: ${HORIZONTAL_HEADER_HEIGHT};
+        flex-shrink: 0;
     }
 `;

@@ -1,29 +1,24 @@
 import dynamic from "next/dynamic";
-import React, { ReactNode } from "react";
-import { useApp } from "../../../context/App";
-import LoadWrapper from "../../Loading/LoadWrapper";
-import Footer from "../Footer";
+import { ReactNode, FC, memo } from "react";
 import { Container, Main } from "./styled";
-const Sidebar = dynamic(() => import("./Menu/Sidebar"), { loading: () => <LoadWrapper isLoading={true}><div style={{ width: '100%', height: 100 }} /></LoadWrapper> });
-const HorizontalMenu = dynamic(() => import("./Menu/Horizontal"), { loading: () => <LoadWrapper isLoading={true}><div style={{ width: '100%', height: 100 }} /></LoadWrapper> });
+
+const Navbar = dynamic(async () => import('./Menu'));
+const Footer = dynamic(async () => import('../Footer'));
 
 interface MainLayout {
     children: ReactNode;
 }
 
-const MainLayout: React.FC<MainLayout> = props => {
-    const { layout, locale: { layouts: {  public: { footer } } } } = useApp();
+const MainLayout: FC<MainLayout> = props => {
     return (
         <Container>
-            {layout.isDesktopSize
-                ? <HorizontalMenu />
-                : <Sidebar />}
+            <Navbar />
             <Main>
                 {props.children}
-                <Footer createdWith={footer.createdWith} createdBy={footer.createdBy} />
+                <Footer />
             </Main>
         </Container>
     );
 }
 
-export default React.memo(MainLayout);
+export default memo(MainLayout);

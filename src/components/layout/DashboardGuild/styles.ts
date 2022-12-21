@@ -13,4 +13,7 @@ export const Main = styled.main`
     padding-bottom: 0;
     flex: 1;
     overflow: hidden;
+
+    display: flex;
+    flex-flow: column;
 `;
