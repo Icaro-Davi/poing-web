@@ -4,7 +4,6 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useApp } from "../../../context/App";
 import LocalStorage from "../../../utils/localStorage";
 import LoadWrapper from "../../Loading/LoadWrapper";
-import fetchGuild from "./FetchGuild";
 import FormElements from "./Form";
 import SubmitButton from "../items/SubmitButton";
 import Card from '../../Card';
@@ -55,13 +54,7 @@ const PoingSettingsForm: FC = () => {
         }
     }
 
-    useEffect(() => {
-        fetchGuild({
-            fetchSettings: true,
-            guildId: store.selectedGuildId,
-            dispatch: reset,
-        });
-    }, [store.selectedGuildId, reset]);
+    useEffect(() => { reset(LocalStorage.bot.getSettings()?.bot) }, [store.selectedGuildId, reset]);
 
     return (
         <LoadWrapper isLoading={!Object.keys(getValues()).length}>

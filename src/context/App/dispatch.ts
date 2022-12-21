@@ -4,6 +4,7 @@ import Notification from "../../components/Notification";
 import BaseError from "../../utils/error/baseError";
 
 import type { AppDispatchStore } from "./app.types";
+import fetchGuild from "./FetchGuild";
 
 class AppDispatch {
     static async findGuildAndSave(dispatch: AppDispatchStore) {
@@ -34,6 +35,7 @@ class AppDispatch {
     }
 
     static async setSelectedGuildId(dispatch: AppDispatchStore, selectedGuildId: string) {
+        await fetchGuild({ fetchSettings: true, guildId: selectedGuildId });
         dispatch({ type: 'SET_SELECTED_GUILD', payload: { selectedGuildId } });
         LocalStorage.guild.setSelectedId(selectedGuildId);
     }
