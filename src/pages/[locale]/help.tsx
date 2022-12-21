@@ -1,44 +1,22 @@
-import { Fragment } from "react";
-import { cardsBreakpoints } from ".";
-import { ButtonShining } from "../../components/Buttons";
-import Card from "../../components/Card";
-import Grid from "../../components/Grid";
+import dynamic from 'next/dynamic';
 import handleGetLayout from "../../components/layout/handleGetLayout";
 import PublicLayout from "../../components/layout/Public";
-import { useApp } from "../../context/App";
 import { withPublicPage } from "../../utils/auth/authenticate";
 import { NextPageWithLayout } from "../../utils/general.types";
+import LoadScreen from '../../components/Loading/LoadScreen';
+import PageMiddleware from '../../utils/auth/middleware';
+import LocalePageMiddleware from '../../utils/auth/middleware/locale.middleware';
 
-const HelpPage: NextPageWithLayout = props => {
-    const { locale: { pages: { root: { help: { helpCard } } } } } = useApp();
-    return (
-        <Grid horizontalAlign="center">
-            <Grid.Row
-                verticalAlign="middle"
-                breakpoints={cardsBreakpoints}
-                style={{ minHeight: 'calc(100vh - 10rem)' }}
-            >
-                <Card
-                    type="four"
-                    title={helpCard.title}
-                    description={helpCard.description}
-                    imageSrc="/image/rimuru_question.png"
-                    imgAlt='Slime Rimuru Tempest'
-                    imgH={360}
-                    imgW={200}
-                    buttonsArea={
-                        <Fragment>
-                            <ButtonShining style={{ marginTop: '0.5rem' }}>{helpCard.discordButton}</ButtonShining>
-                        </Fragment>
-                    }
-                />
-            </Grid.Row>
-        </Grid>
-    );
-}
+const HelpScreen = dynamic(
+    async () => import('../../components/Screens/help'),
+    { loading: LoadScreen }
+)
+
+const HelpPage: NextPageWithLayout = props => <HelpScreen {...props} />;
 
 HelpPage.getLayout = handleGetLayout(PublicLayout);
-
-export const getServerSideProps = withPublicPage();
+export const getServerSideProps = withPublicPage(PageMiddleware([
+    LocalePageMiddleware(locale => ({ pageHead: locale.pages.root.help.head }))
+]));
 
 export default HelpPage;

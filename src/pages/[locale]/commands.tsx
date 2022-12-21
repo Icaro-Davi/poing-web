@@ -1,72 +1,22 @@
-import { useRouter } from "next/router";
-import { Fragment, useEffect, useRef } from "react";
-import CommandsCard from "../../components/Card/Commands";
-import Grid from "../../components/Grid";
+import dynamic from 'next/dynamic';
 import handleGetLayout from "../../components/layout/handleGetLayout";
 import PublicLayout from "../../components/layout/Public";
-import ModalCommandCard from "../../components/Modal/Command";
-import { useApp } from "../../context/App";
-import useModal from "../../hooks/useModal";
-import { Locale } from "../../locale/index.type";
 import { withPublicPage } from "../../utils/auth/authenticate";
-import { NextPageWithLayout, PickInside } from "../../utils/general.types";
+import { NextPageWithLayout } from "../../utils/general.types";
+import LoadScreen from '../../components/Loading/LoadScreen';
+import PageMiddleware from '../../utils/auth/middleware';
+import LocalePageMiddleware from '../../utils/auth/middleware/locale.middleware';
 
-type Command = PickInside<Locale, 'commands'>;
+const CommandScreen = dynamic(
+    async () => import('../../components/Screens/commands'),
+    { loading: LoadScreen }
+);
 
-const ReduceLocale = (locale: Locale) => locale.commands.reduce((prev, current) => {
-    if (prev[current.category]) {
-        prev[current.category].push(current);
-    } else {
-        prev[current.category] = [current];
-    }
-    return prev;
-}, {} as { [k: string]: Command[] });
-
-const CommandPage: NextPageWithLayout = props => {
-    const { query } = useRouter();
-    const { locale } = useApp();
-    const [CommandModal, modal] = useModal(ModalCommandCard);
-    const commandsRef = useRef(Object.entries(ReduceLocale(locale)));
-
-    useEffect(() => {
-        const openCommandModalByQueryString = () => {
-            if (!query) return;
-            const commandByCategoryIndex = commandsRef.current.findIndex(([category, _]) => category.toLowerCase() === `${query.category}`.toLowerCase());
-            if (commandByCategoryIndex > -1) {
-                const command = commandsRef.current[commandByCategoryIndex][1].find(command => command.name === query.command);
-                command && (() => {
-                    modal.setContent({ title: command.name, command });
-                    modal.open();
-                })();
-            }
-        }
-        openCommandModalByQueryString();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return (
-        <Fragment>
-            <Grid horizontalAlign="center">
-                {commandsRef.current.map((commandsByCategory, index) => (
-                    <CommandsCard
-                        tagTheme="admin"
-                        key={`${[commandsByCategory[0]]}-${index}`}
-                        title={commandsByCategory[0]}
-                        commands={commandsByCategory[1]}
-                        openModal={(content) => {
-                            modal.setContent(content);
-                            modal.open();
-                        }}
-                    />
-                ))}
-            </Grid>
-            <CommandModal />
-        </Fragment>
-    );
-}
+const CommandPage: NextPageWithLayout = props => <CommandScreen {...props} />;
 
 CommandPage.getLayout = handleGetLayout(PublicLayout);
-
-export const getServerSideProps = withPublicPage();
+export const getServerSideProps = withPublicPage(PageMiddleware([
+    LocalePageMiddleware(locale => ({ pageHead: locale.pages.root.commands.head }))
+]));
 
 export default CommandPage;
