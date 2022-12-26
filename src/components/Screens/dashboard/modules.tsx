@@ -11,7 +11,7 @@ const ModulesScreen: FC = props => {
     const guild = LocalStorage.bot.getSettings();
     return (
         <div style={{ display: 'flex', height: '100%' }}>
-            <ListModules locale={modules} items={[
+            <ListModules guildId={guild?._id ?? 'module-screen-'} locale={modules} items={[
                 {
                     isActive: guild?.modules?.welcomeMember?.isActive ?? false,
                     name: modules.welcomeMember.title,

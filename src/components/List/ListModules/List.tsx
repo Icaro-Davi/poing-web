@@ -13,7 +13,7 @@ export type ModuleItem = {
     updateActivity: (isChecked: boolean) => Promise<any> | void;
 };
 
-const ListModules: FC<{ modules: ModuleItem[], forceUpdate: () => void }> = props => (
+const ListModules: FC<{ modules: ModuleItem[], forceUpdate: () => void, guildId: string }> = props => (
     <Fragment>
         {props.modules.map((item, i) => (
             <ListItem key={`list-module-${item.name}`} isActive={item.isActive} onClick={item.isActive ? () => item.modal()?.open() : undefined}>

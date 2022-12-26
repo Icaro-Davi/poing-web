@@ -7,6 +7,7 @@ import Modules from './List';
 
 interface IListModulesProps {
     items: ModuleItem[];
+    guildId: string;
     locale: {
         label: {
             active: string;
@@ -33,13 +34,13 @@ const ListModules: FC<IListModulesProps> = props => {
                 {!!modules.active.length && (
                     <Fragment>
                         <Title level='2' stroke={{ strokeColor: '#000' }}>{props.locale.label.active}</Title>
-                        <Modules modules={modules.active.sort(orderAlphabetically)} forceUpdate={() => forceUpdate(update => !update)} />
+                        <Modules guildId={props.guildId} modules={modules.active.sort(orderAlphabetically)} forceUpdate={() => forceUpdate(update => !update)} />
                     </Fragment>
                 )}
                 {!!modules.inactive.length && (
                     <Fragment>
                         <Title level='2' stroke={{ strokeColor: '#000' }}>{props.locale.label.inactive}</Title>
-                        <Modules modules={modules.inactive.sort(orderAlphabetically)} forceUpdate={() => forceUpdate(update => !update)} />
+                        <Modules guildId={props.guildId} modules={modules.inactive.sort(orderAlphabetically)} forceUpdate={() => forceUpdate(update => !update)} />
                     </Fragment>
                 )}
             </ListContainer>
