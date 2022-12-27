@@ -17,7 +17,8 @@ const welcomeMemberForm = {
             label: 'Mensagem de boas vindas',
             placeholder: 'Escreva com uma mensagem de boas vindas',
             validation: {
-                maxLength: STATIC_VALIDATION.maxLength
+                maxLength: STATIC_VALIDATION.maxLength,
+                required: STATIC_VALIDATION.required
             }
         },
         messageEmbedAuthorPicture: {
@@ -41,7 +42,8 @@ const welcomeMemberForm = {
             label: 'Descrição',
             placeholder: 'Escreva uma descrição legal...',
             validation: {
-                maxLength: STATIC_VALIDATION.maxLength
+                maxLength: STATIC_VALIDATION.maxLength,
+                required: STATIC_VALIDATION.required
             }
         },
         messageEmbedFieldInline: {

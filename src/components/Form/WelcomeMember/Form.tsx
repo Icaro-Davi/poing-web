@@ -33,6 +33,16 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
         .filter(([key, label]) => key.match(/picture/) || key === '')
         .map(([key, value]) => ({ label: value, value: key }));
 
+    useEffect(() => {
+        if (methods.getValues('isMessageText')){
+            methods.unregister('messageEmbed.description');
+            methods.register('messageText');
+        }else{
+            methods.register('messageEmbed.description');
+            methods.unregister('messageText');
+        }
+    }, [methods.getValues('isMessageText')]);
+
     return (
         <Grid>
             <Grid.Row breakpoints={{ xs: 24 }}>
@@ -135,6 +145,10 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errormessage={methods.formState.errors.messageEmbed?.description?.message}
                                         {...methods.register('messageEmbed.description', {
+                                            required: {
+                                                value: !methods.getValues('isMessageText'),
+                                                message: welcomeMember.field.messageEmbedDescription.validation.required
+                                            },
                                             maxLength: {
                                                 value: 300,
                                                 message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedDescription.validation.maxLength, {
@@ -197,6 +211,10 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                     }
                                 ]}
                                 {...methods.register('messageText', {
+                                    required: {
+                                        value: true,
+                                        message: welcomeMember.field.messageText.validation.required
+                                    },
                                     maxLength: {
                                         value: 500,
                                         message: findStringVarsAndSubstitute(welcomeMember.field.messageText.validation.maxLength, {
