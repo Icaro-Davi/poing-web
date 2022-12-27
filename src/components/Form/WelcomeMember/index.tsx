@@ -28,6 +28,16 @@ const handleChannels = (channels?: GuildChannel[]) => channels
     ?.filter(channel => channel.type === 'GUILD_TEXT')
     .map(channel => ({ label: `# ${channel.name}` || '', value: channel.id })) ?? [];
 
+const checkMessageTextIsActiveAndFilterModuleSettings = (welcomeModuleSettings: WelcomeModuleType) => {
+    if (welcomeModuleSettings.isMessageText) {
+        const { messageEmbed, ...settings } = welcomeModuleSettings;
+        return settings;
+    } else {
+        const { messageText, ...settings } = welcomeModuleSettings;
+        return settings;
+    }
+}
+
 const WelcomeMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeMemberFormProps> = ({ onSubmitEnd, onChangeFields, onSubmitStart, ...props }, ref) => {
     const { locale } = useApp();
     const [channels, setChannels] = useState<{ label: string; value: string }[]>(handleChannels(LocalStorage.guild.getChannels()?.list));
@@ -40,21 +50,30 @@ const WelcomeMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeMemberFormPro
     const getValues = methods.getValues;
 
     const testWelcomeMember = async () => {
-        if (Object.keys(methods.formState.errors).length) {
-            Notification.open({
-                type: 'warning', ...locale.notifications.warning.modules.welcomeMemberTestSettings
-            });
-            return;
-        }
-        const welcomeMemberSettings = {
-            ...methods.getValues(),
-            messageEmbed: {
-                ...methods.getValues().messageEmbed,
-                color: LocalStorage.bot.getSettings()?.bot.messageEmbedHexColor
+        const notificationMessage = { ...locale.notifications.warning.modules.welcomeMemberTestSettings }
+        try {
+            methods.trigger();
+            if (Object.keys(methods.formState.errors).length) {
+                Notification.open({ type: 'warning', ...notificationMessage });
+                return;
             }
+            const welcomeMemberSettings = {
+                ...methods.getValues(),
+                botSettings: {
+                    messageColor: LocalStorage.bot.getSettings()?.bot.messageEmbedHexColor
+                },
+                messageEmbed: {
+                    ...methods.getValues().messageEmbed,
+                }
+            }
+
+            const welcomeMemberWithVars: WelcomeModuleType = JSON.parse(replaceBotVarsInString(JSON.stringify(welcomeMemberSettings), botInfo));
+            await WelcomeMemberService.testWelcomeMemberMessage(
+                checkMessageTextIsActiveAndFilterModuleSettings(welcomeMemberWithVars)
+            );
+        } catch (error) {
+            Notification.open({ type: 'error', ...notificationMessage });
         }
-        const welcomeMemberWithVars = JSON.parse(replaceBotVarsInString(JSON.stringify(welcomeMemberSettings), botInfo));
-        await WelcomeMemberService.testWelcomeMemberMessage(welcomeMemberWithVars);
     }
 
     useImperativeHandle(ref, () => ({
@@ -65,6 +84,7 @@ const WelcomeMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeMemberFormPro
     const onSubmit: SubmitHandler<WelcomeModuleType> = async (welcomeMemberFormData, e) => {
         try {
             onSubmitStart?.();
+            welcomeMemberFormData = checkMessageTextIsActiveAndFilterModuleSettings(welcomeMemberFormData);
             const botSettings = LocalStorage.bot.getSettings();
             const welcomeMemberSettings = botSettings?.modules?.welcomeMember?.settings;
             if (welcomeMemberSettings && JSON.stringify(welcomeMemberSettings) === JSON.stringify(welcomeMemberFormData)) return;
