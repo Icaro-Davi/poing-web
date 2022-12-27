@@ -33,15 +33,20 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
         .filter(([key, label]) => key.match(/picture/) || key === '')
         .map(([key, value]) => ({ label: value, value: key }));
 
+    const getValues = methods.getValues;
+    const unregister = methods.unregister;
+    const register = methods.register;
+    const isMessageText = getValues('isMessageText');
+
     useEffect(() => {
-        if (methods.getValues('isMessageText')){
-            methods.unregister('messageEmbed.description');
-            methods.register('messageText');
-        }else{
-            methods.register('messageEmbed.description');
-            methods.unregister('messageText');
+        if (isMessageText) {
+            unregister('messageEmbed.description');
+            register('messageText');
+        } else {
+            register('messageEmbed.description');
+            unregister('messageText');
         }
-    }, [methods.getValues('isMessageText')]);
+    }, [isMessageText, getValues, unregister, register]);
 
     return (
         <Grid>
@@ -50,7 +55,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                     <Grid.Row breakpoints={{ xs: 24, md: 8, lg: 6 }}>
                         <DarkFormContainer style={{ height: '100%' }}>
                             <Switch
-                                defaultChecked={methods.getValues('isMessageText')}
+                                defaultChecked={isMessageText}
                                 onChange={e => { methods.setValue('isMessageText', e.target.checked) }}
                                 label={methods.watch('isMessageText') ? welcomeMember.field.isMessageText.activeLabel : welcomeMember.field.isMessageText.disabledLabel}
                                 color={{ bgActive: colors.primary }}
@@ -70,7 +75,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                         >
                             <Select
                                 label={welcomeMember.field.channelId.label}
-                                initialValue={props.channels.find(channel => channel.value === methods.getValues('channelId')) || props.channels[0]}
+                                initialValue={props.channels.find(channel => channel.value === getValues('channelId')) || props.channels[0]}
                                 options={props.channels}
                                 onSelect={(selectedValue) => {
                                     methods.setValue('channelId', selectedValue.value, { shouldValidate: true });
@@ -102,11 +107,11 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                         })}
                                     />
                                 </Grid.Row>
-                                {methods.getValues('messageEmbed.author.name') && (
+                                {getValues('messageEmbed.author.name') && (
                                     <Grid.Row breakpoints={formElementsBreakpoint}>
                                         <Select
                                             label={welcomeMember.field.messageEmbedAuthorPicture.label}
-                                            initialValue={pictureVars.find(item => item.value === methods.getValues('messageEmbed.author.picture'))}
+                                            initialValue={pictureVars.find(item => item.value === getValues('messageEmbed.author.picture'))}
                                             options={pictureVars}
                                             onSelect={function (selectedValue) {
                                                 methods.setValue('messageEmbed.author.picture', selectedValue.value, { shouldValidate: true });
@@ -146,7 +151,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                         errormessage={methods.formState.errors.messageEmbed?.description?.message}
                                         {...methods.register('messageEmbed.description', {
                                             required: {
-                                                value: !methods.getValues('isMessageText'),
+                                                value: !isMessageText,
                                                 message: welcomeMember.field.messageEmbedDescription.validation.required
                                             },
                                             maxLength: {
@@ -202,7 +207,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                 label={welcomeMember.field.messageText.label}
                                 placeholder={welcomeMember.field.messageText.placeholder}
                                 errormessage={methods.formState.errors.messageText?.message}
-                                initialValue={methods.getValues?.('messageText') || ''}
+                                initialValue={getValues?.('messageText') || ''}
                                 triggers={[
                                     {
                                         list: autocompleteVars.welcomeModuleVars.listVarsValues(),
