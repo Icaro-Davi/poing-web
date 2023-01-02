@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const localeLang = getLocaleLang(ctx);
     return {
         redirect: {
-            permanent: false,
+            permanent: true,
             destination:  `${localeLang}/`
         },
         props: {}

@@ -17,6 +17,9 @@ const App = ({ Component, pageProps, initialState, ...rest }: AppPropsWithLayout
     <Fragment>
       <Head>
         <title>{pageProps?.pageHead?.title ?? BOT.name}</title>
+        {pageProps?.pageHead?.description && (
+          <meta name="description" content={pageProps.pageHead.description}></meta>
+        )}
       </Head>
       <Providers {...pageProps}>
         {getLayout(<Component {...pageProps} />)}

@@ -16,7 +16,7 @@ const ModulesPage: NextPageWithLayout = props => <ModulesScreen {...props} />
 
 ModulesPage.getLayout = handleGetLayout(DashboardGuildLayout);
 export const getServerSideProps = withPrivatePage(PageMiddleware([
-    LocalePageMiddleware(locale => ({ pageHead: locale.pages.dashboard.modules.welcomeMember.head })),
+    LocalePageMiddleware(locale => ({ pageHead: locale.pages.dashboard.modules.head })),
 ]));
 
 export default ModulesPage;
