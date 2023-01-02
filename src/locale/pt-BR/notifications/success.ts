@@ -6,9 +6,9 @@ const success = {
         }
     },
     modules: {
-        updateWelcomeMemberSettings: {
-            title: 'AVISO...',
-            description: '😎 Você foi avisado :v. Sorry não resisti, as suas configurações foram salvas.'
+        updateMemberOrLeaveModuleSettings: {
+            title: "Sucesso (●'◡'●)",
+            description: 'As suas configurações foram salvas'
         }
     }
 }

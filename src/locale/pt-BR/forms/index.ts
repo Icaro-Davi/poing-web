@@ -1,9 +1,9 @@
 import poingSettings from "./poingSettings";
-import welcomeMember from "./welcomeMember";
+import welcomeOrLeaveMember from "./welcomeOrLeaveMember";
 
 const forms = {
     poingSettings,
-    welcomeMember
+    welcomeOrLeaveMember
 }
 
 export default forms;

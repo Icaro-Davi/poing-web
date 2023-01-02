@@ -1,4 +1,4 @@
-import { GuildSettingsType } from "../../services/discord/bot/bot.types";
+import { GuildSettingsType, ModulesType } from "../../services/discord/bot/bot.types";
 import { GuildChannel } from "../../services/discord/guild/guild.type";
 import LocalStorageKeys from "./keys";
 import { LocalStorageFuncOptions } from "./local.types";
@@ -46,12 +46,28 @@ const setChannels = (channels: GuildChannel[], options?: LocalStorageFuncOptions
     }));
 };
 
+function setModule<K extends keyof ModulesType>(moduleType: K, moduleSettings: ModulesType[K]){
+    const botSettings = getBotSettings();
+    if (botSettings)
+        setGuildSettings({
+            ...botSettings,
+            modules: {
+                ...botSettings?.modules,
+                [moduleType]: {
+                    ...botSettings?.modules?.[moduleType],
+                    ...moduleSettings
+                }
+            }
+        });
+}
+
 const LocalStorage = {
     clean,
     guild: {
         getChannels, setChannels,
         getSelectedId: getSelectedGuild,
         setSelectedId: setSelectedGuild,
+        setModule
     },
     bot: {
         setSettings: setGuildSettings,

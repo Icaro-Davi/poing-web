@@ -1,7 +1,7 @@
-import { FC, Fragment, useState, useEffect } from 'react';
+import { FC, Fragment, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTheme } from 'styled-components';
-import { WelcomeModuleType } from '../../../services/discord/modules/modules.types';
+import { WelcomeOrLeaveMemberType } from '../../../services/discord/modules/modules.types';
 import Grid from '../../Grid';
 import Switch from '../items/Switch';
 import AutocompleteTextarea from '../items/Autocomplete/Textarea';
@@ -14,50 +14,49 @@ import { useApp } from '../../../context/App';
 import findStringVarsAndSubstitute from '../../../utils/findStringVarsAndSubstitute';
 
 const formElementsBreakpoint = { xs: 24, md: 12 };
-export const welcomeModuleGridGutter: [number, number] = [12, 12];
+export const gridGutter: [number, number] = [12, 12];
 
 const autocompleteTriggerWithoutPicture = [
     {
         name: 'poingVars',
-        list: autocompleteVars.welcomeModuleVars.listVarsValues({ withoutPictures: true }),
-        trigger: autocompleteVars.welcomeModuleVars.trigger
+        list: autocompleteVars.poingTextVars.listVarsValues({ withoutPictures: true }),
+        trigger: autocompleteVars.poingTextVars.trigger
     }
 ]
 
 const FormElements: FC<{ channels: { label: string; value: string; }[] }> = props => {
     const { colors } = useTheme();
-    const { locale: { forms: { welcomeMember } } } = useApp();
-    const methods = useFormContext<WelcomeModuleType>();
+    const { locale: { forms: { welcomeOrLeaveMember } } } = useApp();
+    const methods = useFormContext<WelcomeOrLeaveMemberType>();
 
-    const pictureVars = Object.entries(welcomeMember.welcomeMemberPoingVars)
+    const pictureVars = Object.entries(welcomeOrLeaveMember.poingTextVars)
         .filter(([key, label]) => key.match(/picture/) || key === '')
         .map(([key, value]) => ({ label: value, value: key }));
 
     const getValues = methods.getValues;
-    const unregister = methods.unregister;
     const register = methods.register;
     const isMessageText = getValues('isMessageText');
 
     useEffect(() => {
         if (isMessageText) {
-            unregister('messageEmbed.description');
+            register('messageEmbed.description', { required: false });
             register('messageText');
         } else {
             register('messageEmbed.description');
-            unregister('messageText');
+            register('messageText', { required: false });
         }
-    }, [isMessageText, getValues, unregister, register]);
+    }, [isMessageText, getValues, register]);
 
     return (
         <Grid>
             <Grid.Row breakpoints={{ xs: 24 }}>
-                <Grid horizontalAlign='center' gutter={welcomeModuleGridGutter}>
+                <Grid horizontalAlign='center' gutter={gridGutter}>
                     <Grid.Row breakpoints={{ xs: 24, md: 8, lg: 6 }}>
                         <DarkFormContainer style={{ height: '100%' }}>
                             <Switch
                                 defaultChecked={isMessageText}
                                 onChange={e => { methods.setValue('isMessageText', e.target.checked) }}
-                                label={methods.watch('isMessageText') ? welcomeMember.field.isMessageText.activeLabel : welcomeMember.field.isMessageText.disabledLabel}
+                                label={methods.watch('isMessageText') ? welcomeOrLeaveMember.field.isMessageText.activeLabel : welcomeOrLeaveMember.field.isMessageText.disabledLabel}
                                 color={{ bgActive: colors.primary }}
                                 containerStyle={{
                                     display: 'flex', flexFlow: 'column', alignItems: 'center',
@@ -69,12 +68,12 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                         <DarkFormContainer
                             style={{
                                 height: '100%',
-                                paddingLeft: welcomeModuleGridGutter[0],
-                                paddingRight: welcomeModuleGridGutter[0]
+                                paddingLeft: gridGutter[0],
+                                paddingRight: gridGutter[0]
                             }}
                         >
                             <Select
-                                label={welcomeMember.field.channelId.label}
+                                label={welcomeOrLeaveMember.field.channelId.label}
                                 initialValue={props.channels.find(channel => channel.value === getValues('channelId')) || props.channels[0]}
                                 options={props.channels}
                                 onSelect={(selectedValue) => {
@@ -90,17 +89,17 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                 <Fragment>
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }}>
-                            <Grid gutter={welcomeModuleGridGutter}>
+                            <Grid gutter={gridGutter}>
                                 <Grid.Row breakpoints={formElementsBreakpoint}>
                                     <AutocompleteInput
-                                        label={welcomeMember.field.messageEmbedAuthorName.label}
-                                        placeholder={welcomeMember.field.messageEmbedAuthorName.placeholder}
+                                        label={welcomeOrLeaveMember.field.messageEmbedAuthorName.label}
+                                        placeholder={welcomeOrLeaveMember.field.messageEmbedAuthorName.placeholder}
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errorMessage={methods.formState.errors.messageEmbed?.author?.name?.message}
                                         {...methods.register('messageEmbed.author.name', {
                                             maxLength: {
                                                 value: 50,
-                                                message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedAuthorName.validation.maxLength,
+                                                message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedAuthorName.validation.maxLength,
                                                     { default: false, '{%value%}': '50' }
                                                 ).join('')
                                             }
@@ -110,7 +109,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                 {getValues('messageEmbed.author.name') && (
                                     <Grid.Row breakpoints={formElementsBreakpoint}>
                                         <Select
-                                            label={welcomeMember.field.messageEmbedAuthorPicture.label}
+                                            label={welcomeOrLeaveMember.field.messageEmbedAuthorPicture.label}
                                             initialValue={pictureVars.find(item => item.value === getValues('messageEmbed.author.picture'))}
                                             options={pictureVars}
                                             onSelect={function (selectedValue) {
@@ -125,17 +124,17 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
 
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }} >
-                            <Grid gutter={welcomeModuleGridGutter}>
+                            <Grid gutter={gridGutter}>
                                 <Grid.Row breakpoints={{ xs: 24 }}>
                                     <AutocompleteInput
-                                        label={welcomeMember.field.messageEmbedTitle.label}
-                                        placeholder={welcomeMember.field.messageEmbedTitle.placeholder}
+                                        label={welcomeOrLeaveMember.field.messageEmbedTitle.label}
+                                        placeholder={welcomeOrLeaveMember.field.messageEmbedTitle.placeholder}
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errorMessage={methods.formState.errors.messageEmbed?.title?.message}
                                         {...methods.register('messageEmbed.title', {
                                             maxLength: {
                                                 value: 100,
-                                                message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedTitle.validation.maxLength, {
+                                                message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedTitle.validation.maxLength, {
                                                     default: false, '{%value%}': '100'
                                                 }).join('')
                                             }
@@ -144,19 +143,19 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                 </Grid.Row>
                                 <Grid.Row breakpoints={{ xs: 24 }}>
                                     <AutocompleteTextarea
-                                        label={welcomeMember.field.messageEmbedDescription.label}
-                                        placeholder={welcomeMember.field.messageEmbedDescription.placeholder}
+                                        label={welcomeOrLeaveMember.field.messageEmbedDescription.label}
+                                        placeholder={welcomeOrLeaveMember.field.messageEmbedDescription.placeholder}
                                         spellCheck={false}
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errormessage={methods.formState.errors.messageEmbed?.description?.message}
                                         {...methods.register('messageEmbed.description', {
                                             required: {
-                                                value: !isMessageText,
-                                                message: welcomeMember.field.messageEmbedDescription.validation.required
+                                                value: true,
+                                                message: welcomeOrLeaveMember.field.messageEmbedDescription.validation.required
                                             },
                                             maxLength: {
                                                 value: 300,
-                                                message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedDescription.validation.maxLength, {
+                                                message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedDescription.validation.maxLength, {
                                                     default: false, '{%value%}': '300'
                                                 }).join('')
                                             }
@@ -177,18 +176,18 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                         <Grid.Row
                             breakpoints={{ xs: 24 }}
                             style={{
-                                paddingLeft: welcomeModuleGridGutter[0] / 2,
-                                paddingRight: welcomeModuleGridGutter[0] / 2,
+                                paddingLeft: gridGutter[0] / 2,
+                                paddingRight: gridGutter[0] / 2,
                             }}
                         >
                             <AutocompleteInput
-                                label={welcomeMember.field.messageEmbedFooter.label}
-                                placeholder={welcomeMember.field.messageEmbedFooter.placeholder}
+                                label={welcomeOrLeaveMember.field.messageEmbedFooter.label}
+                                placeholder={welcomeOrLeaveMember.field.messageEmbedFooter.placeholder}
                                 triggers={autocompleteTriggerWithoutPicture}
                                 {...methods.register('messageEmbed.footer', {
                                     maxLength: {
                                         value: 100,
-                                        message: findStringVarsAndSubstitute(welcomeMember.field.messageEmbedFooter.validation.maxLength, {
+                                        message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedFooter.validation.maxLength, {
                                             default: false, '{%value%}': '100'
                                         }).join(''),
                                     }
@@ -199,30 +198,31 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
 
                 </Fragment>
             )}
+
             {methods.watch('isMessageText') && (
                 <Fragment>
                     <Grid.Row breakpoints={{ xs: 24 }}>
                         <DarkFormContainer>
                             <AutocompleteTextarea
-                                label={welcomeMember.field.messageText.label}
-                                placeholder={welcomeMember.field.messageText.placeholder}
+                                label={welcomeOrLeaveMember.field.messageText.label}
+                                placeholder={welcomeOrLeaveMember.field.messageText.placeholder}
                                 errormessage={methods.formState.errors.messageText?.message}
                                 initialValue={getValues?.('messageText') || ''}
                                 triggers={[
                                     {
-                                        list: autocompleteVars.welcomeModuleVars.listVarsValues(),
                                         name: 'poingVars',
-                                        trigger: autocompleteVars.welcomeModuleVars.trigger
+                                        list: autocompleteVars.poingTextVars.listVarsValues(),
+                                        trigger: autocompleteVars.poingTextVars.trigger
                                     }
                                 ]}
                                 {...methods.register('messageText', {
                                     required: {
                                         value: true,
-                                        message: welcomeMember.field.messageText.validation.required
+                                        message: welcomeOrLeaveMember.field.messageText.validation.required
                                     },
                                     maxLength: {
                                         value: 500,
-                                        message: findStringVarsAndSubstitute(welcomeMember.field.messageText.validation.maxLength, {
+                                        message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageText.validation.maxLength, {
                                             default: false, '{%value%}': '500'
                                         }).join('')
                                     }

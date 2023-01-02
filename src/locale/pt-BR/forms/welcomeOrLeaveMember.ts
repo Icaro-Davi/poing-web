@@ -58,8 +58,8 @@ const welcomeMemberForm = {
             }
         },
         messageEmbedFieldValue: {
-            label: 'Titulo do campo',
-            placeholder: 'Titulo do campo {%index%}...',
+            label: 'Descrição do campo',
+            placeholder: 'Descrição do campo {%index%}...',
             validation: {
                 required: STATIC_VALIDATION.required,
                 maxLength: STATIC_VALIDATION.maxLength
@@ -73,8 +73,7 @@ const welcomeMemberForm = {
             }
         }
     },
-
-    welcomeMemberPoingVars: {
+    poingTextVars: {
         '': 'Sem Avatar',
         '{bot.prefix}': 'Prefixo do bot',
         '{bot.hexColor}': 'Cor tema do bot',

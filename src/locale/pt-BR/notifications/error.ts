@@ -32,12 +32,12 @@ const Error = {
             title: 'Ativar modulo',
             description: 'Falha ao atualizar o status do modulo'
         },
-        getWelcomeMemberSettings: {
-            title: 'Modulo de boas vindas',
+        getWelcomeOrLeaveMemberSettings: {
+            title: 'Erro ao buscar',
             description: 'Falha ao buscar as suas configurações do modulo.'
         },
-        updateWelcomeMemberSettings: {
-            title: 'Module de boas vindas',
+        updateWelcomeOrLeaveMemberSettings: {
+            title: 'Erro ao atualizar',
             description: 'Falha ao atualizar as configurações do modulo.'
         }
     }

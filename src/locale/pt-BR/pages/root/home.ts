@@ -1,6 +1,10 @@
 import { BOT } from "../../../defaultBoTInfo";
 
 const home = {
+    head: {
+        title: `Sou o ${BOT.name} um bot de Discord`,
+        description: `Olá me chamo ${BOT.name} eu sou um bot para Discord, mas precisamente para ajudar a administrar os servidores. Basta me convidar e eu estarei lá para lhe ajudar.`
+    },
     welcomeCard: {
         title: `Bem vindo, eu sou o ${BOT.name}!`,
         description: 'Sou um slime e também bot de administração, meu papel é deixar tudo mais fácil para todos, vamos nos divertir juntos ?',

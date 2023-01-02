@@ -1,6 +1,8 @@
-export type WelcomeModuleType = {
-    _id: string;
-    __v: number;
+import { MemberLeaveService, WelcomeMemberService } from "./welcomeOrLeaveMember";
+
+type DefaultMemberModuleType = {
+    _id?: string;
+    __v?: number;
     isMessageText: boolean;
     channelId?: string;
     messageText?: string;
@@ -16,3 +18,8 @@ export type WelcomeModuleType = {
         thumbnail?: string;
     }
 }
+
+export type WelcomeModuleType = DefaultMemberModuleType;
+export type MemberLeaveModuleType = DefaultMemberModuleType;
+export type WelcomeOrLeaveMemberType = WelcomeModuleType | MemberLeaveModuleType;
+export type WelcomeOrMemberServiceType = typeof WelcomeMemberService | typeof MemberLeaveService;

@@ -1,6 +1,6 @@
 const autocompleteVars = {
-    welcomeModuleVars: {
-        name: 'welcomeModuleVars',
+    poingTextVars: {
+        name: 'poing-text-vars',
         trigger: new RegExp('({$|{[\\w\\.@]+?)$', 'g'),
         vars: {
             botPrefix: '{bot.prefix}',

@@ -1,4 +1,10 @@
-import type { WelcomeModuleType } from "../modules/modules.types";
+import type { GetReference } from "../../../utils/general.types";
+import type { MemberLeaveModuleType, WelcomeModuleType } from "../modules/modules.types";
+
+type ModuleType<T> = {
+    isActive?: boolean;
+    settings?: T;
+}
 
 export type GuildSettingsType = {
     _id: string;
@@ -11,11 +17,13 @@ export type GuildSettingsType = {
         };
     };
     modules?: {
-        welcomeMember?: {
-            isActive?: boolean;
-            settings?: WelcomeModuleType | string;
-        }
+        welcomeMember?: ModuleType<WelcomeModuleType | string>;
+        memberLeave?: ModuleType<MemberLeaveModuleType | string>;
     };
     createdAt: string;
     updatedAt: string;
 }
+
+export type ModulesType = Required<GetReference<Required<GuildSettingsType>, 'modules'>>;
+export type GetModuleType<K extends keyof ModulesType> = ModulesType[K];
+export type GetModuleSettings<K extends keyof ModulesType> = Exclude<Required<GetModuleType<K>>['settings'], string>;
