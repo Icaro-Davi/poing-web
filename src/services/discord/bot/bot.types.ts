@@ -1,7 +1,7 @@
 import type { GetReference } from "../../../utils/general.types";
-import type { MemberLeaveModuleType, WelcomeModuleType } from "../modules/modules.types";
+import type { DefaultMemberModuleType, MemberLeaveModuleType, WelcomeModuleType } from "../modules/modules.types";
 
-type ModuleType<T> = {
+type ModuleType<T extends DefaultMemberModuleType | string> = {
     isActive?: boolean;
     settings?: T;
 }
@@ -26,4 +26,4 @@ export type GuildSettingsType = {
 
 export type ModulesType = Required<GetReference<Required<GuildSettingsType>, 'modules'>>;
 export type GetModuleType<K extends keyof ModulesType> = ModulesType[K];
-export type GetModuleSettings<K extends keyof ModulesType> = Exclude<Required<GetModuleType<K>>['settings'], string>;
+export type GetModuleSettings = DefaultMemberModuleType;
