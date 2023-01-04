@@ -1,0 +1,7 @@
+Sitemap: https://poing.tk/sitemaps.xml
+
+User-agent: *
+Allow: /
+
+Disallow: /api/*
+Disallow: /*/dashboard/*
