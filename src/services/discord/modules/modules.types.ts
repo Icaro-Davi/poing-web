@@ -1,6 +1,6 @@
 import { MemberLeaveService, WelcomeMemberService } from "./welcomeOrLeaveMember";
 
-type DefaultMemberModuleType = {
+export type DefaultMemberModuleType = {
     _id?: string;
     __v?: number;
     isMessageText: boolean;

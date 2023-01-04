@@ -1,6 +1,5 @@
-import Module from "module";
 import LocalStorage from "../../../utils/localStorage";
-import { GetModuleSettings, GetModuleType, ModulesType } from "../bot/bot.types";
+import { GetModuleSettings, ModulesType } from "../bot/bot.types";
 import DiscordRequestor from "../requestor";
 
 class DefaultModuleService {
@@ -29,7 +28,7 @@ class DefaultModuleService {
         }
     }
 
-    static async create<K extends keyof ModulesType>(settings: GetModuleSettings<K>) {
+    static async create(settings: GetModuleSettings) {
         try {
             const guildId = LocalStorage.guild.getSelectedId();
             delete settings?.__v;
@@ -40,7 +39,7 @@ class DefaultModuleService {
         }
     }
 
-    static async updateSettings<K extends keyof ModulesType>(settings: GetModuleSettings<K>) {
+    static async updateSettings(settings: GetModuleSettings) {
         try {
             const guildId = LocalStorage.guild.getSelectedId();
             delete settings?.__v;
@@ -51,7 +50,7 @@ class DefaultModuleService {
         }
     }
 
-    static async testWelcomeMemberMessage<K extends keyof ModulesType>(settings: GetModuleSettings<K>) {
+    static async testWelcomeMemberMessage(settings: GetModuleSettings) {
         try {
             const guildId = LocalStorage.guild.getSelectedId();
             delete settings?.__v;
