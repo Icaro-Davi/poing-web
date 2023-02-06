@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { BORDER, INPUT_FORM, SPACING } from '../DefaultPropertyValues';
 
-const SelectContainer = styled.div`
+const ITEM_HEIGHT = 30;
+
+const SelectContainer = styled.div<{ displayItemsCount: number; displayItemsTop?: boolean; }>`
     width: 100%;
     position: relative;
 
@@ -43,8 +45,13 @@ const SelectContainer = styled.div`
 
     :focus-within input {
         background-color: ${props => props.theme.colors.backgroundDarker};
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+        ${props => props.displayItemsTop ? (`
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+        `) : (`
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        `)}
     }
 
     :focus-within ul {
@@ -55,13 +62,21 @@ const SelectContainer = styled.div`
         position: absolute;
         z-index: 10;
         left: 0;
+        ${props => props.displayItemsTop ? (`
+            bottom: ${INPUT_FORM.height};
+            border-top-left-radius: ${BORDER.radius};
+            border-top-right-radius: ${BORDER.radius};
+        `) : (`
+            border-bottom-left-radius: ${BORDER.radius};
+            border-bottom-right-radius: ${BORDER.radius};
+        `)}
         width: 100%;
         height: fit-content;
+        max-height: ${props => props.displayItemsCount * ITEM_HEIGHT}px;
+        overflow: auto;
         background-color: #FFFFFF;
-        border-bottom-left-radius: ${BORDER.radius};
-        border-bottom-right-radius: ${BORDER.radius};
         padding-top: 0;
-        overflow: hidden;
+        /* overflow: hidden; */
         box-shadow: 1px 1px 5px #000000;
         display: none;
 
@@ -73,7 +88,7 @@ const SelectContainer = styled.div`
             text-overflow: ellipsis;
             white-space: nowrap;
             width: 100%;
-            height: 30px;
+            height: ${ITEM_HEIGHT}px;
             padding: 0 1rem;
             line-height: 30px;
             list-style: none;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BORDER, SPACING } from "../items/DefaultPropertyValues";
+import { BORDER, SPACING } from "../../items/DefaultPropertyValues";
 
 const DarkFormContainer = styled.div`
     width: 100%;

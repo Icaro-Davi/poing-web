@@ -13,13 +13,15 @@ interface IProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     errormessage?: string;
     initialValue?: string;
     minRows?: number;
+    disableAutocomplete?: boolean;
 }
 
-const AutocompleteTextarea: ForwardRefRenderFunction<HTMLTextAreaElement, IProps> = ({ initialValue, ...props }, ref) => {
+const AutocompleteTextarea: ForwardRefRenderFunction<HTMLTextAreaElement, IProps> = ({ initialValue, disableAutocomplete, ...props }, ref) => {
     const id = useRef<string>(Math.random().toString(32).slice(2));
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const autocompleteBoxRef = useRef<HTMLDivElement>(null);
     const matchRef = useRef<MatchRef | undefined>();
+
     const { inputElementProps, optionsBox } = useAutocomplete({
         inputReference: textareaRef,
         optionsBoxReference: autocompleteBoxRef,
@@ -54,12 +56,12 @@ const AutocompleteTextarea: ForwardRefRenderFunction<HTMLTextAreaElement, IProps
                         props.onBlur?.(e);
                     }}
                 />
-                <OptionsBox
+                {!disableAutocomplete && <OptionsBox
                     ref={autocompleteBoxRef}
                     inputRef={textareaRef}
                     matchRef={matchRef}
                     onBlur={() => { optionsBox.hide() }}
-                />
+                />}
             </div>
             {!!props.errormessage && (
                 <ErrorMessage>{`${props.errormessage}`}</ErrorMessage>

@@ -13,9 +13,10 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
     errorMessage?: string;
     triggers: RegexReference[];
     placeholder?: string;
+    disableAutocomplete?: boolean;
 }
 
-const AutocompleteInput: ForwardRefRenderFunction<HTMLInputElement, IProps> = ({ label, errorMessage, ...props }, ref) => {
+const AutocompleteInput: ForwardRefRenderFunction<HTMLInputElement, IProps> = ({ label, errorMessage, disableAutocomplete, ...props }, ref) => {
     const id = useRef<string>(Math.random().toString(32).slice(2));
     const inputRef = useRef<HTMLInputElement>(null);
     const optionBoxRef = useRef<HTMLDivElement>(null);
@@ -50,13 +51,13 @@ const AutocompleteInput: ForwardRefRenderFunction<HTMLInputElement, IProps> = ({
                         onInputBlur(e, { optionBoxRef: optionBoxRef, closeOptionBox: optionsBox.hide });
                     }}
                 />
-                <OptionBox
+               {!disableAutocomplete && <OptionBox
                     matchRef={matchRef}
                     inputRef={inputRef}
                     ref={optionBoxRef}
                     htmlPropertyType={window.HTMLInputElement.prototype}
                     onBlur={() => { optionsBox.hide() }}
-                />
+                />}
             </div>
             {errorMessage && (
                 <ErrorMessage>{errorMessage}</ErrorMessage>

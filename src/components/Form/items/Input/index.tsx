@@ -1,4 +1,4 @@
-import { HTMLAttributes, ForwardRefRenderFunction, forwardRef } from "react";
+import { HTMLAttributes, ForwardRefRenderFunction, forwardRef, useMemo } from "react";
 import styled from "styled-components";
 import { BORDER, INPUT_FORM, SPACING } from "../DefaultPropertyValues";
 import ErrorMessage from "../ErrorMessage";
@@ -27,8 +27,8 @@ interface IProps extends HTMLAttributes<HTMLInputElement> {
     placeholder?: string;
 }
 
-const id = Math.random().toString(32).slice(2);
 const Input: ForwardRefRenderFunction<HTMLInputElement, IProps> = ({ label, errorMessage, ...props }, ref) => {
+    const id = useMemo(() => Math.random().toString(32).slice(2), []);
     return (
         <InputNormal>
             {label && (

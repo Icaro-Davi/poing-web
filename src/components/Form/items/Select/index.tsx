@@ -8,6 +8,8 @@ interface IProps {
     options: SelectItem[];
     label?: string;
     initialValue?: SelectItem;
+    displayItemsCount?: number;
+    displayItemsTop?: boolean;
     onSelect?: (selected: SelectItem) => void;
     onBlur?: () => void;
 }
@@ -92,7 +94,11 @@ const Select: FC<IProps> = ({ onBlur, onSelect, ...props }) => {
     }, [onChangeValue]);
 
     return (
-        <SelectContainer onKeyDown={onKeyDown} >
+        <SelectContainer
+            onKeyDown={onKeyDown}
+            displayItemsCount={props.displayItemsCount ?? 6}
+            displayItemsTop={props.displayItemsTop}
+        >
             {props.label && (
                 <Label htmlFor={id.current} onClick={e => (e.currentTarget.nextElementSibling as HTMLElement).focus()} style={{ cursor: 'pointer' }}>
                     {props.label}
