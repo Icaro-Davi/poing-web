@@ -43,7 +43,7 @@ const messageComponent = {
                 STRING_SELECT: 'Seleção de cargos'
             }
         },
-        fieldsbutton: {
+        fieldsButton: {
             style: {
                 label: 'Estilo do botão',
                 options: {

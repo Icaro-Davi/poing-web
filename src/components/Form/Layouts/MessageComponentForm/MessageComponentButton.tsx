@@ -26,10 +26,10 @@ const MessageComponentButton: FC<{
     const errors = formState.errors.components?.[props.index]?.components as Merge<FieldError, FieldErrorsImpl<DeepRequired<ComponentButton[]>>>
     const roles = props.roles;
 
-    const StyleOptions = Object.keys(localeMessageComponent.fieldsbutton.style.options)
+    const StyleOptions = Object.keys(localeMessageComponent.fieldsButton.style.options)
         .map(key => ({
             value: key,
-            label: localeMessageComponent.fieldsbutton.style.options[key as keyof typeof localeMessageComponent.fieldsbutton.style.options],
+            label: localeMessageComponent.fieldsButton.style.options[key as keyof typeof localeMessageComponent.fieldsButton.style.options],
         }));
 
     const addNewComponent = () => append({ type: 'BUTTON', style: 'PRIMARY', roleId: roles[0].value } as ComponentButton);
@@ -55,7 +55,7 @@ const MessageComponentButton: FC<{
                         </Grid.Row>
                         <Grid.Row breakpoints={{ xs: 24, md: 8 }}>
                             <Select
-                                label={localeMessageComponent.fieldsbutton.style.label}
+                                label={localeMessageComponent.fieldsButton.style.label}
                                 initialValue={StyleOptions.find(option => option.value === (field as ComponentButton).style) ?? StyleOptions[0]}
                                 onSelect={selected => setValue(`components.${props.index}.components.${buttonIndex}.style`, selected.value)}
                                 options={StyleOptions}
@@ -66,12 +66,12 @@ const MessageComponentButton: FC<{
                                 {...register(`components.${props.index}.components.${buttonIndex}.label`, {
                                     maxLength: {
                                         value: 80,
-                                        message: localeMessageComponent.fieldsbutton.label.rules.maxLength?.replace('{%values%}', '80')
+                                        message: localeMessageComponent.fieldsButton.label.rules.maxLength?.replace('{%value%}', '80')
                                     }
                                 })}
-                                label={localeMessageComponent.fieldsbutton.label.label}
-                                title={localeMessageComponent.fieldsbutton.label.placeholder}
-                                placeholder={localeMessageComponent.fieldsbutton.label.placeholder}
+                                label={localeMessageComponent.fieldsButton.label.label}
+                                title={localeMessageComponent.fieldsButton.label.placeholder}
+                                placeholder={localeMessageComponent.fieldsButton.label.placeholder}
                                 errorMessage={errors?.[buttonIndex]?.label?.message}
                             />
                         </Grid.Row>
