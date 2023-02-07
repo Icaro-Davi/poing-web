@@ -1,21 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
 import moment from "moment";
-import { get } from 'object-path';
+import { useCallback, useEffect, useState } from "react";
 import { useApp } from "../context/App";
 import { useAuth } from "../context/Auth";
 import { BOT } from "../locale/defaultBoTInfo";
 import LocalStorage from "../utils/localStorage";
-
-export function replaceBotVarsInString<T extends { [key: string]: any }>(text: string, vars: T, object?: { regex?: RegExp; }): string {
-    const regex = new RegExp(object?.regex ?? '({[\\w\.@]+})');
-    const textParts = text.split(regex);
-    const textWithVars = textParts.reduce((prev, current) => {
-        current.match(regex) ? prev.push(get(vars, current.replaceAll(/({|})/g, ''))) : prev.push(current);
-        return prev;
-    }, [] as string[]).join('');
-
-    return textWithVars;
-}
 
 function useBotInfo() {
     const { store: { guilds, selectedGuildId }, locale: { lang } } = useApp();
