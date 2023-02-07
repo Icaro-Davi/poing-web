@@ -1,9 +1,13 @@
 import poingSettings from "./poingSettings";
-import welcomeOrLeaveMember from "./welcomeOrLeaveMember";
+import message from "./layouts/message";
+import messageComponents from "./layouts/messageComponents";
 
 const forms = {
     poingSettings,
-    welcomeOrLeaveMember
+    layouts: {
+        message,
+        messageComponents
+    }
 }
 
 export default forms;

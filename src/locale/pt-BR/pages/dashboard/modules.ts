@@ -1,6 +1,7 @@
 import { BOT } from "../../../defaultBoTInfo";
 import welcomeMember from "../../modules/welcomeMember";
 import memberLeave from "../../modules/memberLeave";
+import roleByInteraction from "../../modules/roleByInteraction";
 
 const modules = {
     label: {
@@ -11,7 +12,8 @@ const modules = {
         title: `${BOT.name} | Módulos`
     },
     welcomeMember,
-    memberLeave
+    memberLeave,
+    roleByInteraction
 }
 
 export default modules;

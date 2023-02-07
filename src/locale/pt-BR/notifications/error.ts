@@ -1,6 +1,12 @@
 import { BOT } from "../../defaultBoTInfo";
 
 const Error = {
+    shared: {
+        unexpectedError: {
+            title: 'Ocorreu um erro inesperado',
+            description: 'Se o erro continuar contate-nos pelo Discord para relatar o bug.'
+        }
+    },
     account: {
         logout: {
             title: 'Logout',

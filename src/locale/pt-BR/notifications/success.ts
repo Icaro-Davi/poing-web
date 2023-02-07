@@ -1,4 +1,10 @@
 const success = {
+    shared: {
+        created: {
+            title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',
+            description: 'Criado com sucesso!'
+        }
+    },
     bot: {
         updateSettings: {
             title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',
