@@ -1,18 +1,17 @@
-import { forwardRef, ForwardRefRenderFunction, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { SubmitHandler, useForm, FormProvider } from 'react-hook-form';
+import { forwardRef, ForwardRefRenderFunction, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useApp } from '../../../context/App';
-import DiscordGuildService from '../../../services/discord/guild';
+import useBotInfo from '../../../hooks/useBotInfo';
 import BaseError from '../../../utils/error/baseError';
 import LocalStorage from '../../../utils/localStorage';
 import LoadWrapper from '../../Loading/LoadWrapper';
 import Notification from '../../Notification';
-import FormElements from './Form';
-import useBotInfo, { replaceBotVarsInString } from '../../../hooks/useBotInfo';
 
-import type { GuildChannel } from '../../../services/discord/guild/guild.type';
-import type { WelcomeOrLeaveMemberType } from '../../../services/discord/modules/modules.types';
-import { ModulesType } from '../../../services/discord/bot/bot.types';
-import { WelcomeMemberService, MemberLeaveService } from '../../../services/discord/modules';
+import useChannels from '../../../hooks/Discord/useChannels';
+import { MemberLeaveService, WelcomeMemberService } from '../../../services/discord/modules';
+import type { WelcomeOrLeaveMemberLabelType, WelcomeOrLeaveMemberType } from '../../../services/discord/modules/modules.types';
+import replaceVarsInString from '../../../utils/replaceVarsInString';
+import MessageForm from '../Layouts/MessageForm';
 
 export interface FormRefs {
     submit: () => void;
@@ -23,13 +22,9 @@ interface WelcomeOrLeaveMemberFormProps {
     onSubmitEnd?: () => void;
     onSubmitStart?: () => void;
     onChangeFields?: (formData: WelcomeOrLeaveMemberType) => void;
-    initialDataForm?: WelcomeOrLeaveMemberType
-    moduleType: keyof ModulesType;
+    initialDataForm?: WelcomeOrLeaveMemberType;
+    moduleType: WelcomeOrLeaveMemberLabelType;
 }
-
-const handleChannels = (channels?: GuildChannel[]) => channels
-    ?.filter(channel => channel.type === 'GUILD_TEXT')
-    .map(channel => ({ label: `# ${channel.name}` || '', value: channel.id })) ?? [];
 
 const checkMessageTextIsActiveAndFilterModuleSettings = (moduleSettings: WelcomeOrLeaveMemberType) => {
     if (moduleSettings.isMessageText) {
@@ -43,7 +38,7 @@ const checkMessageTextIsActiveAndFilterModuleSettings = (moduleSettings: Welcome
 
 const WelcomeOrLeaveMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeOrLeaveMemberFormProps> = ({ onSubmitEnd, onChangeFields, onSubmitStart, moduleType, ...props }, ref) => {
     const { locale } = useApp();
-    const [channels, setChannels] = useState<{ label: string; value: string }[]>(handleChannels(LocalStorage.guild.getChannels()?.list));
+    const { channels } = useChannels();
     const submitButtonRef = useRef<HTMLButtonElement>(null);
     const botInfo = useBotInfo();
     const methods = useForm<WelcomeOrLeaveMemberType>({
@@ -68,11 +63,11 @@ const WelcomeOrLeaveMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeOrLeav
                 botSettings: {
                     messageColor: LocalStorage.bot.getSettings()?.bot.messageEmbedHexColor
                 },
-                channelId: moduleSettings.channelId ?? channels[0].value,
+                channelId: moduleSettings.channelId ?? channels?.[0].id,
                 isMessageText: typeof moduleSettings.isMessageText === 'boolean' ? moduleSettings.isMessageText : false
             }
 
-            const messageWithBotVars: WelcomeOrLeaveMemberType = JSON.parse(replaceBotVarsInString(JSON.stringify(moduleTestMessageSettings), botInfo));
+            const messageWithBotVars: WelcomeOrLeaveMemberType = JSON.parse(replaceVarsInString(JSON.stringify(moduleTestMessageSettings), botInfo));
             await MemberModuleService.testWelcomeMemberMessage(
                 checkMessageTextIsActiveAndFilterModuleSettings(messageWithBotVars)
             );
@@ -91,7 +86,7 @@ const WelcomeOrLeaveMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeOrLeav
             const storedModuleSettings = botSettings?.modules?.[moduleType]?.settings;
             if (storedModuleSettings && JSON.stringify(storedModuleSettings) === JSON.stringify(moduleSettings)) return;
 
-            moduleSettings.channelId = moduleSettings.channelId ?? channels[0].value;
+            moduleSettings.channelId = moduleSettings.channelId ?? channels?.[0].id;
             moduleSettings.isMessageText = typeof moduleSettings.isMessageText === 'boolean' ? moduleSettings.isMessageText : false;
 
             if (storedModuleSettings)
@@ -129,18 +124,13 @@ const WelcomeOrLeaveMemberForm: ForwardRefRenderFunction<FormRefs, WelcomeOrLeav
         onChangeFields?.(getValues());
     }, [onChangeFields, getValues]);
 
-    useEffect(() => {
-        DiscordGuildService.getChannels()
-            .then(_channels => { setChannels(handleChannels(_channels)) });
-    }, []);
-
     useEffect(() => { onChange() }, [onChange]);
 
     return (
         <FormProvider {...methods}>
-            <LoadWrapper isLoading={!channels.length}>
+            <LoadWrapper isLoading={!channels?.length}>
                 <form onSubmit={methods.handleSubmit(onSubmit)} onChange={onChange}>
-                    <FormElements channels={channels} />
+                    <MessageForm channels={channels ?? []} />
                     <button ref={submitButtonRef} type='submit' style={{ display: 'none' }} />
                 </form>
             </LoadWrapper>

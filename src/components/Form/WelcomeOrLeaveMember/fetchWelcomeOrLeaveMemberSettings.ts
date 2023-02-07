@@ -1,27 +1,28 @@
 import { Locale } from "../../../locale/index.type";
-import { ModulesType } from "../../../services/discord/bot/bot.types";
+import { GetModuleType } from "../../../services/discord/bot/bot.types";
 import { MemberLeaveService, WelcomeMemberService } from "../../../services/discord/modules";
+import { MessageType, WelcomeOrLeaveMemberLabelType } from "../../../services/discord/modules/modules.types";
 import BaseError from "../../../utils/error/baseError";
 import LocalStorage from "../../../utils/localStorage";
 import Notification from "../../Notification";
 
-type FetchWelcomeOrLeaveMemberModuleOptions<K extends keyof ModulesType> = {
+type FetchWelcomeOrLeaveMemberModuleOptions = {
     locale?: Locale;
-    onFetch?: (fetchData: ModulesType[K]) => void;
-    moduleType: K;
+    onFetch?: (fetchData: GetModuleType<'memberLeave'> | GetModuleType<'welcomeMember'>) => void;
+    moduleType: WelcomeOrLeaveMemberLabelType;
 }
 
-function FetchWelcomeOrLeaveMemberSettings<K extends keyof ModulesType>(options?: FetchWelcomeOrLeaveMemberModuleOptions<K>) {
-    return new Promise<ModulesType[K]>((resolve, reject) => {
+function FetchWelcomeOrLeaveMemberSettings(options?: FetchWelcomeOrLeaveMemberModuleOptions) {
+    return new Promise<MessageType>((resolve, reject) => {
         if (options?.moduleType === 'memberLeave' || options?.moduleType === 'welcomeMember') {
-            const ModuleService = options.moduleType === 'memberLeave' ? MemberLeaveService : WelcomeMemberService;
+            const ModuleService = options.moduleType === 'welcomeMember' ? MemberLeaveService : WelcomeMemberService;
             ModuleService.getModuleSettings()
                 .then(data => {
                     if (typeof data.settings === 'object') {
                         LocalStorage.guild.setModule(options.moduleType, data);
                     }
                     options?.onFetch && options.onFetch(data);
-                    resolve(data);
+                    resolve(data as MessageType);
                 }).catch(error => {
                     console.error(error);
                     new BaseError({

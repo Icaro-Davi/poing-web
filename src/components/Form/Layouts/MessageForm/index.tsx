@@ -1,20 +1,22 @@
 import { FC, Fragment, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTheme } from 'styled-components';
-import { WelcomeOrLeaveMemberType } from '../../../services/discord/modules/modules.types';
-import Grid from '../../Grid';
-import Switch from '../items/Switch';
-import AutocompleteTextarea from '../items/Autocomplete/Textarea';
-import AutocompleteInput from '../items/Autocomplete/Input';
+import { useApp } from '../../../../context/App';
+import { GuildChannel } from '../../../../services/discord/guild/guild.type';
+import { MessageType } from '../../../../services/discord/modules/modules.types';
+import findStringVarsAndSubstitute from '../../../../utils/findStringVarsAndSubstitute';
+import Grid from '../../../Grid';
+import AutocompleteInput from '../../items/Autocomplete/Input';
+import AutocompleteTextarea from '../../items/Autocomplete/Textarea';
+import Select from '../../items/Select';
+import Switch from '../../items/Switch';
+import DarkFormContainer from '../styles/DarkFormContainer';
+import { formGridGutter } from '../styles/Default';
 import autocompleteVars from './autocompleteVars';
-import DarkFormContainer from '../Layouts/DarkFormContainer';
-import Select from '../items/Select';
 import EmbedFieldList from './EmbedFieldList';
-import { useApp } from '../../../context/App';
-import findStringVarsAndSubstitute from '../../../utils/findStringVarsAndSubstitute';
+import handleChannels from './handleChannels';
 
 const formElementsBreakpoint = { xs: 24, md: 12 };
-export const gridGutter: [number, number] = [12, 12];
 
 const autocompleteTriggerWithoutPicture = [
     {
@@ -24,12 +26,18 @@ const autocompleteTriggerWithoutPicture = [
     }
 ]
 
-const FormElements: FC<{ channels: { label: string; value: string; }[] }> = props => {
-    const { colors } = useTheme();
-    const { locale: { forms: { welcomeOrLeaveMember } } } = useApp();
-    const methods = useFormContext<WelcomeOrLeaveMemberType>();
+type MessageFormProps = {
+    channels: GuildChannel[];
+    disableAutocomplete?: boolean;
+}
 
-    const pictureVars = Object.entries(welcomeOrLeaveMember.poingTextVars)
+const MessageForm: FC<MessageFormProps> = props => {
+    const { colors } = useTheme();
+    const { locale: { forms: { layouts: { message: messageForm } } } } = useApp();
+    const methods = useFormContext<MessageType>();
+    const channels = handleChannels(props.channels);
+
+    const pictureVars = Object.entries(messageForm.poingTextVars)
         .filter(([key, label]) => key.match(/picture/) || key === '')
         .map(([key, value]) => ({ label: value, value: key }));
 
@@ -50,13 +58,13 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
     return (
         <Grid>
             <Grid.Row breakpoints={{ xs: 24 }}>
-                <Grid horizontalAlign='center' gutter={gridGutter}>
+                <Grid horizontalAlign='center' gutter={formGridGutter}>
                     <Grid.Row breakpoints={{ xs: 24, md: 8, lg: 6 }}>
                         <DarkFormContainer style={{ height: '100%' }}>
                             <Switch
                                 defaultChecked={isMessageText}
                                 onChange={e => { methods.setValue('isMessageText', e.target.checked) }}
-                                label={methods.watch('isMessageText') ? welcomeOrLeaveMember.field.isMessageText.activeLabel : welcomeOrLeaveMember.field.isMessageText.disabledLabel}
+                                label={methods.watch('isMessageText') ? messageForm.field.isMessageText.activeLabel : messageForm.field.isMessageText.disabledLabel}
                                 color={{ bgActive: colors.primary }}
                                 containerStyle={{
                                     display: 'flex', flexFlow: 'column', alignItems: 'center',
@@ -68,14 +76,14 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                         <DarkFormContainer
                             style={{
                                 height: '100%',
-                                paddingLeft: gridGutter[0],
-                                paddingRight: gridGutter[0]
+                                paddingLeft: formGridGutter[0],
+                                paddingRight: formGridGutter[0]
                             }}
                         >
                             <Select
-                                label={welcomeOrLeaveMember.field.channelId.label}
-                                initialValue={props.channels.find(channel => channel.value === getValues('channelId')) || props.channels[0]}
-                                options={props.channels}
+                                label={messageForm.field.channelId.label}
+                                initialValue={channels.find(channel => channel.value === getValues('channelId')) ?? channels[0]}
+                                options={channels}
                                 onSelect={(selectedValue) => {
                                     methods.setValue('channelId', selectedValue.value, { shouldValidate: true });
                                 }}
@@ -89,17 +97,18 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                 <Fragment>
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }}>
-                            <Grid gutter={gridGutter}>
+                            <Grid gutter={formGridGutter}>
                                 <Grid.Row breakpoints={formElementsBreakpoint}>
                                     <AutocompleteInput
-                                        label={welcomeOrLeaveMember.field.messageEmbedAuthorName.label}
-                                        placeholder={welcomeOrLeaveMember.field.messageEmbedAuthorName.placeholder}
+                                        label={messageForm.field.messageEmbedAuthorName.label}
+                                        placeholder={messageForm.field.messageEmbedAuthorName.placeholder}
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errorMessage={methods.formState.errors.messageEmbed?.author?.name?.message}
+                                        disableAutocomplete={props.disableAutocomplete}
                                         {...methods.register('messageEmbed.author.name', {
                                             maxLength: {
                                                 value: 50,
-                                                message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedAuthorName.validation.maxLength,
+                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedAuthorName.validation.maxLength,
                                                     { default: false, '{%value%}': '50' }
                                                 ).join('')
                                             }
@@ -109,7 +118,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                 {getValues('messageEmbed.author.name') && (
                                     <Grid.Row breakpoints={formElementsBreakpoint}>
                                         <Select
-                                            label={welcomeOrLeaveMember.field.messageEmbedAuthorPicture.label}
+                                            label={messageForm.field.messageEmbedAuthorPicture.label}
                                             initialValue={pictureVars.find(item => item.value === getValues('messageEmbed.author.picture'))}
                                             options={pictureVars}
                                             onSelect={function (selectedValue) {
@@ -124,17 +133,18 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
 
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }} >
-                            <Grid gutter={gridGutter}>
+                            <Grid gutter={formGridGutter}>
                                 <Grid.Row breakpoints={{ xs: 24 }}>
                                     <AutocompleteInput
-                                        label={welcomeOrLeaveMember.field.messageEmbedTitle.label}
-                                        placeholder={welcomeOrLeaveMember.field.messageEmbedTitle.placeholder}
+                                        label={messageForm.field.messageEmbedTitle.label}
+                                        placeholder={messageForm.field.messageEmbedTitle.placeholder}
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errorMessage={methods.formState.errors.messageEmbed?.title?.message}
+                                        disableAutocomplete={props.disableAutocomplete}
                                         {...methods.register('messageEmbed.title', {
                                             maxLength: {
                                                 value: 100,
-                                                message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedTitle.validation.maxLength, {
+                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedTitle.validation.maxLength, {
                                                     default: false, '{%value%}': '100'
                                                 }).join('')
                                             }
@@ -143,19 +153,20 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                 </Grid.Row>
                                 <Grid.Row breakpoints={{ xs: 24 }}>
                                     <AutocompleteTextarea
-                                        label={welcomeOrLeaveMember.field.messageEmbedDescription.label}
-                                        placeholder={welcomeOrLeaveMember.field.messageEmbedDescription.placeholder}
+                                        label={messageForm.field.messageEmbedDescription.label}
+                                        placeholder={messageForm.field.messageEmbedDescription.placeholder}
                                         spellCheck={false}
                                         triggers={autocompleteTriggerWithoutPicture}
                                         errormessage={methods.formState.errors.messageEmbed?.description?.message}
+                                        disableAutocomplete={props.disableAutocomplete}
                                         {...methods.register('messageEmbed.description', {
                                             required: {
                                                 value: true,
-                                                message: welcomeOrLeaveMember.field.messageEmbedDescription.validation.required
+                                                message: messageForm.field.messageEmbedDescription.validation.required
                                             },
                                             maxLength: {
                                                 value: 300,
-                                                message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedDescription.validation.maxLength, {
+                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedDescription.validation.maxLength, {
                                                     default: false, '{%value%}': '300'
                                                 }).join('')
                                             }
@@ -168,7 +179,7 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
 
                     <DarkFormContainer>
                         <Grid.Row breakpoints={{ xs: 24 }}>
-                            <EmbedFieldList />
+                            <EmbedFieldList disableAutocomplete={props.disableAutocomplete} />
                         </Grid.Row>
                     </DarkFormContainer>
 
@@ -176,18 +187,19 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                         <Grid.Row
                             breakpoints={{ xs: 24 }}
                             style={{
-                                paddingLeft: gridGutter[0] / 2,
-                                paddingRight: gridGutter[0] / 2,
+                                paddingLeft: formGridGutter[0] / 2,
+                                paddingRight: formGridGutter[0] / 2,
                             }}
                         >
                             <AutocompleteInput
-                                label={welcomeOrLeaveMember.field.messageEmbedFooter.label}
-                                placeholder={welcomeOrLeaveMember.field.messageEmbedFooter.placeholder}
+                                label={messageForm.field.messageEmbedFooter.label}
+                                placeholder={messageForm.field.messageEmbedFooter.placeholder}
                                 triggers={autocompleteTriggerWithoutPicture}
+                                disableAutocomplete={props.disableAutocomplete}
                                 {...methods.register('messageEmbed.footer', {
                                     maxLength: {
                                         value: 100,
-                                        message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageEmbedFooter.validation.maxLength, {
+                                        message: findStringVarsAndSubstitute(messageForm.field.messageEmbedFooter.validation.maxLength, {
                                             default: false, '{%value%}': '100'
                                         }).join(''),
                                     }
@@ -204,10 +216,11 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                     <Grid.Row breakpoints={{ xs: 24 }}>
                         <DarkFormContainer>
                             <AutocompleteTextarea
-                                label={welcomeOrLeaveMember.field.messageText.label}
-                                placeholder={welcomeOrLeaveMember.field.messageText.placeholder}
+                                label={messageForm.field.messageText.label}
+                                placeholder={messageForm.field.messageText.placeholder}
                                 errormessage={methods.formState.errors.messageText?.message}
                                 initialValue={getValues?.('messageText') || ''}
+                                disableAutocomplete={props.disableAutocomplete}
                                 triggers={[
                                     {
                                         name: 'poingVars',
@@ -218,11 +231,11 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
                                 {...methods.register('messageText', {
                                     required: {
                                         value: true,
-                                        message: welcomeOrLeaveMember.field.messageText.validation.required
+                                        message: messageForm.field.messageText.validation.required
                                     },
                                     maxLength: {
                                         value: 500,
-                                        message: findStringVarsAndSubstitute(welcomeOrLeaveMember.field.messageText.validation.maxLength, {
+                                        message: findStringVarsAndSubstitute(messageForm.field.messageText.validation.maxLength, {
                                             default: false, '{%value%}': '500'
                                         }).join('')
                                     }
@@ -236,4 +249,4 @@ const FormElements: FC<{ channels: { label: string; value: string; }[] }> = prop
     );
 }
 
-export default FormElements;
+export default MessageForm;

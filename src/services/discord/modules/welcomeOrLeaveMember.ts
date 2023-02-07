@@ -4,7 +4,7 @@ import DiscordRequestor from "../requestor";
 
 class DefaultModuleService {
     static basePath: string;
-    static moduleType: keyof ModulesType;
+    static moduleType: 'welcomeMember' | 'memberLeave';
 
     static async updateActivity(isActive: boolean) {
         try {
@@ -18,11 +18,11 @@ class DefaultModuleService {
         }
     }
 
-    static async getModuleSettings<K extends keyof ModulesType>() {
+    static async getModuleSettings<K extends typeof this.moduleType>() {
         try {
             const guildId = LocalStorage.guild.getSelectedId();
             const { data } = await DiscordRequestor.get<ModulesType[K]>(`${this.basePath}/${guildId}`);
-            return data
+            return data;
         } catch (error) {
             throw error;
         }

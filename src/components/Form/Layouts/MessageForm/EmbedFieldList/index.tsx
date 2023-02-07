@@ -1,22 +1,23 @@
 import { FC, memo, useContext, useRef } from 'react';
-import { IoArrowUp, IoArrowDownSharp, IoTrashSharp, IoAddSharp } from 'react-icons/io5';
-import { ThemeContext } from 'styled-components';
 import { FormState, useFieldArray, UseFieldArrayMove, UseFieldArrayRemove, useFormContext, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import Grid from '../../../Grid';
-import Input from '../../items/Input';
-import Switch from '../../items/Switch';
-import AutocompleteTextarea from '../../items/Autocomplete/Textarea';
-import { gridGutter } from '../Form';
+import { IoAddSharp, IoArrowDownSharp, IoArrowUp, IoTrashSharp } from 'react-icons/io5';
+import { ThemeContext } from 'styled-components';
+import { useApp } from '../../../../../context/App';
+import { Locale } from '../../../../../locale/index.type';
+import findStringVarsAndSubstitute from '../../../../../utils/findStringVarsAndSubstitute';
+import { Button, DangerButton, IconButton } from '../../../../Buttons';
+import Grid from '../../../../Grid';
+import AutocompleteTextarea from '../../../items/Autocomplete/Textarea';
+import { SPACING } from '../../../items/DefaultPropertyValues';
+import Input from '../../../items/Input';
+import Switch from '../../../items/Switch';
 import autocompleteVars from '../autocompleteVars';
-import { IconButton, DangerButton, Button } from '../../../Buttons';
-import { SPACING } from '../../items/DefaultPropertyValues';
-import { Locale } from '../../../../locale/index.type';
-import { useApp } from '../../../../context/App';
-import findStringVarsAndSubstitute from '../../../../utils/findStringVarsAndSubstitute';
 
-import type { WelcomeOrLeaveMemberType } from '../../../../services/discord/modules/modules.types';
+import type { MessageType } from '../../../../../services/discord/modules/modules.types';
+import forceUpdateReactState from '../../../../../utils/forceUpdateReactState';
+import DashedBorder from '../../styles/DashedBorder';
+import { formGridGutter, formGridVerticalGutter, FORM_PADDING } from '../../styles/Default';
 
-const EmbedFieldGridGutter: [number, number] = [6, 0];
 const autocompleteTriggers = [
     {
         name: 'poingVars',
@@ -31,43 +32,44 @@ interface IProps {
         previous: boolean;
         next: boolean;
     };
+    disableAutocomplete?: boolean;
     primaryColor: string;
     secondaryColor: string;
-    formState: FormState<WelcomeOrLeaveMemberType>;
+    formState: FormState<MessageType>;
     locale: Locale;
-    register: UseFormRegister<WelcomeOrLeaveMemberType>;
-    setValue: UseFormSetValue<WelcomeOrLeaveMemberType>;
+    register: UseFormRegister<MessageType>;
+    setValue: UseFormSetValue<MessageType>;
     remove: UseFieldArrayRemove;
     move: UseFieldArrayMove;
     forceUpdateForm: () => void;
 }
 
 const EmbedField: FC<IProps> = memo((props) => (
-    <div style={{ border: '3px dashed #FFF', width: '100%' }}>
-        <Grid.Row breakpoints={{ xs: 24 }} style={{ padding: EmbedFieldGridGutter[0] }}>
-            <Grid gutter={gridGutter}>
+    <DashedBorder>
+        <Grid.Row breakpoints={{ xs: 24 }} style={{ padding: FORM_PADDING.sm }}>
+            <Grid gutter={formGridGutter}>
                 <Grid.Row breakpoints={{ xs: 6, md: 3 }}>
                     <Switch
-                        label={props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldInline.label}
+                        label={props.locale.forms.layouts.message.field.messageEmbedFieldInline.label}
                         color={{ bgActive: props.primaryColor }}
                         onChange={e => { props.setValue(`messageEmbed.fields.${props.index}.inline`, e.target.checked, { shouldValidate: true }) }}
                     />
                 </Grid.Row>
                 <Grid.Row breakpoints={{ xs: 18, md: 21 }}>
                     <Input
-                        label={props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldName.label}
-                        placeholder={findStringVarsAndSubstitute(props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldName.placeholder, {
+                        label={props.locale.forms.layouts.message.field.messageEmbedFieldName.label}
+                        placeholder={findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.placeholder, {
                             default: false, '{%index%}': `${props.index}`
                         }).join('')}
                         errorMessage={props.formState.errors.messageEmbed?.fields?.[props.index]?.name?.message}
                         {...props.register(`messageEmbed.fields.${props.index}.name`, {
                             required: {
                                 value: true,
-                                message: props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldName.validation.required
+                                message: props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.required
                             },
                             maxLength: {
                                 value: 100,
-                                message: findStringVarsAndSubstitute(props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldName.validation.maxLength, {
+                                message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.maxLength, {
                                     default: false, '{%value%}': '100'
                                 }).join(''),
                             }
@@ -76,8 +78,8 @@ const EmbedField: FC<IProps> = memo((props) => (
                 </Grid.Row>
                 <Grid.Row breakpoints={{ xs: 24 }}>
                     <AutocompleteTextarea
-                        label={props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldValue.label}
-                        placeholder={findStringVarsAndSubstitute(props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldValue.placeholder, {
+                        label={props.locale.forms.layouts.message.field.messageEmbedFieldValue.label}
+                        placeholder={findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.placeholder, {
                             default: false, '{%index%}': `${props.index}`
                         }).join('')}
                         triggers={autocompleteTriggers}
@@ -85,11 +87,11 @@ const EmbedField: FC<IProps> = memo((props) => (
                         {...props.register(`messageEmbed.fields.${props.index}.value`, {
                             required: {
                                 value: true,
-                                message: props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldValue.validation.required
+                                message: props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.required
                             },
                             maxLength: {
                                 value: 250,
-                                message: findStringVarsAndSubstitute(props.locale.forms.welcomeOrLeaveMember.field.messageEmbedFieldValue.validation.maxLength, {
+                                message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.maxLength, {
                                     default: false, '{%value%}': '250'
                                 }).join(''),
                             }
@@ -123,7 +125,7 @@ const EmbedField: FC<IProps> = memo((props) => (
                         <Grid.Row breakpoints={{ xs: 16 }} horizontalAlign='right'>
                             <div style={{ width: '100%', maxWidth: 200 }}>
                                 <DangerButton
-                                    label={props.locale.forms.welcomeOrLeaveMember.btnRemoveField}
+                                    label={props.locale.labels.remove}
                                     icon={<IoTrashSharp />}
                                     onClick={() => {
                                         props.remove(props.index);
@@ -136,22 +138,19 @@ const EmbedField: FC<IProps> = memo((props) => (
                 </Grid.Row>
             </Grid>
         </Grid.Row>
-    </div>
+    </DashedBorder>
 ));
 
 EmbedField.displayName = 'EmbedField';
 
-const forceUpdateForm = (element: HTMLElement) => {
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
-    setter?.call(element, `${Math.random().toString(32).slice(2, 7)}`);
-    const event = new Event('input', { bubbles: true });
-    element?.dispatchEvent(event);
+type EmbedFieldsProps = {
+    disableAutocomplete?: boolean;
 }
 
-const EmbedFields: FC = props => {
+const EmbedFields: FC<EmbedFieldsProps> = ({ disableAutocomplete }) => {
     const { locale } = useApp();
     const { colors } = useContext(ThemeContext);
-    const { control, watch, register, setValue, formState } = useFormContext<WelcomeOrLeaveMemberType>();
+    const { control, watch, register, setValue, formState } = useFormContext<MessageType>();
     const forceFormUpdateRef = useRef<HTMLInputElement>(null);
     const { fields, append, remove, move } = useFieldArray({
         control, name: 'messageEmbed.fields',
@@ -167,7 +166,7 @@ const EmbedFields: FC = props => {
         : [];
 
     return (
-        <Grid gutter={[EmbedFieldGridGutter[0], 0]}>
+        <Grid gutter={formGridVerticalGutter}>
             <input ref={forceFormUpdateRef} style={{ display: 'none' }} />
             {controlledFields.map((field, index) => (
                 <EmbedField
@@ -177,11 +176,12 @@ const EmbedFields: FC = props => {
                     primaryColor={colors.primary}
                     secondaryColor={colors.secondary}
                     locale={locale}
+                    disableAutocomplete={disableAutocomplete}
                     register={register}
                     setValue={setValue}
                     move={move}
                     remove={remove}
-                    forceUpdateForm={() => forceUpdateForm(forceFormUpdateRef.current!)}
+                    forceUpdateForm={() => forceUpdateReactState(forceFormUpdateRef.current!)}
                     has={{
                         next: !!controlledFields[index + 1],
                         previous: !!controlledFields[index - 1]
@@ -194,7 +194,7 @@ const EmbedFields: FC = props => {
                         icon={<IoAddSharp />}
                         disabled={controlledFields.length === 5}
                         onClick={() => append({ name: '', value: '', inline: false })}
-                    >{locale.forms.welcomeOrLeaveMember.btnNewFieldLabel}</Button>
+                    >{locale.labels.newField}</Button>
                 </div>
             </Grid.Row>
         </Grid>
