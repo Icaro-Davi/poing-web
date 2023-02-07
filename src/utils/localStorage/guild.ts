@@ -23,24 +23,32 @@ const setSelectedGuild = (guildId: string) => localStorage.setItem(LocalStorageK
 const getSelectedGuild = () => localStorage.getItem(LocalStorageKeys.SELECTED_GUILD_ID) ?? LocalStorageBot.getBotSettings()?._id;
 
 const getChannels = () => {
-    const localChannels = localStorage.getItem(LocalStorageKeys.CHANNELS);
-    if (localChannels) return JSON.parse(localChannels) as {
-        nextFetch: number;
-        list: GuildChannel[];
-    };
+    const guild = getGuilds(getSelectedGuild());
+    if (guild.channels) return guild.channels;
 };
 
 const setChannels = (channels: GuildChannel[], options?: LocalStorageFuncOptions) => {
     const nextFetch = getNextFetchTimestamp();
+    const guilds = getGuilds();
+    const selectedGuildId = getSelectedGuild();
+
+    const updateLocalGuildChannels = (nextFetch: number) => {
+        return guilds.map(guild => {
+            if (guild.id === selectedGuildId) {
+                return { ...guild, channels: { nextFetch, list: channels } };
+            }
+            return guild;
+        });
+    }
+
     if (options?.updateFetchDate) {
-        localStorage.setItem(LocalStorageKeys.CHANNELS, JSON.stringify({ nextFetch, list: channels }));
+        setGuilds(updateLocalGuildChannels(nextFetch));
         return;
     }
+
     const localChannels = getChannels();
-    localStorage.setItem(LocalStorageKeys.CHANNELS, JSON.stringify({
-        list: channels,
-        nextFetch: localChannels && localChannels.nextFetch < Date.now() ? nextFetch : localChannels?.nextFetch ?? nextFetch
-    }));
+    const guild = getGuilds(selectedGuildId);
+    setGuilds(updateLocalGuildChannels((guild && (guild.channels?.nextFetch ?? 1) < Date.now()) ? nextFetch : localChannels?.nextFetch ?? nextFetch));
 };
 
 function setModule<K extends keyof ModulesType>(moduleType: K, moduleSettings: ModulesType[K]) {

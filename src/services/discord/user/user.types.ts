@@ -1,3 +1,4 @@
+import { GuildChannel } from "../guild/guild.type";
 import { DiscordPermissionsTypes } from "../types";
 
 export type GuildRole = {
@@ -24,6 +25,10 @@ export type UserGuildType = {
     features: string[];
     hasBot?: boolean;
     roles: GuildRole[];
+    channels?: {
+        list: GuildChannel[];
+        nextFetch: number;
+    }
 }
 
 export type UserType = {
