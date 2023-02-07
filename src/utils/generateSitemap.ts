@@ -59,9 +59,6 @@ const getPageSitemap = ({ localeFolderName, privateRoutes, relativePath }: GetPa
             ${publicPageUrlList.map(publicPageUrl => (
                 `<url>
                     <loc>${publicPageUrl}</loc>
-                    <lastmod>${new Date().toISOString()}</lastmod>
-                    <changefreq>monthly</changefreq>
-                    <priority>1.0</priority>
                 </url>`
             )).join('\n')}
         </urlset>

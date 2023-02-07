@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const sitemap = getPageSitemap({ localeFolderName, privateRoutes, relativePath });
 
     const res = ctx.res;
-    res.setHeader('Content-Type', 'text/xml');
+    res.setHeader('Content-Type', 'text/xml; charset=UTF-8');
     res.write(sitemap);
     res.end();
 
