@@ -73,7 +73,7 @@ const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, 
                 }
             });
 
-            await RoleByInteractionService.create(cleanObject(data));
+            await RoleByInteractionService.create(cleanObject({ ...data, channelId: data.channelId ?? channels?.find(channel => channel.type === 'GUILD_TEXT')?.id }));
             Notification.open({ type: 'success', ...locale.notifications.success.shared.created });
         } catch (error) {
             Notification.open({ type: 'error', ...locale.notifications.error.shared.unexpectedError });
