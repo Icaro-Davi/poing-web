@@ -1,3 +1,4 @@
+import LocalStorage from "../../../utils/localStorage";
 import DiscordRequestor from "../requestor";
 
 import type { UserGuildType, UserType } from "./user.types";
@@ -8,7 +9,9 @@ class DiscordUserService {
     static async getGuilds() {
         try {
             const { data } = await DiscordRequestor.get<UserGuildType[]>(`${this.basePath}/guilds`);
-            return data.map(guild => ({ ...guild, icon: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` }));
+            const guilds = data.map(guild => ({ ...guild, icon: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` }));
+            LocalStorage.guild.set(guilds);
+            return guilds;
         } catch (error) {
             throw error;
         }
