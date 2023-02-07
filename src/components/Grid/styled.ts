@@ -28,10 +28,12 @@ const Gutter = (gutter: [number, number]) => {
     const [x, y] = gutter;
     return css`
         row-gap: ${(x ?? 0)}px;
-        ${StyledGridRow} {
-            padding-left: ${(y ?? 0) / 2}px;
-            padding-right: ${(y ?? 0) / 2}px;
-        }
+        ${y > 0 && (
+            `${StyledGridRow} {
+                padding-left: ${(y ?? 0) / 2}px;
+                padding-right: ${(y ?? 0) / 2}px;
+            }`
+        )}
     `;
 }
 
