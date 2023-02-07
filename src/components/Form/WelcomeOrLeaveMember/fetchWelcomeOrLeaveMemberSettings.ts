@@ -15,7 +15,7 @@ type FetchWelcomeOrLeaveMemberModuleOptions = {
 function FetchWelcomeOrLeaveMemberSettings(options?: FetchWelcomeOrLeaveMemberModuleOptions) {
     return new Promise<MessageType>((resolve, reject) => {
         if (options?.moduleType === 'memberLeave' || options?.moduleType === 'welcomeMember') {
-            const ModuleService = options.moduleType === 'welcomeMember' ? MemberLeaveService : WelcomeMemberService;
+            const ModuleService = options.moduleType === 'welcomeMember' ? WelcomeMemberService : MemberLeaveService;
             ModuleService.getModuleSettings()
                 .then(data => {
                     if (typeof data.settings === 'object') {
