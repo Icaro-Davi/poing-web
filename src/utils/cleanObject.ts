@@ -17,7 +17,7 @@ function cleanObject<T>(object: T): T {
     function isObject(obj: any) {
         if (Array.isArray(obj)) throw new Error('Only objects can be passed as an argument!');
         Object.keys(obj).forEach(key => {
-            if (!obj[key]) delete obj[key];
+            if (!obj[key] && typeof obj[key] !== 'boolean') delete obj[key];
             if (typeof obj[key] === 'object') {
                 if (Array.isArray(obj[key])) {
                     if ((obj[key] as any[]).length) obj[key] = isArray(obj[key]);
@@ -25,7 +25,7 @@ function cleanObject<T>(object: T): T {
                 } else {
                     if (Object.keys(obj[key]).length) {
                         let objResult = isObject(obj[key]);
-                        if (objResult && Object.keys(objResult).length) obj[key] = objResult;
+                        if ((typeof objResult === 'boolean' || objResult) && Object.keys(objResult).length) obj[key] = objResult;
                         else delete obj[key];
                     } else {
                         delete obj[key];

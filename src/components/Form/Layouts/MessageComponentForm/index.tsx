@@ -26,8 +26,8 @@ const MessageComponentForm: FC = props => {
         const guild = LocalStorage.guild.get(LocalStorage.guild.getSelectedId());
         const newComponent = {
             type: selectedComponent.value,
-            ...selectedComponent.value === 'STRING_SELECT' ? { options: [{ label: '', value: '' }] } : {},
-            ...selectedComponent.value === 'BUTTON' ? { roleId: guild.roles[0].id, style: 'PRIMARY' } : {}
+            ...selectedComponent.value === 'STRING_SELECT' ? { options: [{ label: '', value: '', emoji: { animated: false } }] } : {},
+            ...selectedComponent.value === 'BUTTON' ? { roleId: guild.roles[0].id, style: 'PRIMARY', emoji: { animated: false } } : {}
         } as ComponentsType;
         append({ type: 'ACTION_ROW', components: [newComponent] });
     }

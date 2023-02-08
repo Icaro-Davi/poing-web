@@ -1,7 +1,7 @@
 import { GetReference } from "../../../utils/general.types";
 import { MemberLeaveService, WelcomeMemberService } from "./welcomeOrLeaveMember";
 
-type APIPartialEmoji = {
+export type APIPartialEmoji = {
     id: string | null;
     name: string | null;
     animated?: boolean;
@@ -58,6 +58,7 @@ export type MessageType = {
         fields?: { name: string; value: string; inline?: boolean }[];
         footer?: string;
         thumbnail?: string;
+        color?: string;
     }
 }
 

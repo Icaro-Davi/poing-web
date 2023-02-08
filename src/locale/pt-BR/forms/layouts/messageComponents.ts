@@ -15,16 +15,16 @@ const messageComponent = {
     field: {
         shared: {
             emojiId: {
-                label: 'ID do emoji',
-                placeholder: 'Id do emoji do servidor',
+                label: 'ID do emoji do Discord',
+                placeholder: 'Id do emoji do servidor (precisa da referência do emoji)',
                 rules: {
                     maxLength: STATIC_VALIDATION.maxLength,
                     onlyNumbers: STATIC_VALIDATION.onlyNumbers
                 }
             },
             emojiName: {
-                label: 'Nome do emoji',
-                placeholder: 'O nome do emoji customizado ou emoji comum ♥',
+                label: 'Referência do emoji',
+                placeholder: 'Emoji comum "🤓" ou nome do emoji do discord (precisa do ID do Emoji)',
                 rules: {
                     maxLength: STATIC_VALIDATION.maxLength
                 }
@@ -57,7 +57,8 @@ const messageComponent = {
                 label: 'Nome do botão',
                 placeholder: 'Defina um nome para o botão',
                 rules: {
-                    maxLength: STATIC_VALIDATION.maxLength
+                    maxLength: STATIC_VALIDATION.maxLength,
+                    required: STATIC_VALIDATION.required
                 }
             }
         },

@@ -1,7 +1,7 @@
 import { ForwardRefRenderFunction, useImperativeHandle, useRef, forwardRef, useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import useChannels from "../../../hooks/Discord/useChannels";
-import { ComponentStringSelect, MessageWithComponentsType } from "../../../services/discord/modules/modules.types";
+import { APIPartialEmoji, ComponentButton, ComponentStringSelect, MessageWithComponentsType, ComponentsType } from "../../../services/discord/modules/modules.types";
 import LocalStorage from "../../../utils/localStorage";
 import Notification from "../../Notification";
 import MessageComponentForm from "../Layouts/MessageComponentForm";
@@ -27,7 +27,10 @@ type RoleByInteractionProps = {
 const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, RoleByInteractionProps> = (props, ref) => {
     const methods = useForm<MessageWithComponentsType>({
         mode: 'onBlur',
-        defaultValues: LocalStorage.localFormData.get()?.form?.roleByInteraction
+        defaultValues: {
+            isMessageText: false,
+            ...LocalStorage.localFormData.get()?.form?.roleByInteraction
+        }
     });
     const submitButtonRef = useRef<HTMLButtonElement>(null);
     const { channels } = useChannels();
@@ -73,7 +76,39 @@ const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, 
                 }
             });
 
-            await RoleByInteractionService.create(cleanObject({ ...data, channelId: data.channelId ?? channels?.find(channel => channel.type === 'GUILD_TEXT')?.id }));
+            const checkEmojiIsUsed = (emoji: APIPartialEmoji) => {
+                console.log(!!emoji.id || !!emoji.name)
+                if (emoji.id || emoji.name) return { emoji };
+                else return {}
+            }
+
+            data.components = data.components.map(selectRow => {
+                return {
+                    ...selectRow,
+                    components: selectRow.components.map((component) => {
+                        let { emoji, ...rest } = component as ComponentsType & { emoji: APIPartialEmoji };
+                        if (component.type === 'BUTTON' || component.type === 'STRING_SELECT') {
+                            return { ...rest, ...checkEmojiIsUsed(emoji) }
+                        }
+                        return component;
+                    })
+                }
+            });
+
+            const { messageEmbed, messageText, ...rest } = data;
+            const botSettings = LocalStorage.bot.getSettings();
+            await RoleByInteractionService.create(cleanObject({
+                ...rest,
+                channelId: rest.channelId ?? channels?.find(channel => channel.type === 'GUILD_TEXT')?.id,
+                ...rest.isMessageText
+                    ? { messageText }
+                    : {
+                        messageEmbed: {
+                            ...messageEmbed!,
+                            color: botSettings?.bot.messageEmbedHexColor ?? '#FFFFFF'
+                        }
+                    },
+            }));
             Notification.open({ type: 'success', ...locale.notifications.success.shared.created });
         } catch (error) {
             Notification.open({ type: 'error', ...locale.notifications.error.shared.unexpectedError });

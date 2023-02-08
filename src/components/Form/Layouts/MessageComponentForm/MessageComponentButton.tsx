@@ -67,6 +67,10 @@ const MessageComponentButton: FC<{
                                     maxLength: {
                                         value: 80,
                                         message: localeMessageComponent.fieldsButton.label.rules.maxLength?.replace('{%value%}', '80')
+                                    },
+                                    required: {
+                                        value: true,
+                                        message: localeMessageComponent.fieldsButton.label.rules.required
                                     }
                                 })}
                                 label={localeMessageComponent.fieldsButton.label.label}
