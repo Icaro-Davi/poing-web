@@ -68,7 +68,7 @@ const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, 
             LocalStorage.localFormData.set({
                 ...localFormData,
                 form: {
-                    ...localFormData.form,
+                    ...localFormData?.form,
                     roleByInteraction: data,
                 }
             });

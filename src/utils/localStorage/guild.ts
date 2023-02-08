@@ -1,24 +1,33 @@
 import { getNextFetchTimestamp } from ".";
 import { ModulesType } from "../../services/discord/bot/bot.types";
+import { GuildChannel } from "../../services/discord/guild/guild.type";
 import { UserGuildType } from "../../services/discord/user/user.types";
+import LocalStorageBot from './bot';
 import LocalStorageKeys from "./keys";
 import { LocalStorageFuncOptions } from "./local.types";
-import LocalStorageBot from './bot';
-import { GuildChannel } from "../../services/discord/guild/guild.type";
+import { LocalFormData } from "./localFormData";
 
-function getGuilds(): UserGuildType[];
-function getGuilds(id?: string): UserGuildType;
+interface LocalUserGuildType extends UserGuildType {
+    channels?: {
+        list: GuildChannel[];
+        nextFetch: number;
+    };
+    localFormData?: LocalFormData;
+}
+
+function getGuilds(): LocalUserGuildType[];
+function getGuilds(id?: string): LocalUserGuildType;
 function getGuilds(id?: string): any {
     if (typeof localStorage !== 'undefined') {
         let stringifyGuild = localStorage.getItem(LocalStorageKeys.GUILDS);
         if (!stringifyGuild) return;
-        const guilds = JSON.parse(localStorage.getItem(LocalStorageKeys.GUILDS) ?? "") as UserGuildType[] | undefined;
+        const guilds = JSON.parse(localStorage.getItem(LocalStorageKeys.GUILDS) ?? "") as LocalUserGuildType[] | undefined;
         if (guilds && id) return guilds.find(guild => guild.id === id);
         return guilds;
     }
 }
 
-const setGuilds = (guilds: UserGuildType[]) => localStorage.setItem(LocalStorageKeys.GUILDS, JSON.stringify(guilds));
+const setGuilds = (guilds: LocalUserGuildType[]) => localStorage.setItem(LocalStorageKeys.GUILDS, JSON.stringify(guilds));
 const setSelectedGuild = (guildId: string) => localStorage.setItem(LocalStorageKeys.SELECTED_GUILD_ID, guildId);
 const getSelectedGuild = () => localStorage.getItem(LocalStorageKeys.SELECTED_GUILD_ID) ?? LocalStorageBot.getBotSettings()?._id;
 

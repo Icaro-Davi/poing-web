@@ -1,18 +1,25 @@
+import LocalGuild from "./guild";
 import { MessageWithComponentsType } from "../../services/discord/modules/modules.types"
-import LocalStorageKeys from "./keys"
 
-type LocalFormData = {
+export type LocalFormData = {
     form?: {
         roleByInteraction?: MessageWithComponentsType;
     }
 }
 
 const get = () => {
-    return JSON.parse(localStorage.getItem(LocalStorageKeys.LOCAL_FORM_DATA) ?? "{}") as LocalFormData;
+    const guild = LocalGuild.getGuilds(LocalGuild.getSelectedGuild());
+    return guild.localFormData;
 }
 
 const set = (data: LocalFormData) => {
-    localStorage.setItem(LocalStorageKeys.LOCAL_FORM_DATA, JSON.stringify(data));
+    const selectedGuildId = LocalGuild.getSelectedGuild();
+    const guilds = LocalGuild.getGuilds();
+    LocalGuild.setGuilds(guilds.map(guild => {
+        if (guild.id === selectedGuildId)
+            return { ...guild, localFormData: data }
+        return guild;
+    }));
 }
 
 export default {
