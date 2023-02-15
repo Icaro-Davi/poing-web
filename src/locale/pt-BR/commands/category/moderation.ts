@@ -4,9 +4,9 @@ import COMMAND_CATEGORY from "../categories";
 import STATIC_ARGUMENT from "../staticArguments";
 import { BOT } from "../../../defaultBoTInfo";
 
-import type { BotCommandType } from "../../../index.type";
+import LocaleCommandType from "../../../types/command";
 
-const MODERATION_COMMANDS: BotCommandType[] = [
+const MODERATION_COMMANDS: LocaleCommandType[] = [
     {
         name: 'ban',
         category: COMMAND_CATEGORY.moderation,
@@ -24,7 +24,7 @@ const MODERATION_COMMANDS: BotCommandType[] = [
         examples: [
             [`${BOT.prefix}ban list`, 'Lista com todos os banidos.'],
             [`${BOT.prefix}ban @${BOT.name} --days "7"`, `A flag de days pode ser utilizada ${new MDHelper('(--days|-d)').codeLineB().get()} em seguida o valor entre aspas duplas.`],
-            [`${BOT.prefix}ban @${BOT.name} --reason "${BOT.name} está distraindo os membros do servidor."`, 'O membro ${BOT.name} foi banido com um motivo.'],
+            [`${BOT.prefix}ban @${BOT.name} --reason "${BOT.name} está distraindo os membros do servidor."`, `O membro ${BOT.name} foi banido com um motivo.`],
         ]
     },
     {

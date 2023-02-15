@@ -1,6 +1,7 @@
+import LocaleMessageComponentFormLayout from "../../../types/forms/layouts/messageComponents";
 import STATIC_VALIDATION from "../staticValidation";
 
-const messageComponent = {
+const messageComponent: LocaleMessageComponentFormLayout = {
     labels: {
         createButton: 'Novo botão',
         removeButtons: 'Remover botões',
@@ -17,7 +18,7 @@ const messageComponent = {
             emojiId: {
                 label: 'ID do emoji do Discord',
                 placeholder: 'Id do emoji do servidor (precisa da referência do emoji)',
-                rules: {
+                validation: {
                     maxLength: STATIC_VALIDATION.maxLength,
                     onlyNumbers: STATIC_VALIDATION.onlyNumbers
                 }
@@ -25,7 +26,7 @@ const messageComponent = {
             emojiName: {
                 label: 'Referência do emoji',
                 placeholder: 'Emoji comum "🤓" ou nome do emoji do discord (precisa do ID do Emoji)',
-                rules: {
+                validation: {
                     maxLength: STATIC_VALIDATION.maxLength
                 }
             },
@@ -56,7 +57,7 @@ const messageComponent = {
             label: {
                 label: 'Nome do botão',
                 placeholder: 'Defina um nome para o botão',
-                rules: {
+                validation: {
                     maxLength: STATIC_VALIDATION.maxLength,
                     required: STATIC_VALIDATION.required
                 }
@@ -66,24 +67,24 @@ const messageComponent = {
             maxValues: {
                 label: 'Máximo de escolhas',
                 placeholder: 'De 1 a 25 o membro poderá selecionar de 1 a 25 opções de cargos por vez',
-                rules: {
+                validation: {
                     pattern: STATIC_VALIDATION.onlyNumbers,
-                    min: STATIC_VALIDATION.minNumber,
-                    max: STATIC_VALIDATION.maxNumber,
+                    minNumber: STATIC_VALIDATION.minNumber,
+                    maxNumber: STATIC_VALIDATION.maxNumber,
                     required: STATIC_VALIDATION.required
                 }
             },
             placeholder: {
                 label: 'Descrição do campo',
                 placeholder: 'Descrição do campo de entrada do Discord, Ex: Escolha suas funções de RPG...',
-                rules: {
+                validation: {
                     maxLength: STATIC_VALIDATION.maxLength
                 }
             },
             optionLabel: {
                 label: 'Nome da opção',
                 placeholder: 'O nome de uma das opções da lista de cargos',
-                rules: {
+                validation: {
                     required: STATIC_VALIDATION.required,
                     maxLength: STATIC_VALIDATION.maxLength
                 }
@@ -91,7 +92,7 @@ const messageComponent = {
             optionDescription: {
                 label: 'Descrição do cargo',
                 placeholder: 'Defina a descrição para o cargo selecionado',
-                rules: {
+                validation: {
                     maxLength: STATIC_VALIDATION.maxLength
                 }
             }

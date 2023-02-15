@@ -1,11 +1,11 @@
 import Argument from "../../../argument";
 import { BOT } from "../../../defaultBoTInfo";
-import { BotCommandType } from "../../../index.type";
 import MDHelper from "../../../markdown";
+import LocaleCommandType from "../../../types/command";
 import COMMAND_CATEGORY from "../categories";
 import STATIC_ARGUMENT from "../staticArguments";
 
-const UTILITY_COMMANDS: BotCommandType[] = [
+const UTILITY_COMMANDS: LocaleCommandType[] = [
     {
         name: 'info',
         category: COMMAND_CATEGORY.utility,

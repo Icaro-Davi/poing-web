@@ -1,8 +1,9 @@
+import LocaleNotifications from "../../types/notifications.ts";
 import error from "./error";
 import success from "./success";
 import warning from "./warning";
 
-const notifications = {
+const notifications: LocaleNotifications = {
     error, success, warning
 }
 

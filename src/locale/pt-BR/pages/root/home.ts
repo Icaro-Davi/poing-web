@@ -3,7 +3,7 @@ import { BOT } from "../../../defaultBoTInfo";
 const home = {
     head: {
         title: `${BOT.name} | Adicione poderosos recursos a sua comunidade`,
-        description: `O ${BOT.name} é um bot para Discord que fornece recursos úteis para seus usuários. O ${BOT.name} possui um painel de controle amigável com recursos que irão lhe ajudar. ${BOT.name} é a escolha perfeita para melhorar sua experiência no Discord. Junte-se à nossa comunidade e experimente o poder do ${BOT.name} agora!.`,
+        description: `O ${BOT.name} é um bot para Discord que fornece recursos úteis para seus usuários. O ${BOT.name} possui um painel de controle amigável com recursos que irão lhe ajudar. ${BOT.name} é a escolha perfeita para melhorar sua experiência no Discord. Junte-se à nossa comunidade e experimente o poder do ${BOT.name} agora!`,
         keywords: `discord, bot, discord bot, ${BOT.name} bot, ${BOT.name} inicio, Comandos do discord, Automatização do Discord, Ferramenta de gerenciamento de Discord, Interação de usuário com Discord, Ajuda de Discord, Gerenciamento de servidor de Discord`
     },
     welcomeCard: {

@@ -1,4 +1,6 @@
-const success = {
+import LocaleSuccessNotification from "../../types/notifications.ts/success";
+
+const success: LocaleSuccessNotification = {
     shared: {
         created: {
             title: 'Sucesso ಇ( ꈍᴗꈍ)ಇ',

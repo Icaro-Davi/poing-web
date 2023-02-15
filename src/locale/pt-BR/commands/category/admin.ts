@@ -2,9 +2,9 @@ import { BOT } from "../../../defaultBoTInfo";
 import COMMAND_CATEGORY from "../categories";
 import STATIC_ARGUMENT from "../staticArguments";
 
-import type { BotCommandType } from "../../../index.type";
+import LocaleCommandType from "../../../types/command";
 
-const ADMIN_COMMANDS: BotCommandType[] = [
+const ADMIN_COMMANDS: LocaleCommandType[] = [
     {
         name: 'anonymous-direct-message',
         category: COMMAND_CATEGORY.admin,

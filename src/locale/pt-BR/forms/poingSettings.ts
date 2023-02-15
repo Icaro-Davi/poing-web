@@ -1,7 +1,8 @@
 import { BOT } from "../../defaultBoTInfo";
+import LocalePoingSettingsForm from "../../types/forms/poingSettings";
 import STATIC_VALIDATION from "./staticValidation";
 
-const poingSettings = {
+const poingSettings: LocalePoingSettingsForm = {
     title: `Configurações do ${BOT.name}`,
     submitButtonLabel: 'Atualizar',
     field: {

@@ -1,4 +1,6 @@
-const warnings = {
+import LocaleWarningNotification from "../../types/notifications.ts/warning";
+
+const warnings: LocaleWarningNotification = {
     modules: {
         welcomeOrLeaveMemberModuleTestMessage: {
             title: 'Testar Mensagem',

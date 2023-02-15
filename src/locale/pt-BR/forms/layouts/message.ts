@@ -1,6 +1,7 @@
+import LocaleMessageFormLayout from "../../../types/forms/layouts/message";
 import STATIC_VALIDATION from "../staticValidation";
 
-const message = {
+const message: LocaleMessageFormLayout = {
     field: {
         isMessageText: {
             activeLabel: 'Ativar mensagem incorporada',
@@ -40,6 +41,14 @@ const message = {
             validation: {
                 maxLength: STATIC_VALIDATION.maxLength,
                 required: STATIC_VALIDATION.required
+            }
+        },
+        messageEmbedThumbnail: {
+            label: 'Thumbnail',
+            placeholder: 'URL de imagem ou {member.picture}',
+            validation: {
+                maxLength: STATIC_VALIDATION.maxLength,
+                pattern: 'Precisa ser um link ou variável do bot'
             }
         },
         messageEmbedFieldInline: {

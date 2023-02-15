@@ -1,6 +1,7 @@
 import { BOT } from "../../defaultBoTInfo";
+import LocaleErrorNotification from "../../types/notifications.ts/error";
 
-const Error = {
+const Error: LocaleErrorNotification = {
     shared: {
         unexpectedError: {
             title: 'Ocorreu um erro inesperado',
