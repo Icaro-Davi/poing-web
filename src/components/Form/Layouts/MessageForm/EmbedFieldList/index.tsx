@@ -58,18 +58,18 @@ const EmbedField: FC<IProps> = memo((props) => (
                 <Grid.Row breakpoints={{ xs: 18, md: 21 }}>
                     <Input
                         label={props.locale.forms.layouts.message.field.messageEmbedFieldName.label}
-                        placeholder={findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.placeholder, {
+                        placeholder={findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.placeholder!, {
                             default: false, '{%index%}': `${props.index}`
                         }).join('')}
                         errorMessage={props.formState.errors.messageEmbed?.fields?.[props.index]?.name?.message}
                         {...props.register(`messageEmbed.fields.${props.index}.name`, {
                             required: {
                                 value: true,
-                                message: props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.required
+                                message: props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.required!
                             },
                             maxLength: {
                                 value: 100,
-                                message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.maxLength, {
+                                message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.maxLength!, {
                                     default: false, '{%value%}': '100'
                                 }).join(''),
                             }
@@ -79,7 +79,7 @@ const EmbedField: FC<IProps> = memo((props) => (
                 <Grid.Row breakpoints={{ xs: 24 }}>
                     <AutocompleteTextarea
                         label={props.locale.forms.layouts.message.field.messageEmbedFieldValue.label}
-                        placeholder={findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.placeholder, {
+                        placeholder={findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.placeholder!, {
                             default: false, '{%index%}': `${props.index}`
                         }).join('')}
                         triggers={autocompleteTriggers}
@@ -87,11 +87,11 @@ const EmbedField: FC<IProps> = memo((props) => (
                         {...props.register(`messageEmbed.fields.${props.index}.value`, {
                             required: {
                                 value: true,
-                                message: props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.required
+                                message: props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.required!
                             },
                             maxLength: {
                                 value: 250,
-                                message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.maxLength, {
+                                message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.maxLength!, {
                                     default: false, '{%value%}': '250'
                                 }).join(''),
                             }

@@ -66,11 +66,11 @@ const MessageComponentButton: FC<{
                                 {...register(`components.${props.index}.components.${buttonIndex}.label`, {
                                     maxLength: {
                                         value: 80,
-                                        message: localeMessageComponent.fieldsButton.label.rules.maxLength?.replace('{%value%}', '80')
+                                        message: localeMessageComponent.fieldsButton.label.validation.maxLength?.replace('{%value%}', '80')!
                                     },
                                     required: {
                                         value: true,
-                                        message: localeMessageComponent.fieldsButton.label.rules.required
+                                        message: localeMessageComponent.fieldsButton.label.validation.required!
                                     }
                                 })}
                                 label={localeMessageComponent.fieldsButton.label.label}
@@ -84,11 +84,11 @@ const MessageComponentButton: FC<{
                                 {...register(`components.${props.index}.components.${buttonIndex}.emoji.id`, {
                                     maxLength: {
                                         value: 50,
-                                        message: locale.forms.layouts.messageComponents.field.shared.emojiId.rules.maxLength?.replace('{%value%}', '50')
+                                        message: locale.forms.layouts.messageComponents.field.shared.emojiId.validation.maxLength?.replace('{%value%}', '50')!
                                     },
                                     pattern: {
                                         value: /^\d+$/,
-                                        message: locale.forms.layouts.messageComponents.field.shared.emojiId.rules.onlyNumbers
+                                        message: locale.forms.layouts.messageComponents.field.shared.emojiId.validation.onlyNumbers!
                                     }
                                 })}
                                 label={locale.forms.layouts.messageComponents.field.shared.emojiId.label}
@@ -102,7 +102,7 @@ const MessageComponentButton: FC<{
                                 {...register(`components.${props.index}.components.${buttonIndex}.emoji.name`, {
                                     maxLength: {
                                         value: 50,
-                                        message: locale.forms.layouts.messageComponents.field.shared.emojiName.rules.maxLength?.replace('{%value%}', '50')
+                                        message: locale.forms.layouts.messageComponents.field.shared.emojiName.validation.maxLength?.replace('{%value%}', '50')!
                                     },
                                 })}
                                 label={locale.forms.layouts.messageComponents.field.shared.emojiName.label}

@@ -40,7 +40,7 @@ const FormElements: FC<FormProps<BotFields>> = ({ watch, locale: { forms: { poin
                         required: field.prefix.validation.required,
                         maxLength: {
                             value: 5,
-                            message: findStringVarsAndSubstitute(field.prefix.validation.maxLength, { '{%value%}': '5', default: false }).join('')
+                            message: findStringVarsAndSubstitute(field.prefix.validation.maxLength!, { '{%value%}': '5', default: false }).join('')
                         },
                         pattern: { value: /^[!@#$%&*\-_=+.:?/]{1,5}$/, message: field.prefix.validation.patternPrefix }
                     })}

@@ -108,7 +108,7 @@ const MessageForm: FC<MessageFormProps> = props => {
                                         {...methods.register('messageEmbed.author.name', {
                                             maxLength: {
                                                 value: 50,
-                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedAuthorName.validation.maxLength,
+                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedAuthorName.validation.maxLength!,
                                                     { default: false, '{%value%}': '50' }
                                                 ).join('')
                                             }
@@ -162,13 +162,37 @@ const MessageForm: FC<MessageFormProps> = props => {
                                         {...methods.register('messageEmbed.description', {
                                             required: {
                                                 value: true,
-                                                message: messageForm.field.messageEmbedDescription.validation.required
+                                                message: messageForm.field.messageEmbedDescription.validation.required!
                                             },
                                             maxLength: {
                                                 value: 300,
-                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedDescription.validation.maxLength, {
+                                                message: findStringVarsAndSubstitute(messageForm.field.messageEmbedDescription.validation.maxLength!, {
                                                     default: false, '{%value%}': '300'
                                                 }).join('')
+                                            }
+                                        })}
+                                    />
+                                </Grid.Row>
+                                <Grid.Row breakpoints={{ xs: 24 }}>
+                                    <AutocompleteInput
+                                        label={messageForm.field.messageEmbedThumbnail.label}
+                                        placeholder={messageForm.field.messageEmbedThumbnail.placeholder}
+                                        triggers={[
+                                            {
+                                                name: 'poingVars',
+                                                list: autocompleteVars.poingTextVars.listVarsValues().filter(text => /picture/.test(text)),
+                                                trigger: autocompleteVars.poingTextVars.trigger
+                                            }
+                                        ]}
+                                        errorMessage={methods.formState.errors.messageEmbed?.thumbnail?.message}
+                                        {...methods.register('messageEmbed.thumbnail', {
+                                            pattern: {
+                                                value: /(^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&/=]*)$)|(^{[\w.@]+}$)/,
+                                                message: messageForm.field.messageEmbedThumbnail.validation.pattern
+                                            },
+                                            maxLength: {
+                                                value: 150,
+                                                message: messageForm.field.messageEmbedThumbnail.validation.maxLength?.replace('{%value%}', '150')!
                                             }
                                         })}
                                     />
@@ -199,7 +223,7 @@ const MessageForm: FC<MessageFormProps> = props => {
                                 {...methods.register('messageEmbed.footer', {
                                     maxLength: {
                                         value: 100,
-                                        message: findStringVarsAndSubstitute(messageForm.field.messageEmbedFooter.validation.maxLength, {
+                                        message: findStringVarsAndSubstitute(messageForm.field.messageEmbedFooter.validation.maxLength!, {
                                             default: false, '{%value%}': '100'
                                         }).join(''),
                                     }
@@ -231,11 +255,11 @@ const MessageForm: FC<MessageFormProps> = props => {
                                 {...methods.register('messageText', {
                                     required: {
                                         value: true,
-                                        message: messageForm.field.messageText.validation.required
+                                        message: messageForm.field.messageText.validation.required!
                                     },
                                     maxLength: {
                                         value: 500,
-                                        message: findStringVarsAndSubstitute(messageForm.field.messageText.validation.maxLength, {
+                                        message: findStringVarsAndSubstitute(messageForm.field.messageText.validation.maxLength!, {
                                             default: false, '{%value%}': '500'
                                         }).join('')
                                     }

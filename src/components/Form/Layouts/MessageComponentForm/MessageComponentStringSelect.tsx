@@ -69,19 +69,19 @@ const MessageComponentStringSelect: FC<{
                             {...register(`components.${props.index}.components.0.max_values`, {
                                 pattern: {
                                     value: /^\d+$/,
-                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.rules.pattern
+                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.validation.pattern
                                 },
                                 min: {
                                     value: 1,
-                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.rules.min.replace('{%value%}', '1')
+                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.validation.minNumber!.replace('{%value%}', '1')
                                 },
                                 max: {
                                     value: 25,
-                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.rules.max.replace('{%value%}', '25')
+                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.validation.maxNumber!.replace('{%value%}', '25')
                                 },
                                 required: {
                                     value: true,
-                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.rules.required
+                                    message: localeMessageComponent.field.fieldsStringSelect.maxValues.validation.required!
                                 }
                             })}
                             label={localeMessageComponent.field.fieldsStringSelect.maxValues.label}
@@ -95,7 +95,7 @@ const MessageComponentStringSelect: FC<{
                             {...register(`components.${props.index}.components.0.placeholder`, {
                                 maxLength: {
                                     value: 150,
-                                    message: localeMessageComponent.field.fieldsStringSelect.placeholder.rules.maxLength.replace('{%value%}', '150')
+                                    message: localeMessageComponent.field.fieldsStringSelect.placeholder.validation.maxLength!.replace('{%value%}', '150')
                                 }
                             })}
                             label={localeMessageComponent.field.fieldsStringSelect.placeholder.label}
@@ -122,11 +122,11 @@ const MessageComponentStringSelect: FC<{
                                     {...register(`components.${props.index}.components.0.options.${optionIndex}.label`, {
                                         required: {
                                             value: true,
-                                            message: localeMessageComponent.field.fieldsStringSelect.optionLabel.rules.required
+                                            message: localeMessageComponent.field.fieldsStringSelect.optionLabel.validation.required!
                                         },
                                         maxLength: {
                                             value: 100,
-                                            message: localeMessageComponent.field.fieldsStringSelect.optionLabel.rules.required.replace('{%value%}', '100')
+                                            message: localeMessageComponent.field.fieldsStringSelect.optionLabel.validation.required!.replace('{%value%}', '100')
                                         }
                                     })}
                                     label={localeMessageComponent.field.fieldsStringSelect.optionLabel.label}
@@ -140,7 +140,7 @@ const MessageComponentStringSelect: FC<{
                                     {...register(`components.${props.index}.components.0.options.${optionIndex}.description`, {
                                         maxLength: {
                                             value: 100,
-                                            message: localeMessageComponent.field.fieldsStringSelect.optionDescription.rules.maxLength.replace('{%value%}', '100')
+                                            message: localeMessageComponent.field.fieldsStringSelect.optionDescription.validation.maxLength!.replace('{%value%}', '100')
                                         }
                                     })}
                                     label={localeMessageComponent.field.fieldsStringSelect.optionDescription.label}
@@ -154,11 +154,11 @@ const MessageComponentStringSelect: FC<{
                                     {...register(`components.${props.index}.components.0.options.${optionIndex}.emoji.id`, {
                                         maxLength: {
                                             value: 50,
-                                            message: localeMessageComponent.field.shared.emojiId.rules.maxLength.replace('{%value%}', '50')
+                                            message: localeMessageComponent.field.shared.emojiId.validation.maxLength!.replace('{%value%}', '50')
                                         },
                                         pattern: {
                                             value: /^\d+$/,
-                                            message: localeMessageComponent.field.shared.emojiId.rules.onlyNumbers
+                                            message: localeMessageComponent.field.shared.emojiId.validation.onlyNumbers!
                                         }
                                     })}
                                     label={localeMessageComponent.field.shared.emojiId.label}
@@ -172,7 +172,7 @@ const MessageComponentStringSelect: FC<{
                                     {...register(`components.${props.index}.components.0.options.${optionIndex}.emoji.name`, {
                                         maxLength: {
                                             value: 50,
-                                            message: localeMessageComponent.field.shared.emojiName.rules.maxLength.replace('{%value%}', '50')
+                                            message: localeMessageComponent.field.shared.emojiName.validation.maxLength!.replace('{%value%}', '50')
                                         },
                                     })}
                                     label={localeMessageComponent.field.shared.emojiName.label}
