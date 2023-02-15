@@ -44,7 +44,6 @@ const CreateFields: FC<{ fields: FieldType[] }> = props => {
     )
 }
 
-
 const DiscordEmbedMessage: FC<ReactMDProps> = props => {
     const handleImage = (textVar?: string) => {
         if (!textVar) return;
@@ -88,7 +87,7 @@ const DiscordEmbedMessage: FC<ReactMDProps> = props => {
                 )}
                 {thumbnail && (
                     <div className="thumbnail">
-                        <Img alt="Discord User" imageSrc={thumbnail} />
+                        <img style={{ objectFit: 'fill', width: '100%' }} alt="Discord User" src={thumbnail} />
                     </div>
                 )}
                 {props.footer && (

@@ -1,16 +1,17 @@
-import { ForwardRefRenderFunction, useImperativeHandle, useRef, forwardRef, useCallback, useEffect } from "react";
+import { forwardRef, ForwardRefRenderFunction, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useApp } from "../../../context/App";
 import useChannels from "../../../hooks/Discord/useChannels";
-import { APIPartialEmoji, ComponentButton, ComponentStringSelect, MessageWithComponentsType, ComponentsType } from "../../../services/discord/modules/modules.types";
+import useBotInfo from "../../../hooks/useBotInfo";
+import { APIPartialEmoji, ComponentStringSelect, ComponentsType, MessageWithComponentsType } from "../../../services/discord/modules/modules.types";
+import RoleByInteractionService from "../../../services/discord/modules/roleByInteraction";
+import cleanObject from "../../../utils/cleanObject";
 import LocalStorage from "../../../utils/localStorage";
+import replaceVarsInString from '../../../utils/replaceVarsInString';
+import LoadWrapper from "../../Loading/LoadWrapper";
 import Notification from "../../Notification";
 import MessageComponentForm from "../Layouts/MessageComponentForm";
 import MessageForm from "../Layouts/MessageForm";
-import replaceVarsInString from '../../../utils/replaceVarsInString'
-import { useApp } from "../../../context/App";
-import RoleByInteractionService from "../../../services/discord/modules/roleByInteraction";
-import cleanObject from "../../../utils/cleanObject";
-import LoadWrapper from "../../Loading/LoadWrapper";
 
 export type RoleByInteractionFormRef = {
     submit: () => void;
@@ -36,6 +37,7 @@ const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, 
     const { channels } = useChannels();
     const { locale } = useApp();
     const getValues = methods.getValues;
+    const botInfo = useBotInfo();
 
     useImperativeHandle(ref, () => ({
         submit: () => submitButtonRef.current?.click(),
@@ -45,6 +47,7 @@ const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, 
     const onSubmit = async (data: MessageWithComponentsType) => {
         try {
             props.onSubmitStart?.();
+            data = JSON.parse(replaceVarsInString(JSON.stringify(data), botInfo));
             const localFormData = LocalStorage.localFormData.get();
 
             const stringSelectMaxValuesNotMatchWithOptionsLength = data.components.find(component => (
@@ -77,7 +80,6 @@ const RoleByInteractionForm: ForwardRefRenderFunction<RoleByInteractionFormRef, 
             });
 
             const checkEmojiIsUsed = (emoji: APIPartialEmoji) => {
-                console.log(!!emoji.id || !!emoji.name)
                 if (emoji.id || emoji.name) return { emoji };
                 else return {}
             }
