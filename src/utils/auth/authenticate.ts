@@ -57,7 +57,7 @@ export const withPublicPage = (callback?: GetServerSideProps) => {
         const { props, ...serverSideConf } = (callback ? await callback(context) : { props: {} }) as { [key: string]: any };
         return {
             notFound: !locale.isUrlParam,
-            props: { ...props, initialState: {} },
+            props: { ...props, initialState: { localeLang: locale.lang } },
             ...serverSideConf
         }
     }

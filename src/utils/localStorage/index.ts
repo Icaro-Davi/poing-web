@@ -1,6 +1,7 @@
 import LocalStorageGuild from './guild';
 import LocalStorageBot from './bot';
 import LocalStorageFormData from './localFormData';
+import LocalStorageLocale from './locale';
 
 export const getNextFetchTimestamp = () => new Date().getTime() + ((1000 * 60) * 5);
 const clean = () => localStorage.clear();
@@ -23,6 +24,11 @@ const LocalStorage = {
     localFormData: {
         get: LocalStorageFormData.get,
         set: LocalStorageFormData.set
+    },
+    locale: {
+        save: LocalStorageLocale.saveLocale,
+        get: LocalStorageLocale.getLocaleByLang,
+        getAll: LocalStorageLocale.getAllLocales
     }
 }
 
