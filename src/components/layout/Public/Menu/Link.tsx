@@ -1,8 +1,9 @@
 import Link, { LinkProps } from "next/link";
+import { ReactNode } from "react";
 import { Anchor } from "./styled";
 
 interface IStyledLink extends LinkProps {
-    label?: string;
+    label?: string | ReactNode;
     selected?: boolean;
 }
 

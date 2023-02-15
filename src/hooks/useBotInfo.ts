@@ -31,8 +31,11 @@ function useBotInfo() {
     });
 
     const getMomentByLang = useCallback(async (lang: string) => {
-        await import(`moment/locale/${lang}`);
-        moment.locale(lang);
+
+        await import(`moment/locale/${lang}`).catch(err => {
+            console.log('module', lang, 'not found on moment');
+        });
+
         setVars(vars => ({
             ...vars,
             member: {

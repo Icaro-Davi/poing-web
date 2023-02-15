@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef } from "react";
-import { RiMenuUnfoldLine, RiMenuFoldLine } from 'react-icons/ri';
+import { RiMenuFoldLine, RiMenuUnfoldLine } from 'react-icons/ri';
 import { useTheme } from "styled-components";
 import { useApp } from "../../../../../context/App";
 import { useAuth } from "../../../../../context/Auth";
 import OptionsButton from "../../../../Buttons/OptionsButton";
 import Logo from "../../../../Logo";
 import StyledLink from "../Link";
+import LocaleButton from "../LocaleButton";
 import { Anchor, Header } from "../styled";
 import {
     StyledItemContainer, StyledMenuContainer,
@@ -58,16 +59,6 @@ const Sidebar: React.FC = props => {
                     </StyledOpenMenuBtn>
                 </StyledSideMenuCloseBtnContainer>
                 <StyledMenuContainer>
-
-                    <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === `/${lang}`} href={`/${lang}`} label={menu.home} />
-                    </StyledMenuItem>
-                    <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === `/${lang}/help`} href={`/${lang}/help`} label={menu.help} />
-                    </StyledMenuItem>
-                    <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === `/${lang}/commands`} href={`/${lang}/commands`} label={menu.commands} />
-                    </StyledMenuItem>
                     {auth.isAuthenticated
                         ? (
                             <StyledMenuItem style={{ display: 'flex', justifyContent: 'center' }}>
@@ -80,6 +71,18 @@ const Sidebar: React.FC = props => {
                             </StyledMenuItem>
                         )
                     }
+                    <StyledMenuItem>
+                        <StyledLink selected={Router.asPath === `/${lang}`} href={`/${lang}`} label={menu.home} />
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <StyledLink selected={Router.asPath === `/${lang}/help`} href={`/${lang}/help`} label={menu.help} />
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <StyledLink selected={Router.asPath === `/${lang}/commands`} href={`/${lang}/commands`} label={menu.commands} />
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <LocaleButton />
+                    </StyledMenuItem>
                 </StyledMenuContainer>
             </StyledSideMenuContainer>
         </Fragment>

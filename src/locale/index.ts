@@ -3,7 +3,7 @@ import { getLocaleLang, setLocaleLang } from '../utils/cookies';
 import type { GetServerSidePropsContext, NextPageContext } from 'next/types';
 import type { Locale, LocaleLang } from "./index.type";
 
-export const availableLocales = ['pt-BR'];
+export const availableLocales = ['pt-BR', 'en-US'];
 
 const validateLocale = (localeLang: string) =>
     availableLocales.some(_localeLang => _localeLang === localeLang);

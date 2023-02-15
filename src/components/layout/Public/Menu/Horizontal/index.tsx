@@ -6,6 +6,7 @@ import Logo from "../../../../Logo";
 import StyledLink from '../Link';
 import { Anchor, Header } from '../styled';
 import { MenuContainer, MenuItem, Navbar } from "./styles";
+import LocaleButton from '../LocaleButton';
 
 const MainLayoutHeader: React.FC = props => {
     const auth = useAuth();
@@ -30,15 +31,18 @@ const MainLayoutHeader: React.FC = props => {
                             label={menu.help}
                         />
                     </MenuItem>
-                </MenuContainer>
-                <Logo />
-                <MenuContainer>
                     <MenuItem>
                         <StyledLink
                             href={`/${lang}/commands`}
                             selected={router.asPath === `/${lang}/commands`}
                             label={menu.commands}
                         />
+                    </MenuItem>
+                </MenuContainer>
+                <Logo />
+                <MenuContainer>
+                    <MenuItem>
+                        <LocaleButton />
                     </MenuItem>
                     {auth.isAuthenticated
                         ? (
