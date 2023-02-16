@@ -39,14 +39,10 @@ const LocaleButton: FC = props => {
                                 <Fragment key={`locale-button-${i}`}>
                                     <Anchor
                                         href={ref.href}
-                                        selected={lang === ref.lang}
-                                        children={(
-                                            <Fragment>
-                                                <Flag style={{ marginRight: SPACING.sm }} lang={ref.lang} />
-                                                {ref.label}
-                                            </Fragment>
-                                        )}
-                                    />
+                                        selected={lang === ref.lang}>
+                                        <Flag style={{ marginRight: SPACING.sm }} lang={ref.lang} />
+                                        {ref.label}
+                                    </Anchor>
                                     {(localesReferences[i + 1] && localesReferences[i + 1].lang !== lang) && <Divider />}
                                 </Fragment>
                             )
