@@ -9,10 +9,13 @@ type LocalePoingSettingsForm = {
         }>;
         messageEmbedHexColor: LocaleFormField<{
             patternHexColor: string;
-        }>
+        }>;
         locale: LocaleFormField<{
             required: string;
-        }>
+        }>;
+        channelLogsId: LocaleFormField & {
+            optionLogsDisabled: string;
+        }
     };
 }
 

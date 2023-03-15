@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm, FormProvider } from 'react-hook-form';
 
 import { useApp } from "../../../context/App";
-import LocalStorage from "../../../utils/localStorage";
-import LoadWrapper from "../../Loading/LoadWrapper";
-import FormElements from "./Form";
-import SubmitButton from "../items/SubmitButton";
-import Card from '../../Card';
 import DiscordBotService from "../../../services/discord/bot";
+import BaseError from "../../../utils/error/baseError";
+import LocalStorage from "../../../utils/localStorage";
+import Card from '../../Card';
+import LoadWrapper from "../../Loading/LoadWrapper";
 import Notification from "../../Notification";
 import { Title } from "../../Typography";
-import BaseError from "../../../utils/error/baseError";
+import SubmitButton from "../items/SubmitButton";
+import FormElements from "./Form";
 
 import type { FC } from "react";
 import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
 import type { GetReference } from "../../../utils/general.types";
+import useChannels from "../../../hooks/Discord/useChannels";
 
 type BotFields = GetReference<GuildSettingsType, 'bot'>;
 
 const PoingSettingsForm: FC = () => {
     const { store, locale } = useApp();
-    const { register, handleSubmit, getValues, reset, formState, watch, setValue } = useForm<BotFields>({
+    const methods = useForm<BotFields>({
         defaultValues: LocalStorage.bot.getSettings()?.bot,
         mode: 'all'
     });
-    const discordPoingColorTheme = watch('messageEmbedHexColor');
+    const channels = useChannels();
+    const discordPoingColorTheme = methods.watch('messageEmbedHexColor');
     const [isLoading, setLoading] = useState(false);
 
     const onSubmit: SubmitHandler<BotFields> = async (data, event) => {
@@ -54,16 +56,26 @@ const PoingSettingsForm: FC = () => {
         }
     }
 
+    const reset = methods.reset;
     useEffect(() => { reset(LocalStorage.bot.getSettings()?.bot) }, [store.selectedGuildId, reset]);
 
     return (
-        <LoadWrapper isLoading={!Object.keys(getValues()).length}>
-            <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
-                <Card style={{ borderColor: discordPoingColorTheme }}>
-                    <Title level='2' stroke={{ strokeColor: discordPoingColorTheme }} style={{ paddingBottom: '1rem', textAlign: 'center' }}>{locale.forms.poingSettings.title}</Title>
-                    {!!Object.keys(getValues()).length && <FormElements {...{ register, formState, watch, setValue, locale }} />}
-                    <SubmitButton label={locale.forms.poingSettings.submitButtonLabel} isLoading={isLoading} />
-                </Card>
+        <LoadWrapper isLoading={!Object.keys(methods.getValues()).length && !channels.channels?.length}>
+            <form style={{ width: '100%' }} onSubmit={methods.handleSubmit(onSubmit)}>
+                <FormProvider {...methods}>
+                    <Card style={{ borderColor: discordPoingColorTheme }}>
+                        <Title level='2' stroke={{ strokeColor: discordPoingColorTheme }} style={{ paddingBottom: '1rem', textAlign: 'center' }}>{locale.forms.poingSettings.title}</Title>
+                        {!!Object.keys(methods.getValues()).length && <FormElements
+                            locale={locale}
+                            channels={
+                                channels.channels
+                                    ?.filter(channel => channel.type === 'GUILD_TEXT')
+                                    ?.map(channel => ({ label: channel.name ?? `ID: ${channel.id}`, key: channel.id })) ?? []
+                            }
+                        />}
+                        <SubmitButton label={locale.forms.poingSettings.submitButtonLabel} isLoading={isLoading} />
+                    </Card>
+                </FormProvider>
             </form>
         </LoadWrapper>
     );

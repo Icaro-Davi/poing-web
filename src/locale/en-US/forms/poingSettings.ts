@@ -26,6 +26,11 @@ const poingSettings: LocalePoingSettingsForm = {
             validation: {
                 required: STATIC_VALIDATION.required
             }
+        },
+        channelLogsId: {
+            label: 'Logs Channel',
+            optionLogsDisabled: 'Disabled',
+            validation: {}
         }
     }
 }

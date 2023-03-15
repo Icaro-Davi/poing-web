@@ -15,6 +15,9 @@ export type GuildSettingsType = {
         roles: {
             muteId: string;
         };
+        channel?: {
+            logsId?: string;
+        }
     };
     modules?: {
         welcomeMember?: ModuleType<WelcomeModuleType | string>;

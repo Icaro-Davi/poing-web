@@ -7,7 +7,7 @@ const poingSettings: LocalePoingSettingsForm = {
     submitButtonLabel: 'Atualizar',
     field: {
         prefix: {
-            label:  `Prefixo do ${BOT.name}`,
+            label: `Prefixo do ${BOT.name}`,
             validation: {
                 required: STATIC_VALIDATION.required,
                 maxLength: STATIC_VALIDATION.maxLength,
@@ -26,6 +26,11 @@ const poingSettings: LocalePoingSettingsForm = {
             validation: {
                 required: STATIC_VALIDATION.required
             }
+        },
+        channelLogsId: {
+            label: 'Canal de logs',
+            optionLogsDisabled: 'Desabilitado',
+            validation: {}
         }
     }
 }

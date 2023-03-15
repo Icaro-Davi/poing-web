@@ -68,9 +68,9 @@ const EmbedField: FC<IProps> = memo((props) => (
                                 message: props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.required!
                             },
                             maxLength: {
-                                value: 100,
+                                value: 250,
                                 message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldName.validation.maxLength!, {
-                                    default: false, '{%value%}': '100'
+                                    default: false, '{%value%}': '250'
                                 }).join(''),
                             }
                         })}
@@ -90,9 +90,9 @@ const EmbedField: FC<IProps> = memo((props) => (
                                 message: props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.required!
                             },
                             maxLength: {
-                                value: 250,
+                                value: 1020,
                                 message: findStringVarsAndSubstitute(props.locale.forms.layouts.message.field.messageEmbedFieldValue.validation.maxLength!, {
-                                    default: false, '{%value%}': '250'
+                                    default: false, '{%value%}': '1020'
                                 }).join(''),
                             }
                         })}

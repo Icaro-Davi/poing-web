@@ -9,7 +9,11 @@ class DiscordUserService {
     static async getGuilds() {
         try {
             const { data } = await DiscordRequestor.get<UserGuildType[]>(`${this.basePath}/guilds`);
-            const guilds = data.map(guild => ({ ...guild, icon: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` }));
+            const guilds = data.map(guild => ({
+                ...guild,
+                icon: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}`,
+                roles: guild.roles.filter(role => role.name !== '@everyone')
+            }));
             LocalStorage.guild.set(guilds);
             return guilds;
         } catch (error) {
