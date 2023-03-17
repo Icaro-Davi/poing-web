@@ -95,6 +95,21 @@ const MODERATION_COMMANDS: LocaleCommandType[] = [
             [`${BOT.prefix}unban 123456789`, 'MemberId 123456789 has been unbanned.'],
             [`${BOT.prefix}unban 123456789 Reason for unbanning`, 'Remove member from banned list with reason for action.']
         ]
+    },
+    {
+        name: 'warn',
+        category: COMMAND_CATEGORY.moderation,
+        description: 'Send a notice to a member.',
+        usage: [`${BOT.prefix}warn ${new MDHelper('[@Member Mention|MemberId]').codeLineB().get()} ${new MDHelper('<message|embed>').codeLineB().get()} ${new MDHelper('[message]|(embed flags)').codeLineB().get()}`],
+        args: [
+            Argument.create('STATIC', 'message', 'Indicate that a normal text message will be sent next.'),
+            Argument.create('STATIC', 'embed', 'Indicates that an embed message will then be sent, the command with this flag is identical to the embed command, check the embed command if you have any doubts.'),
+            STATIC_ARGUMENT.member.description
+        ],
+        examples: [
+            [`${BOT.prefix}warn message @${BOT.name} He cursed a member, let it not be repeated!"`, "Send a warning by message."],
+            [`${BOT.prefix}warn embed @${BOT.name} -t "Server ${BOT.name}" -d "You have committed serious crimes against slime society" -fti "Infringement 1" -fvi "Stepped on a slime" -fti "Infringement 2" -fvi "Used a slime to melt clothes" -f "You will be banned if you commit these atrocities again!"`, "Sends warn using embedded message."]
+        ]
     }
 ]
 

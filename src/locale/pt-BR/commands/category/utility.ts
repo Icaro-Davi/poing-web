@@ -53,6 +53,26 @@ const UTILITY_COMMANDS: LocaleCommandType[] = [
         examples: [
             [`${BOT.prefix}ping`, 'Retorna ping dos serviços disponíveis.']
         ]
+    },
+    {
+        name: 'embed',
+        category: COMMAND_CATEGORY.utility,
+        description: 'Cria uma mensagem incorporada.',
+        usage: [`${BOT.prefix}embed ${new MDHelper('(--title|--desc|--thumb|--field_title|--field_value|--field_title_inline|--field_value_inline|--footer)').codeLineB().get()}`],
+        args: [
+            Argument.create('FLAG', 'title', 'Titulo da mensagem'),
+            Argument.create('FLAG', 'desc', 'Descrição da mensagem'),
+            Argument.create('FLAG', 'thumb', 'Thumbnail precisa ser uma URL valida.', '--thumb|-tb'),
+            Argument.create('FLAG', 'field_title', 'Titulo do campo em linha única (Para cada field_title irá precisar de um field_value)', '--field_title|-fv'),
+            Argument.create('FLAG', 'field_value', 'Descrição do campo em linha única (Para cada field_value irá precisar de um field_title)', '--field_title|-fv'),
+            Argument.create('FLAG', 'field_title_inline', 'Titulo do campo em linha dividida com outros campos (Para cada field_title_inline irá precisar de um field_value_inline)', '--field_title_inline|-fti'),
+            Argument.create('FLAG', 'field_value_inline', 'Descrição do campo em linha dividida com outros campos (Para cada field_value_inline irá precisar de um field_title_inline)', '--field_value_inline|-fvi'),
+            Argument.create('FLAG', 'footer', 'Rodapé da mensagem'),
+        ],
+        examples: [
+            [`${BOT.prefix}embed -t "Hello" -d "Eu sou ${BOT.name}" -tb "https://media.tenor.com/NBDZyvHqv9wAAAAC/poring-ragnarok.gif" -ft "Gosta de mim UwU ?" -fv "Então porque não me chamou para seu servidor ? :c"`, "Cria mensagem incorporada com titulo, descrição, thumbnail 1 campo."],
+            [`${BOT.prefix}embed -t "Hello" -d "World" -f "Rodapé da mensagem" -fti "Titulo 1" -fvi "Descrição 1" -ft "Titulo 2" -fv "Descrição 2"`, "Cria mensagem incorporada com um titulo, descrição, rodapé e 2 campos na mesma linha."],
+        ]
     }
 ]
 

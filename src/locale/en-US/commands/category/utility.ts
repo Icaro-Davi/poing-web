@@ -53,6 +53,26 @@ const UTILITY_COMMANDS: LocaleCommandType[] = [
         examples: [
             [`${BOT.prefix}ping`, 'Return the server response time.']
         ]
+    },
+    {
+        name: 'embed',
+        category: COMMAND_CATEGORY.utility,
+        description: 'Creates an embed message.',
+        usage: [`${BOT.prefix}embed ${new MDHelper('(--title|--desc|--thumb|--field_title|--field_value|--field_title_inline|--field_value_inline|--footer)').codeLineB().get()}`],
+        args: [
+            Argument.create('FLAG', 'title', 'Message title.'),
+            Argument.create('FLAG', 'desc', 'Message description.'),
+            Argument.create('FLAG', 'thumb', 'Thumbnail must be a valid URL.', '--thumb|-tb'),
+            Argument.create('FLAG', 'field_title', 'Title of a field in a sigle line (For each "field_title" you will need a "field_value")', '--field_title|-fv'),
+            Argument.create('FLAG', 'field_value', 'Description of a field in a single line (For each "field_value" you will need a "field_title")', '--field_title|-fv'),
+            Argument.create('FLAG', 'field_title_inline', 'Title of a field split in a line with other fields (For each "field_title_inline" you will need a "field_value_inline")', '--field_title_inline|-fti'),
+            Argument.create('FLAG', 'field_value_inline', 'Description of a field split in a line with other fields (For each "field_value_inline" you will need a "field_title_inline")', '--field_value_inline|-fvi'),
+            Argument.create('FLAG', 'footer', 'Message footer'),
+        ],
+        examples: [
+            [`${BOT.prefix}embed -t "Hello" -d "I'm ${BOT.name}" -tb "https://media.tenor.com/NBDZyvHqv9wAAAAC/poring-ragnarok.gif" -ft "Do you like me UwU ?" -fv "Then why didn't you invite me to your server ? :c"`, "Creates an embed message with a title, a description, a footer and 2 fields in the same line."],
+            [`${BOT.prefix}embed -t "Hello" -d "World" -f "Message footer" -fti "Title 1" -fvi "Description 1" -ft "Title 2" -fv "Description 2"`, "Creates an embed message with a title, a description, a footer and 2 fields in the same line."],
+        ]
     }
 ]
 

@@ -54,8 +54,8 @@ const MODERATION_COMMANDS: LocaleCommandType[] = [
         ],
         args: [
             STATIC_ARGUMENT.member.description,
-            [Argument.argSymbol, '[addrole]', `Adicione o argumento ${new MDHelper('[addrole]').codeLineB().get()} em seguida o cargo que deseja adicionar podendo ser ${new MDHelper('[Mencionar um cargo "@Cargo" ou usar o ID do cargo "123456789"]').codeLineB().get()}.`],
-            [Argument.argSymbol, '[list]', 'Lista os 50 membros mais próximos de acabar a punição.'],
+            [Argument.staticArgSymbol, '<addrole>', `Adicione o argumento ${new MDHelper('[addrole]').codeLineB().get()} em seguida o cargo que deseja adicionar podendo ser ${new MDHelper('[Mencionar um cargo "@Cargo" ou usar o ID do cargo "123456789"]').codeLineB().get()}.`],
+            [Argument.staticArgSymbol, '<list>', 'Lista os 50 membros mais próximos de acabar a punição.'],
             [Argument.argSymbol, '[Tempo]', 'A duração pode ser usado informando um número e em seguida com M para minutos, H para horas e D para dias.'],
             [Argument.argSymbol, '[Motivo]', 'Motivo para mutar o membro.']
         ],
@@ -94,6 +94,21 @@ const MODERATION_COMMANDS: LocaleCommandType[] = [
         examples: [
             [`${BOT.prefix}unban 123456789`, 'Agora o membro de ID 123456789 pode ser convidado novamente.'],
             [`${BOT.prefix}unban 123456789 Pagou propina para o admin`, 'Remove membro da lista de banidos com o motivo da ação.']
+        ]
+    },
+    {
+        name: 'warn',
+        category: COMMAND_CATEGORY.moderation,
+        description: 'Envia um aviso para um membro.',
+        usage: [`${BOT.prefix}warn ${new MDHelper('[@Menção de Membro|MembroId]').codeLineB().get()} ${new MDHelper('<message|embed>').codeLineB().get()} ${new MDHelper('[mensagem]|(embed flags)').codeLineB().get()}`],
+        args: [
+            Argument.create('STATIC', 'message', 'Indicar que em seguida vai ser enviado uma mensagem de texto normal.'),
+            Argument.create('STATIC', 'embed', 'Indica que em seguida será enviada uma mensagem incorporada, o comando com essa flag é idêntico ao comando embed, consulte o comando embed caso tenha duvidas.'),
+            STATIC_ARGUMENT.member.description
+        ],
+        examples: [
+            [`${BOT.prefix}warn message @${BOT.name} Xingou um membro, que não se repita!`, "Envia um aviso por mensagem."],
+            [`${BOT.prefix}warn embed @${BOT.name} -t "Servidor ${BOT.name}" -d "Você cometeu sérios crimes contra a sociedade dos slimes" -fti "Infração 1" -fvi "Pisou em um slime" -fti "Infração 2" -fvi "Usou um slime para derreter roupas" -f "Seras banido caso cometa novamente essas atrocidades!"`, "Envia um aviso usando mensagem incorporada."]
         ]
     }
 ]
