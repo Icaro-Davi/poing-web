@@ -1,18 +1,19 @@
 import Image from "next/image";
 import styled from "styled-components";
 
-interface IImg extends React.HTMLAttributes<HTMLDivElement>{
+interface IImg extends React.HTMLAttributes<HTMLDivElement> {
     imageSrc: string;
     alt: string;
 }
 
-const Img: React.FC<IImg> = ({ imageSrc, alt, ...props}) => {
+const Img: React.FC<IImg> = ({ imageSrc, alt, ...props }) => {
     return (
         <div {...props}>
             <Image
                 priority
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="(max-width: 768px) 100vw"
+                style={{ objectFit: 'contain' }}
                 src={imageSrc}
                 alt={alt}
             />

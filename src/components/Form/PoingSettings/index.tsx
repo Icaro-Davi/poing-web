@@ -25,7 +25,7 @@ const PoingSettingsForm: FC = () => {
         defaultValues: LocalStorage.bot.getSettings()?.bot,
         mode: 'all'
     });
-    const channels = useChannels();
+    const channels = useChannels(store.selectedGuildId);
     const discordPoingColorTheme = methods.watch('messageEmbedHexColor');
     const [isLoading, setLoading] = useState(false);
 
@@ -57,22 +57,26 @@ const PoingSettingsForm: FC = () => {
     }
 
     const reset = methods.reset;
-    useEffect(() => { reset(LocalStorage.bot.getSettings()?.bot) }, [store.selectedGuildId, reset]);
+    useEffect(() => {
+        reset(LocalStorage.bot.getSettings()?.bot);
+    }, [reset, channels.channels]);
 
     return (
-        <LoadWrapper isLoading={!Object.keys(methods.getValues()).length && !channels.channels?.length}>
+        <LoadWrapper isLoading={(!Object.keys(methods.getValues()).length && !channels.channels?.length) || channels.isLoading}>
             <form style={{ width: '100%' }} onSubmit={methods.handleSubmit(onSubmit)}>
                 <FormProvider {...methods}>
                     <Card style={{ borderColor: discordPoingColorTheme }}>
                         <Title level='2' stroke={{ strokeColor: discordPoingColorTheme }} style={{ paddingBottom: '1rem', textAlign: 'center' }}>{locale.forms.poingSettings.title}</Title>
-                        {!!Object.keys(methods.getValues()).length && <FormElements
-                            locale={locale}
-                            channels={
-                                channels.channels
-                                    ?.filter(channel => channel.type === 'GUILD_TEXT')
-                                    ?.map(channel => ({ label: channel.name ?? `ID: ${channel.id}`, key: channel.id })) ?? []
-                            }
-                        />}
+                        {!!Object.keys(methods.getValues()).length && (
+                            <FormElements
+                                locale={locale}
+                                channels={
+                                    channels.channels
+                                        ?.filter(channel => channel.type === 'GUILD_TEXT')
+                                        ?.map(channel => ({ label: channel.name ?? `ID: ${channel.id}`, key: channel.id })) ?? []
+                                }
+                            />
+                        )}
                         <SubmitButton label={locale.forms.poingSettings.submitButtonLabel} isLoading={isLoading} />
                     </Card>
                 </FormProvider>

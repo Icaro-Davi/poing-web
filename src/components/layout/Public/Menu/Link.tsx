@@ -9,7 +9,7 @@ interface IStyledLink extends LinkProps {
 
 const StyledLink: React.FC<IStyledLink> = props => (
     <Link {...props} passHref>
-        <Anchor selected={props.selected}>{props.label}</Anchor>
+        <Anchor as={'span'} selected={props.selected}>{props.label}</Anchor>
     </Link>
 );
 

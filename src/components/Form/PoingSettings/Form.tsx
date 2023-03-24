@@ -77,11 +77,12 @@ const FormElements: FC<IForm> = ({ locale: { forms: { poingSettings: { field } }
             </Grid.Row>
             <Grid.Row breakpoints={breakpoints}>
                 <FloatSelect
-                    label={field.channelLogsId.label}
-                    errorMessage={formState.errors.channel?.logsId?.message}
-                    options={[{ label: field.channelLogsId.optionLogsDisabled, key: '' }, ...props.channels]}
                     style={style}
+                    label={field.channelLogsId.label}
+                    options={[{ label: field.channelLogsId.optionLogsDisabled, key: '' }, ...props.channels]}
+                    defaultValue={''}
                     innerElement={{ style: { borderColor } }}
+                    errorMessage={formState.errors.channel?.logsId?.message}
                     {...register('channel.logsId')}
                 />
             </Grid.Row>

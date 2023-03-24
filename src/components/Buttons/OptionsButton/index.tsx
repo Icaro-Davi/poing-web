@@ -48,7 +48,7 @@ const OptionsButton: FC<IProps> = props => {
                 </button>
                 <ul>
                     <li>
-                        <Link href={`/${props.localeLang}/dashboard/poing`}><a><IoSettingsOutline size={ICON_SIZE} />{props.label.dashboard}</a></Link>
+                        <Link href={`/${props.localeLang}/dashboard/poing`}><IoSettingsOutline size={ICON_SIZE} />{props.label.dashboard}</Link>
                     </li>
                     <li>
                         <a href='#' onClick={logOut}><IoExitOutline size={ICON_SIZE} />{props.label.exit}</a>
