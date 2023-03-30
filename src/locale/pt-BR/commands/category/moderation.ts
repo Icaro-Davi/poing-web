@@ -32,11 +32,13 @@ const MODERATION_COMMANDS: LocaleCommandType[] = [
         category: COMMAND_CATEGORY.moderation,
         description: 'Remove um membro.',
         usage: [
-            `${BOT.prefix}kick ${STATIC_ARGUMENT.member.name}* ${new MDHelper('[Motivo]').codeLineB().get()}`
+            `${BOT.prefix}kick ${STATIC_ARGUMENT.member.name}* ${new MDHelper('[Motivo]').codeLineB().get()}`,
+            `${BOT.prefix}kick mass`
         ],
         args: [
             STATIC_ARGUMENT.member.description,
-            [Argument.argSymbol, '[Motivo]', `Salva o motivo pela qual o membro foi kickado.`]
+            [Argument.argSymbol, '[Motivo]', `Salva o motivo pela qual o membro foi kickado.`],
+            Argument.create('STATIC', 'mass', 'Irá remover vários membros de uma só vez, cria uma mensagem interativa para preencher as informações necessárias.')
         ],
         examples: [
             [`${BOT.prefix}kick @${BOT.name}`, `O membro ${BOT.name} for removido.`],
@@ -110,7 +112,7 @@ const MODERATION_COMMANDS: LocaleCommandType[] = [
             [`${BOT.prefix}warn message @${BOT.name} Xingou um membro, que não se repita!`, "Envia um aviso por mensagem."],
             [`${BOT.prefix}warn embed @${BOT.name} -t "Servidor ${BOT.name}" -d "Você cometeu sérios crimes contra a sociedade dos slimes" -fti "Infração 1" -fvi "Pisou em um slime" -fti "Infração 2" -fvi "Usou um slime para derreter roupas" -f "Seras banido caso cometa novamente essas atrocidades!"`, "Envia um aviso usando mensagem incorporada."]
         ]
-    }
+    },
 ]
 
 export default MODERATION_COMMANDS;

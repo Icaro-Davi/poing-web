@@ -32,11 +32,13 @@ const MODERATION_COMMANDS: LocaleCommandType[] = [
         category: COMMAND_CATEGORY.moderation,
         description: 'Kick a member.',
         usage: [
-            `${BOT.prefix}kick ${STATIC_ARGUMENT.member.name}* ${new MDHelper('[Reason]').codeLineB().get()}`
+            `${BOT.prefix}kick ${STATIC_ARGUMENT.member.name}* ${new MDHelper('[Reason]').codeLineB().get()}`,
+            `${BOT.prefix}kick mass`
         ],
         args: [
             STATIC_ARGUMENT.member.description,
-            [Argument.argSymbol, '[Reason]', `Saves the reason the member was kicked.`]
+            [Argument.argSymbol, '[Reason]', `Saves the reason the member was kicked.`],
+            Argument.create('STATIC', 'mass', 'Will remove multiple members at once. Create an interactive message to fill in the required information.')
         ],
         examples: [
             [`${BOT.prefix}kick @${BOT.name}`, `Remove member ${BOT.name}.`],
