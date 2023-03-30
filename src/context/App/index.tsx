@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-import { useReducer, FC, useState, createContext, useContext } from "react";
+import { createContext, FC, useCallback, useContext, useEffect, useReducer, useState } from "react";
 import useMatchMedia from "../../hooks/useMatchMedia";
 import appReducer from "./reducer";
 
-import type { IAppContext, IAppProvider } from "./app.interfaces";
 import type { Locale } from "../../locale/index.type";
+import LocaleType from "../../locale/types";
 import DiscordBotService from "../../services/discord/bot";
-import AppDispatch from "./dispatch";
 import { useAuth } from "../Auth";
-import LocalStorage from '../../utils/localStorage';
+import type { IAppContext, IAppProvider } from "./app.interfaces";
+import AppDispatch from "./dispatch";
 
 const AppProvider: FC<IAppProvider> = props => {
     const [locale, setLocale] = useState<Locale>(props.initialState?.locale);
@@ -16,47 +15,45 @@ const AppProvider: FC<IAppProvider> = props => {
     const breakpoints = useMatchMedia();
     const { isAuthenticated } = useAuth();
     const [store, dispatchStore] = useReducer(appReducer, {
-        guilds: LocalStorage.guild.get() ?? [],
+        guilds: [],
         selectedGuildId: ''
     });
 
-    const loadGuilds = async () => {
+    const loadGuilds = useCallback(async (isAuthenticated: boolean) => {
         try {
-            isAuthenticated
-                ? await AppDispatch.findGuildAndSave(dispatchStore)
-                    .then(async (store) => {
-                        store?.selectedGuildId && DiscordBotService.getGuildSettingsById(store.selectedGuildId);
-                        setLoadApp({ isLoading: false, isReady: true });
-                    })
-                : setLoadApp({ isLoading: false, isReady: true });
+            isAuthenticated && await AppDispatch.findGuildAndSave(dispatchStore)
+                .then(async (store) => {
+                    store?.selectedGuildId && DiscordBotService.getGuildSettingsById(store.selectedGuildId);
+                })
         } catch (error) {
             console.error('[APP_CONTEXT] Failed to load guilds');
         }
-    }
+    }, []);
 
-    const handleLoad = async () => {
-        if (loadApp.isLoading) return;
-        !loadApp.isReady && setLoadApp({ isLoading: true, isReady: false });
+    const handleLoad = useCallback(async (params: {
+        app: { isLoading: boolean; isReady: boolean; }
+        isAuthenticated: boolean;
+        locale?: LocaleType;
+    }) => {
+        if (params.app.isLoading) return;
+        !params.app.isReady && setLoadApp({ isLoading: true, isReady: false });
         const { getLocale } = (await import('../../locale'));
-
         const loadDataAndStartApp = async () => {
-            if (!locale) {
+            if (!params.locale) {
                 const _locale = (await getLocale()) as Locale;
                 setLocale(_locale);
             }
-            await loadGuilds();
+            await loadGuilds(!!params.isAuthenticated);
         }
         await loadDataAndStartApp();
-    }
+        setLoadApp({ isLoading: false, isReady: true });
+    }, [loadGuilds]);
 
-    useEffect(() => { handleLoad(); }, [isAuthenticated]);
+
     useEffect(() => {
-        window.addEventListener('focus', async () => {
-            if (!LocalStorage.guild.get()) {
-                await loadGuilds();
-            }
-        });
-    }, []);
+        if (!loadApp.isLoading && ((!store.guilds.length && isAuthenticated) || !loadApp.isReady))
+            handleLoad({ app: loadApp, isAuthenticated: !!isAuthenticated, locale });
+    }, [handleLoad, loadApp, isAuthenticated, locale, store.guilds.length]);
 
     return (
         <AppContext.Provider value={{

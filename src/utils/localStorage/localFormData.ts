@@ -22,7 +22,9 @@ const set = (data: LocalFormData) => {
     }));
 }
 
-export default {
+const localFormData = {
     get,
     set
 }
+
+export default localFormData;

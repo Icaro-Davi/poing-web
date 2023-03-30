@@ -18,7 +18,9 @@ const setGuildSettings = (guildSettings: GuildSettingsType, options?: LocalStora
     localStorage.setItem(LocalStorageKeys.GUILD_SETTINGS, JSON.stringify({ ...guildSettings, nextFetch: botSettings?.nextFetch || nextFetch }));
 }
 
-export default {
+const bot = {
     getBotSettings,
     setGuildSettings
 }
+
+export default bot;

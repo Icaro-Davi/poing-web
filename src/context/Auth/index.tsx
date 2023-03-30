@@ -1,4 +1,4 @@
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useRef, useState, FC, createContext, useContext, useEffect } from 'react';
 import Notification from '../../components/Notification';
 import AuthService from '../../services/discord/auth';
@@ -14,6 +14,7 @@ const AuthProvider: FC<IAuthProvider> = props => {
     const { current: discordAuthUrl } = useRef(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI);
     const [isAuthenticated, setAuth] = useState(!!props.initialState?.isAuthenticated);
     const [user, setUser] = useState<UserType>();
+    const { asPath } = useRouter();
 
     const logIn = () => { };
     const logOut = async () => {
@@ -42,7 +43,7 @@ const AuthProvider: FC<IAuthProvider> = props => {
         AuthService.status()
             .then(setAuth)
             .catch(err => err);
-    });
+    }, [asPath, setAuth]);
 
     useEffect(() => {
         isAuthenticated && DiscordUserService.getMe()

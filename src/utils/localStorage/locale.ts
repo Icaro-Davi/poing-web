@@ -19,8 +19,10 @@ const saveLocale = (locale: Locale) => {
     localStorage?.setItem(LocalStorageKeys.LOCALE, JSON.stringify({ ...locales, [locale.lang]: locale }));
 }
 
-export default {
+const locale = {
     getAllLocales,
     getLocaleByLang,
     saveLocale
 }
+
+export default locale;

@@ -9,6 +9,8 @@ import fetchGuild from "./FetchGuild";
 class AppDispatch {
     static async findGuildAndSave(dispatch: AppDispatchStore) {
         try {
+            const localGuilds = LocalStorage.guild.get();
+            localGuilds?.length && dispatch({ type: 'SET_GUILDS', payload: { guilds: localGuilds } });
             const guilds = await DiscordUserService.getGuilds();
             if (guilds) {
                 dispatch({ type: 'SET_GUILDS', payload: { guilds } });

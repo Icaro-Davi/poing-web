@@ -33,7 +33,7 @@ const getSelectedGuild = () => localStorage.getItem(LocalStorageKeys.SELECTED_GU
 
 const getChannels = () => {
     const guild = getGuilds(getSelectedGuild());
-    if (guild.channels) return guild.channels;
+    if (guild?.channels) return guild.channels;
 };
 
 const setChannels = (channels: GuildChannel[], options?: LocalStorageFuncOptions) => {
@@ -75,7 +75,7 @@ function setModule<K extends keyof ModulesType>(moduleType: K, moduleSettings: M
         });
 }
 
-export default {
+const guild =  {
     getGuilds,
     setGuilds,
     setSelectedGuild,
@@ -84,3 +84,5 @@ export default {
     setChannels,
     setModule
 }
+
+export default guild;
