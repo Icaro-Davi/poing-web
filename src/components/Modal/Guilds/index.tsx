@@ -17,7 +17,7 @@ const ModalGuilds: ModalComponentWrapper<{ guilds: UserGuildType[] }> = props =>
     }
     return (
         <ModalWrapper onClick={props.modal.close}>
-            <Grid horizontalAlign="center" verticalAlign="center">
+            <Grid horizontalAlign="center" verticalAlign="middle">
                 <Grid.Row breakpoints={{ xs: 23, md: 10, lg: 8 }} onClick={e => e.stopPropagation()}>
                     <ModalHeader>
                         <Title stroke={{ strokeColor: '#000000' }}>Guilds</Title>

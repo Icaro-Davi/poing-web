@@ -3,7 +3,7 @@ import { StrokeText } from "../../../Typography/styled";
 
 const FONT_SIZE = 18;
 export const MARGIN = 32;
-export const HORIZONTAL_HEADER_HEIGHT = '5em';
+export const HORIZONTAL_HEADER_HEIGHT = '5rem';
 
 export const Header = styled.header`
     height: ${HORIZONTAL_HEADER_HEIGHT};

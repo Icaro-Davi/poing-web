@@ -1,11 +1,36 @@
-import fs from 'fs';
-import { Locale, LocaleLang } from "./index.type";
+import { getLocaleLang, setLocaleLang } from '../utils/cookies';
 
-export const getLocale = async (localeLang: LocaleLang): Promise<Locale | undefined> => {
-    if (!(typeof window === 'undefined')) throw new Error('Locale only works on server side.');
-    const localePath = './src/locale';
-    const fileLocaleName = fs.readdirSync(localePath).find(file => file.split('.')[0] === localeLang);
-    if (!fileLocaleName) return;
-    const locale = await import(`./${fileLocaleName}`)
-    return locale.default;
+import type { GetServerSidePropsContext, NextPageContext } from 'next/types';
+import type { Locale, LocaleLang } from "./index.type";
+
+export const availableLocales = ['pt-BR', 'en-US'];
+
+const validateLocale = (localeLang: string) =>
+    availableLocales.some(_localeLang => _localeLang === localeLang);
+
+export const getAndValidateLocaleLang = (ctx?: NextPageContext | GetServerSidePropsContext) => {
+    const urlLocaleLang = ctx?.query.locale as LocaleLang;
+    if (urlLocaleLang && validateLocale(urlLocaleLang)) {
+        setLocaleLang(urlLocaleLang, ctx);
+        return {
+            lang: urlLocaleLang,
+            isUrlParam: true
+        };
+    } else {
+        const localeLang = getLocaleLang(ctx) as LocaleLang;
+        if (localeLang && validateLocale(localeLang))
+            return {
+                lang: localeLang,
+                isUrlParam: false
+            };
+    }
+    return {
+        lang: 'pt_BR' as LocaleLang,
+        isUrlParam: false
+    };
+}
+
+export const getLocale = async (ctx?: NextPageContext | GetServerSidePropsContext): Promise<Locale> => {
+    const locale = getAndValidateLocaleLang(ctx);
+    return (await import(`../locale/${locale.lang}`)).default as Locale;
 }

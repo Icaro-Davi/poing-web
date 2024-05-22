@@ -1,5 +1,7 @@
 import authenticate from './authenticate';
 
-export default {
+const auth = {
     authenticate
 }
+
+export default auth;

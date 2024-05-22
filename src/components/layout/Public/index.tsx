@@ -1,22 +1,18 @@
 import dynamic from "next/dynamic";
-import React, { ReactNode } from "react";
-import { useApp } from "../../../context/App";
-import Footer from "../Footer";
+import { ReactNode, FC, memo } from "react";
 import { Container, Main } from "./styled";
-const Sidebar = dynamic(() => import("./Menu/Sidebar"));
-const HorizontalMenu = dynamic(() => import("./Menu/Horizontal"));
+
+const Navbar = dynamic(async () => import('./Menu'));
+const Footer = dynamic(async () => import('../Footer'));
 
 interface MainLayout {
     children: ReactNode;
 }
 
-const MainLayout: React.FC<MainLayout> = props => {
-    const { layout } = useApp();
+const MainLayout: FC<MainLayout> = props => {
     return (
         <Container>
-            {layout.isDesktopSize
-                ? <HorizontalMenu />
-                : <Sidebar />}
+            <Navbar />
             <Main>
                 {props.children}
                 <Footer />
@@ -25,4 +21,4 @@ const MainLayout: React.FC<MainLayout> = props => {
     );
 }
 
-export default React.memo(MainLayout);
+export default memo(MainLayout);

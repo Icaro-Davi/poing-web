@@ -1,23 +1,34 @@
-import { GuildSettingsType } from "../../services/discord/bot/bot.types";
-import LocalStorageKeys from "./keys";
+import LocalStorageGuild from './guild';
+import LocalStorageBot from './bot';
+import LocalStorageFormData from './localFormData';
+import LocalStorageLocale from './locale';
 
-const setSelectedGuild = (guildId: string) => localStorage.setItem(LocalStorageKeys.SELECTED_GUILD_ID, guildId);
-const getSelectedGuild = () => localStorage.getItem(LocalStorageKeys.SELECTED_GUILD_ID);
-
-const setGuildSettings = (guildSettings: GuildSettingsType) => localStorage.setItem(LocalStorageKeys.GUILD_SETTINGS, JSON.stringify(guildSettings));
-const getBotSettings = () => {
-    let guildSettings = localStorage.getItem(LocalStorageKeys.GUILD_SETTINGS);
-    return (guildSettings ? JSON.parse(guildSettings) : undefined) as GuildSettingsType | undefined;
-};
+export const getNextFetchTimestamp = () => new Date().getTime() + ((1000 * 60) * 5);
+const clean = () => localStorage.clear();
 
 const LocalStorage = {
+    clean,
     guild: {
-        getSelectedId: getSelectedGuild,
-        setSelectedId: setSelectedGuild
+        get: LocalStorageGuild.getGuilds,
+        set: LocalStorageGuild.setGuilds,
+        getChannels: LocalStorageGuild.getChannels,
+        setChannels: LocalStorageGuild.setChannels,
+        getSelectedId: LocalStorageGuild.getSelectedGuild,
+        setSelectedId: LocalStorageGuild.setSelectedGuild,
+        setModule: LocalStorageGuild.setModule
     },
     bot: {
-        setSettings: setGuildSettings,
-        getSettings: getBotSettings
+        setSettings: LocalStorageBot.setGuildSettings,
+        getSettings: LocalStorageBot.getBotSettings
+    },
+    localFormData: {
+        get: LocalStorageFormData.get,
+        set: LocalStorageFormData.set
+    },
+    locale: {
+        save: LocalStorageLocale.saveLocale,
+        get: LocalStorageLocale.getLocaleByLang,
+        getAll: LocalStorageLocale.getAllLocales
     }
 }
 

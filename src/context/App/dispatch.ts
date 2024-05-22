@@ -1,30 +1,43 @@
-import { AppDispatchStore } from "./app.types";
 import DiscordUserService from "../../services/discord/user";
 import LocalStorage from "../../utils/localStorage";
 import Notification from "../../components/Notification";
+import BaseError from "../../utils/error/baseError";
+
+import type { AppDispatchStore } from "./app.types";
+import fetchGuild from "./FetchGuild";
 
 class AppDispatch {
     static async findGuildAndSave(dispatch: AppDispatchStore) {
         try {
+            const localGuilds = LocalStorage.guild.get();
+            localGuilds?.length && dispatch({ type: 'SET_GUILDS', payload: { guilds: localGuilds } });
             const guilds = await DiscordUserService.getGuilds();
             if (guilds) {
                 dispatch({ type: 'SET_GUILDS', payload: { guilds } });
                 const lsGuildId = LocalStorage.guild.getSelectedId()
-                const selectedGuildId = (lsGuildId && guilds.find(guild => guild.id === lsGuildId)?.id) || guilds[0].id;
-                dispatch({ type: 'SET_SELECTED_GUILD', payload: { selectedGuildId } });
-                LocalStorage.guild.setSelectedId(selectedGuildId);
+                const selectedGuildId = (lsGuildId && guilds.find(guild => guild.id === lsGuildId)?.id) || guilds.find(guild => guild.hasBot)?.id;
+                if (selectedGuildId) {
+                    this.setSelectedGuildId(dispatch, selectedGuildId);
+                }
+                return { selectedGuildId };
             }
         } catch (error) {
-            console.error(error);
-            Notification.open({
-                title: 'Error',
-                description: 'Erro ao buscar a lista de guilds',
-                type: 'error'
-            });
+            new BaseError({
+                origin: 'context.app.AppDispatch.findGuildAndSave',
+                message: "Failed find user guilds",
+                error,
+                callback({ notifications }) {
+                    Notification.open({
+                        type: 'error',
+                        ...notifications.error.guilds.find
+                    });
+                }
+            })
         }
     }
 
     static async setSelectedGuildId(dispatch: AppDispatchStore, selectedGuildId: string) {
+        await fetchGuild({ fetchSettings: true, guildId: selectedGuildId });
         dispatch({ type: 'SET_SELECTED_GUILD', payload: { selectedGuildId } });
         LocalStorage.guild.setSelectedId(selectedGuildId);
     }

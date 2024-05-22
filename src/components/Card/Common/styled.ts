@@ -1,10 +1,10 @@
 import styled, { css, DefaultTheme, ThemeProps } from "styled-components";
 import { ThemeColorsKeys } from "../../../utils/general.types";
-import { StyledTitleOne, StrokeText, StyledParagraph } from "../../Typography/styled";
+import { StyledTitleTwo, StrokeText, StyledParagraph } from "../../Typography/styled";
 import { IStyledCard } from "./card.types";
 
 export const StyledCardParagraph = styled(StyledParagraph)``;
-export const StyledCardTitle = styled(StyledTitleOne)`
+export const StyledCardTitle = styled(StyledTitleTwo)`
     width: 100%;
 `;
 

@@ -20,7 +20,7 @@ const GlobalStyled = createGlobalStyle`
 
     #__next {
         width: 100%;
-        height: 100vh;
+        height: 100dvh;
         font-family: 'Roboto', sans-serif;
     }
 

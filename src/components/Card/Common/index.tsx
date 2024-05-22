@@ -35,7 +35,7 @@ const Card: React.FC<ICard> = ({ children, title, description, imageSrc, imgAlt,
                     }}
                 >
                     {imageSrc && (
-                        <div style={{ width: (isMobile ? imgW / 1.5 : (imgW * 2)), height: (isMobile ? imgH / 1.5 : (imgH * 1.5)) }}>
+                        <div style={{ width: (isMobile ? imgW / 1.5 : (imgW * 3)), height: (isMobile ? imgH / 1.5 : (imgH * 1.5)) }}>
                             <Img
                                 imageSrc={imageSrc}
                                 alt={imgAlt || ''}

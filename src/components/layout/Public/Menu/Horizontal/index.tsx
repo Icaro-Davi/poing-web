@@ -1,14 +1,16 @@
 import { useRouter } from 'next/router';
 import { useApp } from "../../../../../context/App";
 import { useAuth } from "../../../../../context/Auth";
+import OptionsButton from '../../../../Buttons/OptionsButton';
 import Logo from "../../../../Logo";
 import StyledLink from '../Link';
 import { Anchor, Header } from '../styled';
 import { MenuContainer, MenuItem, Navbar } from "./styles";
+import LocaleButton from '../LocaleButton';
 
 const MainLayoutHeader: React.FC = props => {
     const auth = useAuth();
-    const { locale } = useApp();
+    const { locale: { lang, layouts: { public: { menu } } } } = useApp();
     const router = useRouter();
 
     return (
@@ -17,40 +19,40 @@ const MainLayoutHeader: React.FC = props => {
                 <MenuContainer verticalAlign="flex-end">
                     <MenuItem>
                         <StyledLink
-                            href='/'
-                            selected={router.asPath === '/'}
-                            label={locale?.navbar.mainMenu.home}
+                            href={`/${lang}`}
+                            selected={router.asPath === `/${lang}`}
+                            label={menu.home}
                         />
                     </MenuItem>
                     <MenuItem>
                         <StyledLink
-                            href='/help'
-                            selected={router.asPath === '/help'}
-                            label={locale?.navbar.mainMenu.help}
+                            href={`/${lang}/help`}
+                            selected={router.asPath === `/${lang}/help`}
+                            label={menu.help}
+                        />
+                    </MenuItem>
+                    <MenuItem>
+                        <StyledLink
+                            href={`/${lang}/commands`}
+                            selected={router.asPath === `/${lang}/commands`}
+                            label={menu.commands}
                         />
                     </MenuItem>
                 </MenuContainer>
                 <Logo />
                 <MenuContainer>
                     <MenuItem>
-                        <StyledLink
-                            href='/commands'
-                            selected={router.asPath === '/commands'}
-                            label={locale?.navbar.mainMenu.commands}
-                        />
+                        <LocaleButton />
                     </MenuItem>
                     {auth.isAuthenticated
                         ? (
                             <MenuItem>
-                                <StyledLink
-                                    href='/dashboard/poing'
-                                    label="Dashboard"
-                                />
+                                <OptionsButton localeLang={lang} label={menu.optionsButton} />
                             </MenuItem>
                         )
                         : (
                             <MenuItem>
-                                <Anchor href={auth.discordAuthUrl}>{locale?.navbar.mainMenu.login}</Anchor>
+                                <Anchor href={auth.discordAuthUrl}>{menu.login}</Anchor>
                             </MenuItem>
                         )}
                 </MenuContainer>

@@ -6,7 +6,7 @@ interface IFooter {
 
 const Footer: React.FC<IFooter> = props => (
     <StyledModalCommandCardFooter>
-        <p style={{ margin: 0 }}>Categoria - Admin</p>
+        <p style={{ margin: 0 }}>Categoria - {props.categoryName}</p>
     </StyledModalCommandCardFooter>
 );
 

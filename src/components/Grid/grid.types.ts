@@ -1,11 +1,13 @@
-export type AlignType = 'center' | 'left' | 'right'
+export type HorizontalAlign = 'center' | 'left' | 'right';
+export type VerticalAlign = 'top' | 'middle' | 'bottom';
 
 export type StyledGridContainerProps = {
-    horizontalAlign?: AlignType;
-    verticalAlign?: AlignType;
+    horizontalAlign?: HorizontalAlign;
+    verticalAlign?: VerticalAlign;
+    gutter?: [number, number];
 }
 
 export type StyledGridRowProps = {
-    horizontalAlign?: AlignType;
-    verticalAlign?: AlignType;
+    horizontalAlign?: HorizontalAlign;
+    verticalAlign?: VerticalAlign;
 }

@@ -16,7 +16,6 @@ export type ModalWrapperParams<P extends { [key: string]: any } = {}> = {
 export type ModalStateType<P extends { [key: string]: any } = {}> = {
     visibility: boolean;
     content: P;
-    Component: ModalComponent;
 }
 
 export type ModalActionType<T> = {

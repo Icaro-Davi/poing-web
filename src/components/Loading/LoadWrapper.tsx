@@ -3,7 +3,7 @@ import { LoaderContainer, LoadIconContainer } from "./styled";
 
 interface IProps {
     isLoading: boolean;
-    children: ReactNode;
+    children?: ReactNode;
     spinnerColor?: string;
 }
 

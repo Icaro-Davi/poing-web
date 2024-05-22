@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef } from "react";
-import { RiMenuUnfoldLine, RiMenuFoldLine } from 'react-icons/ri';
+import { RiMenuFoldLine, RiMenuUnfoldLine } from 'react-icons/ri';
 import { useTheme } from "styled-components";
 import { useApp } from "../../../../../context/App";
 import { useAuth } from "../../../../../context/Auth";
+import OptionsButton from "../../../../Buttons/OptionsButton";
 import Logo from "../../../../Logo";
 import StyledLink from "../Link";
+import LocaleButton from "../LocaleButton";
 import { Anchor, Header } from "../styled";
 import {
     StyledItemContainer, StyledMenuContainer,
@@ -20,7 +22,7 @@ const Sidebar: React.FC = props => {
     const sideMenuRef = useRef<HTMLDivElement>(null);
     const spanBoxRef = useRef<HTMLDivElement>(null);
     const appTheme = useTheme();
-    const { locale } = useApp();
+    const { locale: { lang, layouts: { public: { menu } } } } = useApp();
     const auth = useAuth();
     const Router = useRouter();
 
@@ -57,26 +59,30 @@ const Sidebar: React.FC = props => {
                     </StyledOpenMenuBtn>
                 </StyledSideMenuCloseBtnContainer>
                 <StyledMenuContainer>
-                    <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === '/'} href='/' label={locale.navbar.mainMenu.home} />
-                    </StyledMenuItem>
-                    <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === '/help'} href='/help' label={locale.navbar.mainMenu.help} />
-                    </StyledMenuItem>
-                    <StyledMenuItem>
-                        <StyledLink selected={Router.asPath === '/commands'} href='/commands' label={locale.navbar.mainMenu.commands} />
-                    </StyledMenuItem>
                     {auth.isAuthenticated
                         ? (
-                            <StyledMenuItem>
-                                <StyledLink selected={false} href='/dashboard/poing' label='Dashboard' />
+                            <StyledMenuItem style={{ display: 'flex', justifyContent: 'center' }}>
+                                <OptionsButton localeLang={lang} label={menu.optionsButton} />
                             </StyledMenuItem>
                         )
                         : (
                             <StyledMenuItem>
-                                <Anchor href={auth.discordAuthUrl}>{locale.navbar.mainMenu.login}</Anchor>
+                                <Anchor href={auth.discordAuthUrl}>{menu.login}</Anchor>
                             </StyledMenuItem>
-                        )}
+                        )
+                    }
+                    <StyledMenuItem>
+                        <StyledLink selected={Router.asPath === `/${lang}`} href={`/${lang}`} label={menu.home} />
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <StyledLink selected={Router.asPath === `/${lang}/help`} href={`/${lang}/help`} label={menu.help} />
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <StyledLink selected={Router.asPath === `/${lang}/commands`} href={`/${lang}/commands`} label={menu.commands} />
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <LocaleButton />
+                    </StyledMenuItem>
                 </StyledMenuContainer>
             </StyledSideMenuContainer>
         </Fragment>

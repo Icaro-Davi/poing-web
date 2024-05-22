@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
+import GlobalStyled from "../styles/globalStyled";
+import AppThemeProvider from './ThemeProvider';
 
-const AppThemeProvider = dynamic(() => import('./ThemeProvider'));
-const GlobalStyled = dynamic(() => import("../styles/globalStyled"));
-const AppProvider = dynamic(() => import("./App"));
 const AuthProvider = dynamic(() => import("./Auth"));
+const AppProvider = dynamic(() => import("./App"));
 
 import type { ReactNode } from "react";
 import type { Locale } from "../locale/index.type";
@@ -20,14 +20,14 @@ interface IProviders {
 
 const Providers: React.FC<IProviders> = props => {
     return (
-        <AppProvider {...props}>
-            <AppThemeProvider>
-                <GlobalStyled />
-                <AuthProvider {...props}>
+        <AuthProvider {...props}>
+            <AppProvider {...props}>
+                <AppThemeProvider>
+                    <GlobalStyled />
                     {props.children}
-                </AuthProvider>
-            </AppThemeProvider>
-        </AppProvider>
+                </AppThemeProvider>
+            </AppProvider>
+        </AuthProvider>
     );
 }
 

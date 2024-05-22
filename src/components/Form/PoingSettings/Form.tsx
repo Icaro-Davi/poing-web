@@ -1,64 +1,68 @@
 import "react-color-palette/lib/css/styles.css"
-import { ColorPicker, Color, useColor } from 'react-color-palette';
-import { CSSProperties, FC, useRef } from "react";
-import type { FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-
-import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
-import type { GetReference } from "../../../utils/general.types";
+import { ColorPicker, useColor } from 'react-color-palette';
+import { useRef } from "react";
 import Grid from "../../Grid";
 import FloatInput from "../items/Float/Input";
 import FloatSelect from "../items/Float/Select";
 import { ColorPalletWrapper } from "./styled";
+import findStringVarsAndSubstitute from "../../../utils/findStringVarsAndSubstitute";
+import { useFormContext } from "react-hook-form";
 
-type BotFields = GetReference<GuildSettingsType, 'bot'>;
+import type { Color } from 'react-color-palette';
+import type { CSSProperties, FC } from "react";
+import type { GuildSettingsType } from "../../../services/discord/bot/bot.types";
+import type { GetReference } from "../../../utils/general.types";
+import type { Locale } from "../../../locale/index.type";
 
 const style: CSSProperties = { width: '100%' };
 const breakpoints = { xs: 24, md: 12, lg: 8 };
 
-interface IProps {
-    formState: FormState<BotFields>;
-    register: UseFormRegister<BotFields>;
-    watch: UseFormWatch<BotFields>;
-    setValue: UseFormSetValue<BotFields>;
+type BotFields = GetReference<GuildSettingsType, 'bot'>;
+interface IForm {
+    locale: Locale;
+    channels: { label: string; key: string; }[];
 }
 
-const FormElements: FC<IProps> = ({ watch, ...props }) => {
-    const [color, setColor] = useColor('hex', watch('messageEmbedHexColor'));
+const FormElements: FC<IForm> = ({ locale: { forms: { poingSettings: { field } } }, ...props }) => {
+    const { watch, setValue, register, formState } = useFormContext<BotFields>();
+    const borderColor = watch('messageEmbedHexColor');
+    const [color, setColor] = useColor('hex', borderColor);
     const debounce = useRef<NodeJS.Timeout>();
 
     const onColorPickerChange = (color: Color) => {
         setColor(color);
         clearTimeout(debounce.current);
-        debounce.current = setTimeout(() => { props.setValue('messageEmbedHexColor', color.hex); }, 200);
+        debounce.current = setTimeout(() => { setValue('messageEmbedHexColor', color.hex, { shouldValidate: true }) }, 200);
     }
+
     return (
         <Grid style={{ rowGap: '1rem' }}>
             <Grid.Row breakpoints={breakpoints}>
                 <FloatInput
-                    label="Commando prefixo"
-                    errorMessage={props.formState.errors.prefix?.message}
+                    label={field.prefix.label}
+                    errorMessage={formState.errors.prefix?.message ?? ''}
                     style={style}
-                    innerElement={{ style: { borderColor: watch('messageEmbedHexColor') } }}
-                    {...props.register('prefix', {
-                        required: "Need be filled with bot prefix.",
+                    innerElement={{ style: { borderColor } }}
+                    {...register('prefix', {
+                        required: field.prefix.validation.required,
                         maxLength: {
                             value: 5,
-                            message: "Only can use 5 characters."
+                            message: findStringVarsAndSubstitute(field.prefix.validation.maxLength!, { '{%value%}': '5', default: false }).join('')
                         },
+                        pattern: { value: /^[!@#$%&*\-_=+.:?/]{1,5}$/, message: field.prefix.validation.patternPrefix }
                     })}
                 />
             </Grid.Row>
             <Grid.Row breakpoints={breakpoints}>
                 <ColorPalletWrapper>
                     <FloatInput
-                        label="Cor das mensagens"
-                        errorMessage={props.formState.errors.messageEmbedHexColor?.message}
+                        label={field.messageEmbedHexColor.label}
+                        errorMessage={formState.errors.messageEmbedHexColor?.message ?? ''}
                         style={style}
-                        innerElement={{ style: { borderColor: watch('messageEmbedHexColor') } }}
-                        {...props.register('messageEmbedHexColor', {
-                            required: "Need be filled with a hexadecimal color.",
-                            pattern: { value: /^#[0-9A-F]{6}$/i, message: "Need be a valid hexadecimal color." },
-
+                        innerElement={{ style: { borderColor } }}
+                        {...register('messageEmbedHexColor', {
+                            required: field.messageEmbedHexColor.validation.required,
+                            pattern: { value: /^#[0-9A-F]{6}$/i, message: field.messageEmbedHexColor.validation.patternHexColor },
                         })}
                     />
                     <ColorPicker
@@ -73,16 +77,27 @@ const FormElements: FC<IProps> = ({ watch, ...props }) => {
             </Grid.Row>
             <Grid.Row breakpoints={breakpoints}>
                 <FloatSelect
-                    label="Tradução"
-                    errorMessage={props.formState.errors.locale?.message}
+                    style={style}
+                    label={field.channelLogsId.label}
+                    options={[{ label: field.channelLogsId.optionLogsDisabled, key: '' }, ...props.channels]}
+                    defaultValue={''}
+                    innerElement={{ style: { borderColor } }}
+                    errorMessage={formState.errors.channel?.logsId?.message}
+                    {...register('channel.logsId')}
+                />
+            </Grid.Row>
+            <Grid.Row breakpoints={breakpoints}>
+                <FloatSelect
+                    label={field.locale.label}
+                    errorMessage={formState.errors.locale?.message}
                     options={[
                         { label: 'Português', key: 'pt-BR' },
                         { label: 'Ingles', key: 'en-US' }
                     ]}
                     style={style}
-                    innerElement={{ style: { borderColor: watch('messageEmbedHexColor') } }}
-                    {...props.register('locale', {
-                        required: "Choose any locale for bot vawvaw vaw.",
+                    innerElement={{ style: { borderColor } }}
+                    {...register('locale', {
+                        required: field.locale.validation.required,
                     })}
                 />
             </Grid.Row>

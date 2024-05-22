@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const GuildChangeBtn: FC<IProps> = ({ guild, ...props }) => {
-    const imageLoaded = useImageLoad(guild.icon);
+    const imageLoaded = useImageLoad(guild.icon || DEFAULT_IMAGE);
     return (
         <LoadWrapper isLoading={!imageLoaded}>
             <Header onClick={props.onClick} imageSrc={guild?.icon || DEFAULT_IMAGE}>
