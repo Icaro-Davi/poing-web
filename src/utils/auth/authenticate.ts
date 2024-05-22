@@ -23,7 +23,7 @@ async function isAuthenticated(ctx?: NextPageContext | GetServerSidePropsContext
     } catch (error) {
         console.error('[AUTH] Failed to authenticate');
         if (error instanceof AxiosError) {
-            if (error.code === '401') removeAuthToken(ctx);
+            // if (error.code === '401') removeAuthToken(ctx);
         } else {
             console.error(error);
         }
