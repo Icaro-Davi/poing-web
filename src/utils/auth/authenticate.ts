@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { getAuthToken, removeAuthToken } from '../cookies';
+import { getAuthJWToken, getAuthToken, removeAuthToken } from '../cookies';
 import { getAndValidateLocaleLang } from '../../locale';
 import CookieKeys from '../cookies/keys';
 
@@ -8,22 +8,24 @@ import type { GetServerSideProps, GetServerSidePropsContext } from "next/types";
 
 async function isAuthenticated(ctx?: NextPageContext | GetServerSidePropsContext) {
     const authToken = await getAuthToken(ctx);
+    const authJWToken = await getAuthJWToken(ctx);
     try {
-        if (!authToken) return false;
+        if (!authToken && !authJWToken) return false;
         if (ctx && typeof window === 'undefined') {
             const url = `${process.env.NEXT_PUBLIC_DISCORD_DASHBOARD_API}/auth/status`;
             await axios.get(url, {
-                headers: {
-                    'Cookie': `${CookieKeys.AUTH_TOKEN}=${authToken}`,
-                },
                 withCredentials: true,
+                headers: {
+                    ...authJWToken ? { 'Authorization': `Bearer ${authJWToken}` } : {},
+                    ...authToken ? { 'Cookie': `${CookieKeys.AUTH_TOKEN}=${authToken}` } : {},
+                },
             });
         }
         return true;
     } catch (error) {
         console.error('[AUTH] Failed to authenticate');
         if (error instanceof AxiosError) {
-            // if (error.code === '401') removeAuthToken(ctx);
+            if (error.code === '403') removeAuthToken(ctx);
         } else {
             console.error(error);
         }
@@ -34,7 +36,7 @@ async function isAuthenticated(ctx?: NextPageContext | GetServerSidePropsContext
 const authenticationHof = async (context: GetServerSidePropsContext) => {
     const isAuth = await isAuthenticated(context);
     const locale = await getAndValidateLocaleLang(context);
-
+    console.log('authenticationHof', isAuth, locale);
     return { isAuth, locale }
 }
 

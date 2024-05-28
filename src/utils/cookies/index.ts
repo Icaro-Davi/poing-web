@@ -41,6 +41,10 @@ export const getAuthToken: GetCookieFunc = ctx => {
     return getCookie(CookieKeys.AUTH_TOKEN, ctx);
 }
 
+export const getAuthJWToken: GetCookieFunc = ctx => {
+    return getCookie(CookieKeys.AUTH_JWT, ctx);
+}
+
 export const getLocaleLang: GetCookieFunc = ctx => {
     return getCookie(CookieKeys.LOCALE_LANG, ctx) || 'pt-BR';
 }
