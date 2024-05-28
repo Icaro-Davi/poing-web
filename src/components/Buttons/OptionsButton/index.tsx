@@ -38,11 +38,11 @@ const OptionsButton: FC<IProps> = props => {
         <LoadWrapper isLoading={!user}>
             <OptionsButtonContainer>
                 <button>
-                    <span>{handleUsernameSize(layout.breakpoints, `${user?.username ?? BOT.name}#${user?.discriminator}`)}</span>
+                    <span>{handleUsernameSize(layout.breakpoints, `${user?.username ?? BOT.name}`)}</span>
                     {user && user.avatar && <div>
                         <Image
                             imageSrc={user.avatar}
-                            alt={`${user.username}#${user.discriminator}`}
+                            alt={user.username}
                         />
                     </div>}
                 </button>
